@@ -1,0 +1,54 @@
+<!-- Head partial (for your templating/build step) -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Prakrit Tyagi - Portfolio</title>
+
+<!-- 0) Apply saved theme ASAP to avoid flash -->
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      if (!saved) {
+        // fall back to system preference
+        saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', saved);
+      // expose for the next inline script
+      window.__savedTheme = saved;
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'light');
+      window.__savedTheme = 'light';
+    }
+  })();
+</script>
+
+<meta name="color-scheme" content="dark light">
+
+<!-- Theme color tokens (both present; JS enables one) -->
+<link id="theme-light" rel="stylesheet" href="css/themes/light.css" data-theme="light" disabled>
+<link id="theme-dark"  rel="stylesheet" href="css/themes/dark.css"  data-theme="dark"  disabled>
+
+<!-- Enable the correct theme sheet BEFORE other CSS loads -->
+<script>
+  (function () {
+    var t = window.__savedTheme || 'light';
+    var light = document.getElementById('theme-light');
+    var dark  = document.getElementById('theme-dark');
+    if (light && dark) {
+      light.disabled = (t !== 'light');
+      dark.disabled  = (t !== 'dark');
+    }
+  })();
+</script>
+
+<!-- Base + per-section CSS (no raw colors; only use tokens) -->
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/sections/header.css" />
+<link rel="stylesheet" href="css/sections/hero.css" />
+<link rel="stylesheet" href="css/sections/about.css" />
+<link rel="stylesheet" href="css/sections/experience.css" />
+<link rel="stylesheet" href="css/sections/projects.css" />
+<link rel="stylesheet" href="css/sections/reviews.css" />
+<link rel="stylesheet" href="css/sections/extra.css" />
+<link rel="stylesheet" href="css/sections/contact.css" />

@@ -1,0 +1,519 @@
+New Website
+│   index.html
+│   tree.txt
+│
+├───assets
+│   ├───docs
+│   ├───icons
+│   ├───img
+│   │   ├───companies
+│   │   │       adda.png
+│   │   │       freelance.png
+│   │   │       ulavi.png
+│   │   │
+│   │   ├───customer
+│   │   ├───extra
+│   │   │       1.jpg
+│   │   │       2.jpg
+│   │   │       3.jpg
+│   │   │
+│   │   ├───icons
+│   │   │       github.svg
+│   │   │       gmail.svg
+│   │   │       instagram.svg
+│   │   │       linkedin.svg
+│   │   │       twitter.svg
+│   │   │       whatsapp.svg
+│   │   │       youtube.svg
+│   │   │
+│   │   ├───me
+│   │   │       profile.jpg
+│   │   │
+│   │   ├───misc
+│   │   │       back.svg
+│   │   │       moon.svg
+│   │   │       next.svg
+│   │   │       pin.svg
+│   │   │       sun.svg
+│   │   │
+│   │   ├───projects
+│   │   │       SnakeAI.png
+│   │   │
+│   │   └───techstack
+│   │           .NET-core.svg
+│   │           .NET.svg
+│   │           AArch64.svg
+│   │           Adobe-Commerce-(Magneto).svg
+│   │           Adobe-Illustrator.svg
+│   │           Adobe-Photoshop.svg
+│   │           Adobe-Premiere-Pro.svg
+│   │           Adobe-XD.svg
+│   │           AdonisJS.svg
+│   │           After-Effects.svg
+│   │           Akka.svg
+│   │           Algolia.svg
+│   │           Alpine.js.svg
+│   │           Anaconda.svg
+│   │           Android-Studio.svg
+│   │           Android.svg
+│   │           Angular.svg
+│   │           AngularJS.svg
+│   │           Ansible.svg
+│   │           Ant-Design.svg
+│   │           Apache-Airflow.svg
+│   │           Apache-Cassandra.svg
+│   │           Apache-Groovy.svg
+│   │           Apache-Hadoop.svg
+│   │           Apache-Kafka.svg
+│   │           Apache-Maven.svg
+│   │           Apache-Spark.svg
+│   │           Apache-Subversion.svg
+│   │           Apache-Tomcat.svg
+│   │           Apache.svg
+│   │           APL.svg
+│   │           Appcelerator.svg
+│   │           Apple-Safari.svg
+│   │           Apple.svg
+│   │           Appwrite.svg
+│   │           Arch-Linux.svg
+│   │           Arduino.svg
+│   │           Argo-CD.svg
+│   │           Astro.svg
+│   │           Atom.svg
+│   │           Autodesk-Maya.svg
+│   │           Autodesk-ShotGrid.svg
+│   │           Awk.svg
+│   │           AWS.svg
+│   │           Azios.svg
+│   │           Azure-Devops.svg
+│   │           Azure-SQL-Database.svg
+│   │           Azure.svg
+│   │           Babel.svg
+│   │           Backbone.js.svg
+│   │           Ballerina.svg
+│   │           Bamboo.svg
+│   │           Bash.svg
+│   │           Behance.svg
+│   │           BitBucket.svg
+│   │           Blender.svg
+│   │           Bootstrap.svg
+│   │           Bower.svg
+│   │           BrowserStack.svg
+│   │           Bulma.svg
+│   │           Bun.svg
+│   │           C#-(CSharp).svg
+│   │           C++-(CPlusPlus).svg
+│   │           C.svg
+│   │           Cairo-Graphics.svg
+│   │           CakePHP.svg
+│   │           Canva.svg
+│   │           Capacitor.svg
+│   │           CentOS.svg
+│   │           Chrome.svg
+│   │           CircleCI.svg
+│   │           Clarity.svg
+│   │           CLion.svg
+│   │           Clojure.svg
+│   │           ClojureScript.svg
+│   │           Cloudflare-Workers.svg
+│   │           Cloudflare.svg
+│   │           CMake.svg
+│   │           Codeac.svg
+│   │           Codecov.svg
+│   │           CodeIgniter.svg
+│   │           CodePen.svg
+│   │           CoffeeScript.svg
+│   │           Composer.svg
+│   │           Confluence.svg
+│   │           Consul.svg
+│   │           Contao.svg
+│   │           Core-js.svg
+│   │           Cosmos-BD.svg
+│   │           CouchDB.svg
+│   │           Crystal.svg
+│   │           CSS3.svg
+│   │           Cucumber.svg
+│   │           Cypress.svg
+│   │           D3.js.svg
+│   │           Dart.svg
+│   │           DataGrip.svg
+│   │           DataSpell.svg
+│   │           DBeaver.svg
+│   │           Debian.svg
+│   │           Deno.svg
+│   │           Devicon.svg
+│   │           Digital-Ocean.svg
+│   │           Discord.js.svg
+│   │           Django-REST.svg
+│   │           Django.svg
+│   │           Docker.svg
+│   │           Doctrine.svg
+│   │           Dropwizard.svg
+│   │           Drupal.svg
+│   │           Eclipse-Ceylon.svg
+│   │           Eclipse-IDE.svg
+│   │           Eclipse-Vert.x.svg
+│   │           Elastic-Beats.svg
+│   │           Elastic-Search.svg
+│   │           Electron.svg
+│   │           Eleventy-(11ty).svg
+│   │           Elixir.svg
+│   │           Elm.svg
+│   │           Embedded-C.svg
+│   │           Ember.js.svg
+│   │           Envoy.svg
+│   │           Erlang.svg
+│   │           ESLint.svg
+│   │           Express.svg
+│   │           Facebook.svg
+│   │           FastAPI.svg
+│   │           Fastify.svg
+│   │           Fauna.svg
+│   │           Feathers.svg
+│   │           Fedora.svg
+│   │           Figma.svg
+│   │           FileZilla.svg
+│   │           Firebase.svg
+│   │           Firefox.svg
+│   │           Flask.svg
+│   │           Flutter.svg
+│   │           Fortran.svg
+│   │           Foundation.svg
+│   │           FSharp-(F#).svg
+│   │           Gatling.svg
+│   │           Gatsby.svg
+│   │           Gazebo.svg
+│   │           GCC.svg
+│   │           Gentoo.svg
+│   │           Ghost.svg
+│   │           GIMP.svg
+│   │           Git.svg
+│   │           GitBook.svg
+│   │           GitHub-Actions.svg
+│   │           GitHub-Codespaces.svg
+│   │           GitHub.svg
+│   │           GitLab.svg
+│   │           Gitpod.svg
+│   │           Gitter.svg
+│   │           GNU-Emacs.svg
+│   │           Go.svg
+│   │           Godot-Engine.svg
+│   │           GoLand.svg
+│   │           Google-Cloud.svg
+│   │           Google.svg
+│   │           Gradle.svg
+│   │           Grafana.svg
+│   │           Grails.svg
+│   │           GraphQL.svg
+│   │           Grunt.js.svg
+│   │           Gulp.js.svg
+│   │           Handlebars.svg
+│   │           Hardhat.svg
+│   │           Harvester.svg
+│   │           HashiCorp-Terraform.svg
+│   │           HashiCorp-Vagrant.svg
+│   │           HashiCorp-Vault.svg
+│   │           Haskell.svg
+│   │           Haxe.svg
+│   │           Helm.svg
+│   │           Heroku.svg
+│   │           Hibernate.svg
+│   │           Homebrew.svg
+│   │           HTML5.svg
+│   │           Hugo.svg
+│   │           IBM-SPSS-Statistics.svg
+│   │           IFTTT.svg
+│   │           InfluxDB.svg
+│   │           Inkscape-.svg
+│   │           Insomnia.svg
+│   │           IntelliJ-IDEA.svg
+│   │           Internet-Explorer-10-(ie10).svg
+│   │           Ionic.svg
+│   │           Jaeger-Tracing.svg
+│   │           Jamstack.svg
+│   │           Jasmine.svg
+│   │           Java.svg
+│   │           JavaScript.svg
+│   │           Jeet.svg
+│   │           Jekyll.svg
+│   │           Jenkins.svg
+│   │           Jest.svg
+│   │           JetBrains.svg
+│   │           Jira-Align.svg
+│   │           Jira.svg
+│   │           jQuery.svg
+│   │           JSON.svg
+│   │           Jule.svg
+│   │           Julia.svg
+│   │           JUnit.svg
+│   │           Jupyter.svg
+│   │           K3OS.svg
+│   │           K3s.svg
+│   │           Kaggle.svg
+│   │           Karate-Labs.svg
+│   │           Karma.svg
+│   │           Keras.svg
+│   │           Kibana.svg
+│   │           Knex.js.svg
+│   │           Knockout.svg
+│   │           Kotlin.svg
+│   │           Krakenjs.svg
+│   │           Ktor.svg
+│   │           Kubernetes.svg
+│   │           LabVIEW.svg
+│   │           Laravel.svg
+│   │           LaTeX.svg
+│   │           Less.js.svg
+│   │           LinkedIn.svg
+│   │           Linux.svg
+│   │           Liquibase.svg
+│   │           Livewire.svg
+│   │           LLVM.svg
+│   │           Logstash.svg
+│   │           Lua.svg
+│   │           Lumen.svg
+│   │           Markdown.svg
+│   │           Material-UI.svg
+│   │           Materialize.svg
+│   │           MATLAB.svg
+│   │           Matplotlib.svg
+│   │           Meteor.js.svg
+│   │           Microsoft-SQL-Server.svg
+│   │           Minitab.svg
+│   │           MobX.svg
+│   │           Mocha.svg
+│   │           MODX.svg
+│   │           Moleculer.svg
+│   │           MongoDB.svg
+│   │           Mongoose.js.svg
+│   │           Moodle.svg
+│   │           MS-DOS.svg
+│   │           MySQL.svg
+│   │           Nano.svg
+│   │           Nerog.svg
+│   │           Nest.js.svg
+│   │           NetworkX.svg
+│   │           New4j.svg
+│   │           Next.js.svg
+│   │           NGINX.svg
+│   │           NHibernate.svg
+│   │           Nim.svg
+│   │           Nimble.svg
+│   │           NixOS.svg
+│   │           Node.js.svg
+│   │           Nodemon.svg
+│   │           NPM.svg
+│   │           NuGet.svg
+│   │           NumPy.svg
+│   │           Nuxt-JS.svg
+│   │           NW.js-(node-webkit).svg
+│   │           Objective-C.svg
+│   │           OCaml.svg
+│   │           Oh-my-zsh.svg
+│   │           Okta.svg
+│   │           OpenAL.svg
+│   │           OpenAPI.svg
+│   │           OpenCL.svg
+│   │           OpenCV.svg
+│   │           OpenGL.svg
+│   │           OpenStack.svg
+│   │           openSUSE.svg
+│   │           OpenTelemetry.svg
+│   │           Opera.svg
+│   │           Oracle.svg
+│   │           p5-JS.svg
+│   │           Packer.svg
+│   │           Pandas.svg
+│   │           Perl.svg
+│   │           pfSense.svg
+│   │           Phalcon.svg
+│   │           Phoenix-Framework.svg
+│   │           Photon-Engine-.svg
+│   │           PHP.svg
+│   │           PhpStorm.svg
+│   │           Playwrite.svg
+│   │           Ploty.svg
+│   │           Podman.svg
+│   │           Polygon.svg
+│   │           Portainer.svg
+│   │           PostCSS.svg
+│   │           PostgresSQL.svg
+│   │           Postman.svg
+│   │           Powershell.svg
+│   │           Processing.svg
+│   │           Prometheus.svg
+│   │           Protractor-Test.svg
+│   │           PureScript.svg
+│   │           PuTTY.svg
+│   │           PyCharm.svg
+│   │           PyScript.svg
+│   │           pytest.svg
+│   │           Python-Poetry.svg
+│   │           Python.svg
+│   │           PyTorch.svg
+│   │           Qodana.svg
+│   │           Qt-Framework.svg
+│   │           Quarkus.svg
+│   │           Quasar.svg
+│   │           Qwik.svg
+│   │           R-.svg
+│   │           RabbitMQ.svg
+│   │           Rancher.svg
+│   │           Raspberry-Pi.svg
+│   │           Reach.svg
+│   │           React-Bootstrap.svg
+│   │           React.svg
+│   │           Realm.svg
+│   │           Red-Hat.svg
+│   │           RedCube's-epic-Compiler-Thingy-programming-(ReCT).svg
+│   │           Redis.svg
+│   │           Redux.svg
+│   │           Ren'Py.svg
+│   │           Rider.svg
+│   │           Robot-Operating-System-(ROS).svg
+│   │           RocksDB.svg
+│   │           Rollup.js.svg
+│   │           RSpec.svg
+│   │           RStudio.svg
+│   │           Ruby-on-Rails.svg
+│   │           Ruby.svg
+│   │           RubyMine.svg
+│   │           Rust.svg
+│   │           Salesforce.svg
+│   │           Sanity.svg
+│   │           Sass.svg
+│   │           Scala.svg
+│   │           Scalingo.svg
+│   │           Selenium.svg
+│   │           Sema-Software.svg
+│   │           Sequelize.svg
+│   │           Shopware.svg
+│   │           Simple-DirectMedia-Layer-(SDL).svg
+│   │           Sketch.svg
+│   │           Slack.svg
+│   │           Socket.io.svg
+│   │           Solid.js.svg
+│   │           Solidity.svg
+│   │           SonarQube.svg
+│   │           Sourcetree.svg
+│   │           Splunk.svg
+│   │           Spring.svg
+│   │           SQL-Developer.svg
+│   │           SQLAlchemy.svg
+│   │           SQLite.svg
+│   │           SSH.svg
+│   │           Stack-Overflow.svg
+│   │           Stata.svg
+│   │           Storybook.svg
+│   │           Streamlit.svg
+│   │           Stylus.svg
+│   │           Svelte.svg
+│   │           Swagger.svg
+│   │           Swift.svg
+│   │           Symfony.svg
+│   │           Tailwind-CSS.svg
+│   │           Tauri.svg
+│   │           TensorFlow.svg
+│   │           TeX.svg
+│   │           The-Algorithms.svg
+│   │           Three.js.svg
+│   │           Titanium-SDK.svg
+│   │           TortoiseGit.svg
+│   │           Tower.svg
+│   │           Traefik-Mesh.svg
+│   │           Traefik-Proxy.svg
+│   │           Travis-CI.svg
+│   │           Trello.svg
+│   │           Twitter.svg
+│   │           TypeScript.svg
+│   │           TYPO3.svg
+│   │           Ubuntu.svg
+│   │           Unified-Modelling-Language-(UML).svg
+│   │           Unity.svg
+│   │           UNIX.svg
+│   │           Unreal-Engine.svg
+│   │           uWSGI.svg
+│   │           V8.svg
+│   │           Vala.svg
+│   │           Vercel.svg
+│   │           Veutify.svg
+│   │           Vim.svg
+│   │           Visual-Studio-Code-(VS-Code).svg
+│   │           Visual-Studio.svg
+│   │           Vite.js.svg
+│   │           Vite.svg
+│   │           vSphere.svg
+│   │           Vue-Storefront.svg
+│   │           Vue.js.svg
+│   │           Vyper.svg
+│   │           WebAssembly.svg
+│   │           Webflow.svg
+│   │           Weblate.svg
+│   │           Webpack.svg
+│   │           WebStorm.svg
+│   │           Windows-11.svg
+│   │           Windows-8.svg
+│   │           WooCommerce.svg
+│   │           WordPress.svg
+│   │           Xamarin.svg
+│   │           Xcode.svg
+│   │           XML.svg
+│   │           YAML.svg
+│   │           Yarn.svg
+│   │           Yii-Framework.svg
+│   │           Yuno-Host.svg
+│   │           Zend-Framework.svg
+│   │           Zig.svg
+│   │
+│   └───videos
+│           trailer.mp4
+│
+├───css
+│   │   base.css
+│   │
+│   ├───sections
+│   │       about.css
+│   │       contact.css
+│   │       experience.css
+│   │       extra.css
+│   │       header.css
+│   │       hero.css
+│   │       projects.css
+│   │       reviews.css
+│   │
+│   └───themes
+│           dark.css
+│           light.css
+│
+├───js
+│   │   main.js
+│   │
+│   ├───modules
+│   │       about.js
+│   │       animations.js
+│   │       contact.js
+│   │       experience.js
+│   │       extra.js
+│   │       header.js
+│   │       hero.js
+│   │       projects.js
+│   │       reviews.js
+│   │
+│   └───utils
+│           css.js
+│           dom.js
+│           io.js
+│           scroll.js
+│
+└───partials
+    │   head.html
+    │   header.html
+    │
+    └───sections
+            about.html
+            contact.html
+            experience.html
+            extra.html
+            hero.html
+            projects.html
+            reviews.html

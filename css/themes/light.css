@@ -1,0 +1,200 @@
+/* =========================================================
+   LIGHT THEME - White, Black, Red Only
+   Location: css/themes/light.css
+   ========================================================= */
+
+:root[data-theme="light"] {
+  /* Accent color - single source of truth for red */
+  --accent: #ff0000;
+  --accent-light: rgba(255, 0, 0, 0.3);
+  --accent-glow: rgba(255, 0, 0, 0.4);
+  --accent-glow-strong: rgba(255, 0, 0, 0.6);
+  --accent-glow-intense: rgba(255, 0, 0, 0.5);
+  
+  /* Base colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #e6e6e6;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-muted: #666666;
+  --text-inverted: #ffffff;
+  --border-primary: #cccccc;
+  --border-secondary: #999999;
+
+  /* Component colors */
+  --chip-bg: #f5f5f5;
+  --chip-border: #cccccc;
+  --chip-text: #000000;
+  --cta-bg: var(--accent);
+  --cta-text: #ffffff;
+
+  /* Hero colors */
+  --hero-bg: #ffffff;
+  --hero-text: #000000;
+
+  /* About section colors */
+  --about-tile-bg: #f5f5f5;
+  --about-tile-border: #cccccc;
+  --about-tile-text: #000000;
+  --about-stack-bg: #ffffff;
+  --about-stack-border: #cccccc;
+  --about-stack-dashed: #cccccc;
+  --about-socials-bg: #ffffff;
+  --about-socials-border: #cccccc;
+  --about-btn-bg: #ffffff;
+  --about-btn-border: #cccccc;
+  --about-btn-text: #000000;
+  --about-orbit-line: #000000;
+  --about-globe-base: 0;
+  --about-globe-dark: 0;
+  --about-globe-glow: 0;
+
+  /* Terminal Tech Stack colors - adapted to light mode */
+  --ts-terminal-bg: #ffffff;
+  --ts-terminal-border: #cccccc;
+  --ts-terminal-glow: rgba(0, 0, 0, 0.1);
+  --ts-header-bg: #f5f5f5;
+  --ts-title-color: #000000;
+  --ts-command-color: #1bac31;
+  --ts-bracket-color: #333333;
+  --ts-item-bg: #f5f5f5;
+  --ts-item-border: #e6e6e6;
+  --ts-item-hover-bg: #ffe5e5;
+  --ts-text-color: #000000;
+  --ts-string-color: #ff4800;
+  --ts-secondary-color: #999999;
+  --ts-secondary-highlight: #333333;
+
+  /* Experience colors */
+  --exp-text: #000000;
+  --exp-muted: #666666;
+  --exp-spine: #000000;
+  --exp-bridge: #cccccc;
+  --exp-dot: #000000;
+  --exp-dot-ring: rgba(0, 0, 0, 0.2);
+  --exp-logo-bg: #f5f5f5;
+  --exp-logo-border: rgba(0, 0, 0, 0.3);
+
+  /* Projects colors */
+  --proj-panel-bg: #ffffff;
+  --proj-panel-text: #000000;
+  --proj-media-bg: #f5f5f5;
+  --proj-btn-bg: #e6e6e6;
+  --proj-focus: var(--accent);
+
+  /* Reviews colors */
+  --rev-card-bg: #ffffff;
+  --rev-card-border: #cccccc;
+  --rev-card-text: #000000;
+  --rev-avatar-bg: #e6e6e6;
+  --rev-avatar-border: #cccccc;
+
+  /* Contact colors */
+  --contact-form-bg: #f5f5f5;
+  --contact-form-border: #cccccc;
+  --contact-form-text: #000000;
+  --contact-input-bg: #ffffff;
+  --contact-input-border: #999999;
+  --contact-input-focus: var(--accent);
+  --contact-submit-bg: #f5f5f5;
+  --contact-error: var(--accent);
+  --contact-invalid: var(--accent);
+  --contact-status-bg: #f5f5f5;
+  --contact-status-border: var(--accent);
+
+  /* Extra section colors */
+  --extra-activity-bg: #ffffff;
+  --extra-activity-border: #cccccc;
+  --extra-activity-text: #000000;
+  --extra-journey-bg: #ffffff;
+  --extra-journey-card-bg: #ffffff;
+  --extra-journey-media-bg: #f5f5f5;
+  --extra-yt-bg: #ffffff;
+  --extra-yt-thumb-bg: #f5f5f5;
+  --extra-yt-badge-bg: #ffffff;
+  --extra-yt-badge-border: var(--accent);
+  --extra-scrollbar-thumb: #999999;
+  --extra-scrollbar-track: #f5f5f5;
+
+  /* Interactive states */
+  --focus-outline: var(--accent);
+  --hover-overlay: rgba(0, 0, 0, 0.05);
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-heavy: rgba(0, 0, 0, 0.3);
+  
+  /* Divider colors */
+  --divider-line: #cccccc;
+}
+
+/* Contact form input focus fix - remove double border */
+:root[data-theme="light"] .contact input:focus,
+:root[data-theme="light"] .contact textarea:focus,
+:root[data-theme="light"] input:focus,
+:root[data-theme="light"] textarea:focus,
+:root[data-theme="light"] [class*="contact"] input:focus,
+:root[data-theme="light"] [class*="contact"] textarea:focus {
+  outline: none !important;
+  border-color: var(--contact-input-focus) !important;
+  box-shadow: 0 0 0 1px var(--contact-input-focus) !important;
+}
+
+/* Projects: make chevron SVGs black in light mode */
+:root[data-theme="light"] .projects .proj-control-btn .chev-icon {
+  filter: none;
+}
+
+:root[data-theme="light"] .projects .proj-control-btn {
+  color: var(--text-primary);
+}
+
+:root[data-theme="light"] .projects .proj-control-btn svg,
+:root[data-theme="light"] .projects .proj-control-btn svg * {
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary) !important;
+}
+
+/* Red underline for section headings */
+:root[data-theme="light"] .section-title, 
+:root[data-theme="light"] .section-heading,
+:root[data-theme="light"] [class*="section-title"]:not([class*="sub"]):not([class*="secondary"]):not([class*="card"]), 
+:root[data-theme="light"] [class*="section-heading"]:not([class*="sub"]):not([class*="secondary"]):not([class*="card"]) {
+  text-decoration: underline !important;
+  text-decoration-color: var(--accent) !important;
+  text-underline-offset: 0.2em !important;
+  text-decoration-thickness: 2px !important;
+}
+
+/* Exclude extra section sub-headings */
+:root[data-theme="light"] .extra-section .card-title,
+:root[data-theme="light"] .extra-section .subsection-title,
+:root[data-theme="light"] .extra-section .activity-title,
+:root[data-theme="light"] .extra-section .journey-title,
+:root[data-theme="light"] .extra-section h3,
+:root[data-theme="light"] .extra-section h4,
+:root[data-theme="light"] .extra-section h5,
+:root[data-theme="light"] .extra-section h6 {
+  text-decoration: none !important;
+}
+
+/* Header elements - No underlines */
+:root[data-theme="light"] .site-header a,
+:root[data-theme="light"] .site-header .nav a {
+  text-decoration: none !important;
+}
+
+:root[data-theme="light"] .site-header a:hover,
+:root[data-theme="light"] .site-header .nav a:hover {
+  text-decoration: none !important;
+}
+
+/* Exclude terminal tech stack title from red underline */
+:root[data-theme="light"] .ts-title {
+  text-decoration: none !important;
+}
+
+/* Invert globe colors in light mode */
+:root[data-theme="light"] .about-time__globe canvas,
+:root[data-theme="light"] #cobe-globe {
+  filter: invert(1) hue-rotate(180deg);
+}

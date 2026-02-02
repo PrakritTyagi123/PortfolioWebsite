@@ -1,0 +1,256 @@
+/* =========================================================
+Hear From Clients (Reviews) — JS-only marquee
+========================================================= */
+
+.clients {
+    padding: 32px 10px 64px;
+    }
+    
+    .clients .section-title {
+    margin: 0 0 10px;
+    }
+    
+    /* Each row is a full-width track with overflow hidden */
+    .marquee-row {
+    position: relative;
+    width: 100%;
+    margin: 12px auto 0;
+    overflow: hidden;
+    padding: 12px 0;
+    }
+    
+    /* Fade edges for smooth appearance */
+    .marquee-row::before,
+    .marquee-row::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+    }
+    
+    .marquee-row::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-primary) 0%, transparent 100%);
+    }
+    
+    .marquee-row::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-primary) 0%, transparent 100%);
+    }
+    
+    /* The animated belt of cards */
+    .marquee {
+    display: flex;
+    gap: 24px;
+    animation: marquee-left var(--marquee-duration, 60s) linear infinite;
+    animation-play-state: paused;
+    will-change: transform;
+    }
+    
+    /* When JS has prepared A|B, start running */
+    .clients.marquee-ready .marquee {
+    animation-play-state: running;
+    }
+    
+    .dir-right .marquee { animation-name: marquee-right; }
+    
+    /* A single group holds the live set */
+    .group {
+    display: flex;
+    gap: 24px;
+    flex-shrink: 0;
+    }
+    
+    /* -------- Card layout -------- */
+    .review {
+    width: 320px;
+    min-width: 320px;
+    flex-shrink: 0;
+    }
+    
+    .rev {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 6px 12px;
+    padding: 14px;
+    border: 2px solid var(--rev-card-border);
+    background: var(--rev-card-bg);
+    border-radius: 12px;
+    height: 176px;
+    align-content: start;
+    color: var(--rev-card-text);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+    
+    /* Red border on hover */
+    .rev:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    }
+    
+    /* Avatar - Shows initials with colored background, image overlays on top */
+    .rev-avatar {
+    grid-row: 1 / span 2;
+    width: 56px; 
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--avatar-bg, #6366f1); /* Default purple, overridden by data-color */
+    color: #ffffff;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1px;
+    border: 2px solid var(--rev-avatar-border);
+    user-select: none;
+    position: relative;
+    }
+    
+    /* Show initials from data-initials attribute */
+    .rev-avatar::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1px;
+    z-index: 1;
+    }
+    
+    /* Image sits on top of initials */
+    .rev-avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+    }
+    
+    /* When image fails to load (fallback class), hide it to show initials */
+    .rev-avatar.fallback img { 
+    display: none; 
+    }
+    
+    /* -------- Avatar Color Variations -------- */
+    /* Different colors based on data-color attribute */
+    .rev-avatar[data-color="red"] { background: #ef4444; }
+    .rev-avatar[data-color="orange"] { background: #f97316; }
+    .rev-avatar[data-color="amber"] { background: #f59e0b; }
+    .rev-avatar[data-color="yellow"] { background: #eab308; }
+    .rev-avatar[data-color="lime"] { background: #84cc16; }
+    .rev-avatar[data-color="green"] { background: #22c55e; }
+    .rev-avatar[data-color="emerald"] { background: #10b981; }
+    .rev-avatar[data-color="teal"] { background: #14b8a6; }
+    .rev-avatar[data-color="cyan"] { background: #06b6d4; }
+    .rev-avatar[data-color="sky"] { background: #0ea5e9; }
+    .rev-avatar[data-color="blue"] { background: #3b82f6; }
+    .rev-avatar[data-color="indigo"] { background: #6366f1; }
+    .rev-avatar[data-color="violet"] { background: #8b5cf6; }
+    .rev-avatar[data-color="purple"] { background: #a855f7; }
+    .rev-avatar[data-color="fuchsia"] { background: #d946ef; }
+    .rev-avatar[data-color="pink"] { background: #ec4899; }
+    .rev-avatar[data-color="rose"] { background: #f43f5e; }
+    
+    /* Name + quote */
+    .rev-name {
+    align-self: center;
+    font-weight: 800;
+    letter-spacing: .2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
+    
+    /* Star ratings */
+    .rev-stars {
+    grid-column: 2;
+    grid-row: 2;
+    color: var(--accent);
+    font-size: 14px;
+    letter-spacing: 2px;
+    line-height: 1;
+    }
+    
+    .rev-body {
+    grid-column: 2;
+    grid-row: 3;
+    min-width: 0;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    position: relative;
+    padding-left: 14px;
+    padding-right: 14px;
+    font-style: italic;
+    }
+    
+    /* Decorative red quote marks on both sides */
+    .rev-body::before {
+    content: '"';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    font-style: normal;
+    line-height: 1;
+    }
+    
+    .rev-body::after {
+    content: '"';
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    font-style: normal;
+    line-height: 1;
+    }
+    
+    /* Pause animation only when hovering over the row */
+    .marquee-row:hover .marquee { animation-play-state: paused; }
+    
+    /* Keyframes */
+    @keyframes marquee-left { 
+    from { transform: translateX(0); } 
+    to { transform: translateX(-50%); } 
+    }
+    
+    @keyframes marquee-right { 
+    from { transform: translateX(-50%); } 
+    to { transform: translateX(0); } 
+    }
+    
+    /* Mobile / narrow screens */
+    @media (max-width: 520px) {
+    .review { width: 280px; min-width: 280px; }
+    .rev { height: 168px; }
+    .rev-body { -webkit-line-clamp: 4; line-clamp: 4; }
+    .rev-avatar::before { font-size: 16px; }
+    }
+    
+    /* Make Hear From Clients occupy the full panel */
+    .clients {
+    min-height: calc(100vh - var(--header-h, 56px));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10px;
+    overflow: hidden;
+    scroll-margin-top: var(--header-h, 56px);
+    }
+    
+    .clients .section-title {
+    margin-bottom: 20px;
+    }

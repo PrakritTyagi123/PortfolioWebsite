@@ -1,0 +1,76 @@
+/* =========================================================
+   SECTION DIVIDERS - Straight Red Line
+   Location: css/sections/dividers.css
+   ========================================================= */
+
+/* =========================================================
+   Sections need position: relative
+   ========================================================= */
+.hero,
+.about,
+.work,
+.projects,
+.extra,
+.clients {
+  position: relative !important;
+}
+
+/* Base divider - straight horizontal red line */
+.section-divider {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 1200px;
+  height: 2px;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent-light);
+}
+
+/* Optional: fade edges */
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+}
+
+.section-divider::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-primary), transparent);
+}
+
+.section-divider::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-primary), transparent);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 768px) {
+  .section-divider {
+    width: 90%;
+  }
+  
+  .section-divider::before,
+  .section-divider::after {
+    width: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-divider {
+    width: 95%;
+  }
+  
+  .section-divider::before,
+  .section-divider::after {
+    width: 30px;
+  }
+}

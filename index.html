@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prakrit Tyagi - Portfolio</title>
+
+  <!-- 0) Apply saved theme ASAP to avoid flash -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (!saved) {
+          saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', saved);
+        window.__savedTheme = saved;
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        window.__savedTheme = 'light';
+      }
+    })();
+  </script>
+
+  <!-- Inline CSS to hide scrollbar -->
+  <style>
+    html {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    html::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+
+  <meta name="color-scheme" content="dark light">
+
+  <link id="theme-light" rel="stylesheet" href="css/themes/light.css?v=2" data-theme="light" disabled>
+  <link id="theme-dark"  rel="stylesheet" href="css/themes/dark.css?v=2"  data-theme="dark"  disabled>
+
+  <script>
+    (function () {
+      var t = window.__savedTheme || 'light';
+      var light = document.getElementById('theme-light');
+      var dark  = document.getElementById('theme-dark');
+      if (light && dark) {
+        light.disabled = (t !== 'light');
+        dark.disabled  = (t !== 'dark');
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="css/base.css?v=2" />
+  <link rel="stylesheet" href="css/sections/header.css?v=2" />
+  <link rel="stylesheet" href="css/sections/hero.css?v=2" />
+  <link rel="stylesheet" href="css/sections/about.css?v=2" />
+  <link rel="stylesheet" href="css/sections/experience.css?v=2" />
+  <link rel="stylesheet" href="css/sections/projects.css?v=2" />
+  <link rel="stylesheet" href="css/sections/reviews.css?v=2" />
+  <link rel="stylesheet" href="css/sections/extra.css?v=2" />
+  <link rel="stylesheet" href="css/sections/contact.css?v=2" />
+  <link rel="stylesheet" href="css/sections/dividers.css?v=2" />
+</head>
+<body>
+  <noscript>Please enable JavaScript to view the site.</noscript>
+
+  <!-- App container -->
+  <div id="app"></div>
+
+  <script>
+    // =========================================================
+    // SIMPLE BOOT SEQUENCE (No Loading Screen)
+    // =========================================================
+    
+    // Load HTML partial and inject into target
+    async function loadPartial(path, target) {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error('Failed to fetch ' + path);
+      target.insertAdjacentHTML('beforeend', await res.text());
+    }
+    
+    // Load a script file
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.defer = false;
+        s.onload = () => resolve();
+        s.onerror = () => reject(new Error('Failed to load ' + src));
+        document.body.appendChild(s);
+      });
+    }
+
+    // =========================================================
+    // MAIN BOOT SEQUENCE
+    // =========================================================
+    
+    (async function boot() {
+      const app = document.getElementById('app');
+      
+      const partials = [
+        'partials/header.html',
+        'partials/sections/about.html',
+        'partials/sections/hero.html',
+        'partials/sections/experience.html',
+        'partials/sections/projects.html',
+        'partials/sections/extra.html',
+        'partials/sections/reviews.html',
+        'partials/sections/contact.html'
+      ];
+      
+      const scripts = [
+        'js/utils/css.js',
+        'js/utils/dom.js',
+        'js/utils/scroll.js',
+        'js/utils/io.js',
+        'js/modules/header.js',
+        'js/modules/projects.js',
+        'js/modules/about.js',
+        'js/modules/contact.js',
+        'js/modules/reviews.js',
+        'js/modules/extra.js',
+        'js/main.js',
+        'js/modules/hero.js',
+        'js/modules/experience.js'
+      ];
+      
+      try {
+        // ===== STAGE 1: HTML Partials =====
+        // Partials must be sequential to maintain DOM order
+        for (const partial of partials) {
+          await loadPartial(partial, app);
+        }
+        
+        // ===== STAGE 2: JavaScript =====
+        // Scripts must be sequential for dependency order
+        for (const src of scripts) {
+          await loadScript(src);
+        }
+        
+        // ===== STAGE 3: Initialize =====
+        // Initialize theme
+        if (window.themeModule && window.themeModule.init) {
+          window.themeModule.init();
+        }
+        
+        console.log('âœ… Site fully loaded!');
+        
+      } catch (error) {
+        console.error('Boot error:', error);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!-- HERO — Game Trailer (large, autoplay loop, no UI) -->
+<section id="home" class="hero hero-trailer" aria-label="Game trailer">
+  <div class="container hero-wrap">
+    <!-- Big trailer on the left -->
+    <div class="hero-media">
+      <figure class="media-frame">
+        <video
+          id="trailer"
+          class="trailer"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="assets/img/projects/SnakeAI.png">
+          <source src="assets/videos/trailer.mp4" type="video/mp4" />
+          Sorry, your browser doesn't support embedded videos.
+        </video>
+        <!-- Video pause/play control -->
+        <button id="trailer-toggle" class="trailer-toggle" type="button" aria-label="Pause video" aria-pressed="false">
+          ⏸
+        </button>
+      </figure>
+    </div>
+
+    <!-- Compact info on the right -->
+    <aside class="hero-side" aria-label="Game information">
+      <h1 class="game-title">ECHOES OF THE MOUNTAIN</h1>
+      <p class="game-desc">
+        A story rich fantasy adventure inspired by Indian folklore and Hindu mythology where music is your magic and choices shape your fate. Journey through desi myth and modern mischief as you cast sound spells, solve melody puzzles, and follow branching paths toward Insanity or Nirvana. Every verse you wield reshapes the world encounters, allies, and rewards bend to your rhythm inviting you to find harmony, unleash chaos, or compose a destiny that's entirely your own.
+      </p>
+    </aside>
+  </div>
+
+  <!-- In-hero scroll disclaimer (ALWAYS visible while on the hero) -->
+  <div class="scroll-disclaimer">
+    <button class="scroll-disclaimer__btn" type="button" aria-label="Scroll to the next section">
+      <span class="scroll-disclaimer__text">
+        <em>This website is still in development</em><br />
+        <strong>Scroll Down for My Info</strong>
+      </span>
+      <span class="scroll-disclaimer__arrow" aria-hidden="true">↓</span>
+    </button>
+  </div>
+</section>

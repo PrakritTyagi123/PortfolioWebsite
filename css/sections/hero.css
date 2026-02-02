@@ -1,0 +1,167 @@
+/* =========================================================
+   HERO Ã¢â‚¬â€ Big trailer, neutral text, extra spacing
+   (Persistent in-hero disclaimer; not fixed to viewport)
+========================================================= */
+
+.hero {
+  position: relative; /* anchor disclaimer inside hero */
+  margin: 0;
+  margin-top: 0;
+  min-height: calc(100svh - var(--header-h, 56px));
+  background: var(--hero-bg);
+  color: var(--hero-text);
+
+  /* Remove extra space at top */
+  padding: 0 min(3vw, 32px) min(16px, 2vh);
+}
+
+/* Wider wrap + BIGGER gap (+30px) between video and details */
+.hero .hero-wrap.container {
+  width: min(1680px, 96vw);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(280px, 3fr); /* 70/30 split */
+  gap: calc(clamp(16px, 2.5vw, 32px) + 30px); /* +30px requested */
+  align-items: center;
+  min-height: inherit;
+}
+
+/* -------- Left: video -------- */
+.hero-media { width: 100%; }
+
+.media-frame {
+  position: relative;
+  width: 100%;
+
+  /* Height trimmed by 30px, and now subtract ONLY bottom padding
+        (top padding is 0, so we removed the old "2 * padding" subtraction) */
+  height: calc(
+    clamp(340px, calc(100svh - var(--header-h, 56px) - min(16px, 2vh)), 900px)
+    - 100px
+  );
+
+  border: none;                 /* remove outer box */
+  border-radius: 14px;
+  overflow: clip;
+  background: var(--bg-primary);
+}
+
+/* Trailer toggle: small circular button bottom-left */
+.trailer-toggle{
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 2px solid var(--border-secondary);
+  background: transparent; /* remove blue bg */
+  color: var(--text-primary);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 14px var(--shadow-light);
+  outline-offset: 3px;
+  transition: transform .15s ease, box-shadow .18s ease;
+}
+.trailer-toggle:hover,
+.trailer-toggle:focus-visible{ transform: translateY(-1px); box-shadow: 0 12px 24px var(--shadow-heavy); background: var(--hover-overlay); }
+
+.trailer {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  background: var(--bg-primary);
+}
+
+/* Hide native controls everywhere */
+.trailer::-webkit-media-controls,
+.trailer::-webkit-media-controls-enclosure { display: none !important; }
+
+/* -------- Right: text (no boxes) -------- */
+.hero-side {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.game-title {
+  margin: 0;
+  font-size: clamp(1.7rem, 1.15rem + 2.2vw, 2.4rem);
+  line-height: 1.15;
+  font-weight: 800;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+.game-desc {
+  margin: 0;
+  font-size: clamp(0.98rem, 0.9rem + .45vw, 1.08rem);
+  line-height: 1.6;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* =========================================================
+   Persistent in-hero disclaimer (bottom-right of HERO only)
+========================================================= */
+.scroll-disclaimer {
+  position: absolute;
+  right: clamp(12px, 2vw, 28px);
+  bottom: clamp(12px, 2vh, 28px);
+  z-index: 5; /* above video */
+}
+
+.scroll-disclaimer__btn {
+  background: transparent;          /* no box look */
+  border: 0;
+  color: var(--hero-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+  cursor: pointer;
+  text-underline-offset: 3px;
+  font-weight: 700;
+  font-size: clamp(.9rem, .85rem + .25vw, 1rem);
+  transition: transform .15s ease, filter .15s ease;
+}
+
+.scroll-disclaimer__btn:hover,
+.scroll-disclaimer__btn:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  outline: none;
+}
+
+.scroll-disclaimer__text em { font-style: italic; opacity: .9; }
+.scroll-disclaimer__text strong { font-weight: 800; }
+
+.scroll-disclaimer__arrow {
+  display: inline-block;
+  font-size: 1.15em;
+  line-height: 1;
+  animation: scroll-bob 1.2s ease-in-out infinite;
+}
+
+@keyframes scroll-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* -------- Responsive -------- */
+@media (max-width: 980px) {
+  .hero .hero-wrap.container {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .media-frame {
+    /* keep the -30px trim on mobile; top padding is still 0 so no extra subtraction */
+    height: calc(clamp(260px, 52vw, 560px) - 30px);
+  }
+}
