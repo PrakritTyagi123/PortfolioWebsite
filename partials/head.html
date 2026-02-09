@@ -1,0 +1,50 @@
+<!-- Head partial -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Prakrit Tyagi - Portfolio</title>
+
+<!-- Apply saved theme ASAP -->
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      if (!saved) {
+        saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', saved);
+      window.__savedTheme = saved;
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'light');
+      window.__savedTheme = 'light';
+    }
+  })();
+</script>
+
+<meta name="color-scheme" content="dark light">
+
+<link id="theme-light" rel="stylesheet" href="css/themes/light.css?v=3" data-theme="light" disabled>
+<link id="theme-dark"  rel="stylesheet" href="css/themes/dark.css?v=3"  data-theme="dark"  disabled>
+
+<script>
+  (function () {
+    var t = window.__savedTheme || 'light';
+    var light = document.getElementById('theme-light');
+    var dark  = document.getElementById('theme-dark');
+    if (light && dark) {
+      light.disabled = (t !== 'light');
+      dark.disabled  = (t !== 'dark');
+    }
+  })();
+</script>
+
+<link rel="stylesheet" href="css/base.css?v=3" />
+<link rel="stylesheet" href="css/sections/header.css?v=3" />
+<link rel="stylesheet" href="css/sections/hero.css?v=3" />
+<link rel="stylesheet" href="css/sections/about.css?v=3" />
+<link rel="stylesheet" href="css/sections/experience.css?v=3" />
+<link rel="stylesheet" href="css/sections/projects.css?v=3" />
+<link rel="stylesheet" href="css/sections/reviews.css?v=3" />
+<link rel="stylesheet" href="css/sections/extra.css?v=3" />
+<link rel="stylesheet" href="css/sections/contact.css?v=3" />
+<link rel="stylesheet" href="css/sections/dividers.css?v=3" />

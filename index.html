@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prakrit Tyagi - Portfolio</title>
+
+  <!-- Apply saved theme ASAP to avoid flash -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (!saved) {
+          saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', saved);
+        window.__savedTheme = saved;
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        window.__savedTheme = 'light';
+      }
+    })();
+  </script>
+
+  <!-- Hide scrollbar -->
+  <style>
+    html {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    html::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+
+  <meta name="color-scheme" content="dark light">
+
+  <link id="theme-light" rel="stylesheet" href="css/themes/light.css?v=3" data-theme="light" disabled>
+  <link id="theme-dark"  rel="stylesheet" href="css/themes/dark.css?v=3"  data-theme="dark"  disabled>
+
+  <script>
+    (function () {
+      var t = window.__savedTheme || 'light';
+      var light = document.getElementById('theme-light');
+      var dark  = document.getElementById('theme-dark');
+      if (light && dark) {
+        light.disabled = (t !== 'light');
+        dark.disabled  = (t !== 'dark');
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="css/base.css?v=3" />
+  <link rel="stylesheet" href="css/sections/header.css?v=3" />
+  <link rel="stylesheet" href="css/sections/hero.css?v=3" />
+  <link rel="stylesheet" href="css/sections/about.css?v=3" />
+  <link rel="stylesheet" href="css/sections/experience.css?v=3" />
+  <link rel="stylesheet" href="css/sections/projects.css?v=3" />
+  <link rel="stylesheet" href="css/sections/reviews.css?v=3" />
+  <link rel="stylesheet" href="css/sections/extra.css?v=3" />
+  <link rel="stylesheet" href="css/sections/contact.css?v=3" />
+  <link rel="stylesheet" href="css/sections/dividers.css?v=3" />
+</head>
+<body>
+  <noscript>Please enable JavaScript to view the site.</noscript>
+
+  <!-- App container -->
+  <div id="app"></div>
+
+  <script>
+    // =========================================================
+    // BOOT SEQUENCE
+    // =========================================================
+
+    async function loadPartial(path, target) {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error('Failed to fetch ' + path);
+      target.insertAdjacentHTML('beforeend', await res.text());
+    }
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.defer = false;
+        s.onload = () => resolve();
+        s.onerror = () => reject(new Error('Failed to load ' + src));
+        document.body.appendChild(s);
+      });
+    }
+
+    (async function boot() {
+      const app = document.getElementById('app');
+
+      const partials = [
+        'partials/header.html',
+        'partials/sections/about.html',
+        'partials/sections/hero.html',
+        'partials/sections/experience.html',
+        'partials/sections/projects.html',
+        'partials/sections/extra.html',
+        'partials/sections/reviews.html',
+        'partials/sections/contact.html'
+      ];
+
+      const scripts = [
+        'js/utils/css.js',
+        'js/utils/dom.js',
+        'js/utils/scroll.js',
+        'js/utils/io.js',
+        'js/modules/header.js',
+        'js/modules/hero.js',
+        'js/modules/about.js',
+        'js/modules/experience.js',
+        'js/modules/projects.js',
+        'js/modules/contact.js',
+        'js/modules/reviews.js',
+        'js/modules/extra.js',
+        'js/modules/animations.js',
+        'js/main.js'
+      ];
+
+      try {
+        // HTML partials (sequential for DOM order)
+        for (const partial of partials) {
+          await loadPartial(partial, app);
+        }
+
+        // JavaScript (sequential for dependencies)
+        for (const src of scripts) {
+          await loadScript(src);
+        }
+
+        // Initialize theme
+        if (window.themeModule && window.themeModule.init) {
+          window.themeModule.init();
+        }
+
+        console.log('✅ Site fully loaded!');
+
+      } catch (error) {
+        console.error('Boot error:', error);
+      }
+    })();
+  </script>
+</body>
+</html> 

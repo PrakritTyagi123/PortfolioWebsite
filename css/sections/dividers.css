@@ -1,0 +1,48 @@
+/* =========================================================
+   SECTION DIVIDERS - Invisible Line
+   Location: css/sections/dividers.css
+   ========================================================= */
+
+/* =========================================================
+   Sections need position: relative
+   ========================================================= */
+   .hero,
+   .about,
+   .work,
+   .projects,
+   .extra-section,
+   .clients {
+     position: relative !important;
+   }
+   
+   /* =========================================================
+      Invisible divider (structural only)
+      ========================================================= */
+   .section-divider {
+     position: absolute;
+     bottom: 0;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 80%;
+     max-width: 1200px;
+     height: 1px;
+     background: transparent; /* invisible */
+     pointer-events: none;
+     z-index: 10;
+   }
+   
+   /* =========================================================
+      RESPONSIVE
+      ========================================================= */
+   @media (max-width: 768px) {
+     .section-divider {
+       width: 90%;
+     }
+   }
+   
+   @media (max-width: 480px) {
+     .section-divider {
+       width: 95%;
+     }
+   }
+   

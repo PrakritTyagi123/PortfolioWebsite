@@ -1,0 +1,187 @@
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 16px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-primary);
+  z-index: 20;
+}
+
+/* === Brand (FONT + BIGGER SIZE + RED DOT) === */
+.site-header .brand {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 700;
+  font-size: clamp(20px, 1.6vw, 28px); /* âœ… increased size */
+  text-decoration: none;
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.site-header .brand-dot {
+  color: var(--accent);
+}
+
+.site-header .brand:hover,
+.site-header .brand:focus-visible {
+  text-decoration: underline;
+  background: var(--hover-overlay);
+}
+
+.site-header .nav {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.site-header .nav a {
+  text-decoration: none;
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.site-header .nav a:hover,
+.site-header .nav a:focus-visible {
+  background: var(--hover-overlay);
+}
+
+/* ===== Glass Indicator ===== */
+.nav-glass-indicator {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 32px;
+  transform: translateY(-50%) translateX(0);
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, width;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  opacity: 0;
+  width: 60px;
+}
+
+.nav-glass-indicator.is-ready {
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+              width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+              opacity 0.2s ease;
+}
+
+.nav-glass-indicator.is-visible {
+  opacity: 1;
+}
+
+:root[data-theme="light"] .nav-glass-indicator {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="dark"] .nav-glass-indicator {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-glass-indicator::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+/* === GitHub icon === */
+.site-header .nav .nav-github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 4px;
+  line-height: 0;
+}
+
+.nav-github .gh {
+  width: 30px;
+  height: 30px;
+  display: block;
+}
+
+:root[data-theme="light"] .nav-github .gh { filter: none; }
+:root[data-theme="dark"] .nav-github .gh { filter: brightness(0) invert(1); }
+
+.nav-github:hover {
+  background: var(--hover-overlay);
+}
+
+.nav-github:hover .gh {
+  transform: translateY(-1px);
+  transition: transform .18s ease;
+}
+
+/* === Theme toggle === */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.theme-toggle:hover {
+  background: var(--hover-overlay);
+  transform: translateY(-1px);
+  transition: transform .18s ease;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.theme-toggle .icon {
+  display: none;
+  width: 30px;
+  height: 30px;
+}
+
+:root[data-theme="light"] .theme-toggle .icon-moon {
+  display: block;
+  filter: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: block;
+  filter: brightness(0) invert(1);
+}

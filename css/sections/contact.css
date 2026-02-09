@@ -1,0 +1,330 @@
+/* =========================================================
+   CONTACT â€” 2-Column Layout + Footer
+   ========================================================= */
+
+/* ---------- Section shell ---------- */
+.contact {
+  min-height: calc(100svh - var(--header-h, 56px) - var(--footer-h, 80px));
+  padding: clamp(48px, 6vh, 96px) 0 clamp(24px, 3vh, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  scroll-margin-top: calc(var(--header-h, 56px) - 40px);
+}
+
+.contact .section-title {
+  text-align: left;
+  margin: 0;
+  text-decoration: none !important;
+}
+
+/* =========================================================
+   2-COLUMN LAYOUT
+   ========================================================= */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+
+/* =========================================================
+   INFO SIDEBAR
+   ========================================================= */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.5vh, 32px);
+}
+
+.contact-intro {
+  font-size: clamp(14px, 1vw, 16px);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Channels */
+.contact-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-channel {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(12px, 1.2vw, 16px);
+  background: var(--about-tile-bg, var(--bg-secondary));
+  border: 1px solid var(--border-primary);
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+a.contact-channel:hover {
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+
+.contact-channel__ico {
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: var(--bg-primary);
+  border-radius: 10px;
+  border: 1px solid var(--border-primary);
+}
+
+/* Contact channel icon theming */
+.contact-channel__ico .icon-box {
+  background: transparent;
+  border: none;
+}
+
+.contact-channel__detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.contact-channel__label {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.contact-channel__value {
+  font-size: clamp(13px, 0.95vw, 15px);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Availability pill */
+.contact-availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.08);
+  align-self: flex-start;
+}
+
+.avail-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+  animation: contact-avail-pulse 2s ease-in-out infinite;
+}
+
+@keyframes contact-avail-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+  50% { box-shadow: 0 0 0 6px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avail-dot { animation: none; }
+}
+
+.avail-text {
+  font-size: clamp(12px, 0.85vw, 13px);
+  font-weight: 600;
+  color: #22c55e;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+.talk-form {
+  background: var(--about-tile-bg, var(--bg-secondary));
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+  padding: clamp(20px, 2.5vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.talk-form:focus-within {
+  border-color: var(--border-secondary);
+}
+
+/* 2-column row (name + email side by side) */
+.tf-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.tf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tf-label {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+input.tf-input,
+textarea.tf-textarea {
+  width: 100%;
+  background: var(--contact-input-bg, var(--bg-primary));
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: var(--font-body, 'Instrument Sans', sans-serif);
+  font-size: clamp(13px, 0.95vw, 15px);
+  transition: border-color 0.2s ease;
+}
+
+input.tf-input::placeholder,
+textarea.tf-textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+input.tf-input:focus,
+textarea.tf-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft, rgba(255,0,0,0.08));
+}
+
+textarea.tf-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Submit */
+.tf-submit {
+  align-self: flex-end;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: none;
+  background: var(--accent);
+  color: #ffffff;
+  font-family: var(--font-body, 'Instrument Sans', sans-serif);
+  font-size: clamp(13px, 0.95vw, 15px);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tf-submit:hover {
+  box-shadow: 0 6px 24px -4px var(--accent);
+  transform: translateY(-1px);
+}
+
+/* Validation */
+.tf-help {
+  font-size: 11px;
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.is-invalid {
+  border-color: var(--accent) !important;
+}
+
+.tf-status {
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft, rgba(255,0,0,0.05));
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.site-footer {
+  padding: clamp(20px, 2.5vh, 32px) 0;
+  border-top: 1px solid var(--border-primary);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.footer-name {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 800;
+  font-size: clamp(14px, 1.1vw, 17px);
+}
+
+.footer-copy {
+  font-size: clamp(11px, 0.8vw, 13px);
+  color: var(--text-muted);
+}
+
+/* Social icons */
+.footer-socials {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.footer-socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-primary);
+  transition: all 0.2s ease;
+}
+
+.footer-socials a:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.footer-socials img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+}
+
+/* GitHub icon only - invert on theme */
+:root[data-theme="dark"] .footer-socials a[aria-label="GitHub"] img {
+  filter: brightness(0) invert(1);
+}
+
+:root[data-theme="light"] .footer-socials a[aria-label="GitHub"] img {
+  filter: none;
+}
