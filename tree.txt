@@ -38,6 +38,7 @@ New Website
 │   │   │
 │   │   ├───projects
 │   │   │       SnakeAI.png
+│   │   │       UnityParkourSystem.png
 │   │   │
 │   │   └───techstack
 │   │           .NET-core.svg
@@ -474,6 +475,7 @@ New Website
 │   ├───sections
 │   │       about.css
 │   │       contact.css
+│   │       dividers.css
 │   │       experience.css
 │   │       extra.css
 │   │       header.css
