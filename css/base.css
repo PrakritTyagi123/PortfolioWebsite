@@ -41,38 +41,6 @@ Base stylesheet (structure only - colors from themes)
 html, body { height: 100%; }
 html { 
 scroll-behavior: smooth;
-/* Firefox - thin red scrollbar */
-scrollbar-width: thin;
-scrollbar-color: var(--accent) transparent;
-}
-
-/* WebKit (Chrome, Safari) - custom thin red scrollbar */
-html::-webkit-scrollbar {
-  width: 2px;
-}
-
-html::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-html::-webkit-scrollbar-thumb {
-  background-color: var(--accent);
-  border-radius: 0;
-}
-
-/* Hide all scrollbar arrows/buttons */
-html::-webkit-scrollbar-button,
-html::-webkit-scrollbar-button:single-button,
-html::-webkit-scrollbar-button:start,
-html::-webkit-scrollbar-button:end,
-html::-webkit-scrollbar-button:vertical:start,
-html::-webkit-scrollbar-button:vertical:end,
-html::-webkit-scrollbar-button:vertical:increment,
-html::-webkit-scrollbar-button:vertical:decrement {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-  background: transparent !important;
 }
 
 body {
@@ -121,21 +89,6 @@ h6 {
   font-size: var(--heading-6);
   font-weight: 600;
   line-height: 1.4;
-}
-
-/* =========================
-   Theme switch shockwave overlay
-   ========================= */
-.theme-shockwave {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  background: var(--bg-primary);
-  /* circle radius animated via inline style; center via CSS vars */
-  --cxpx: 50vw;
-  --cypx: 50vh;
-  clip-path: circle(0 at var(--cxpx) var(--cypx));
 }
 
 /* =========================================================
@@ -195,10 +148,6 @@ h6 {
   box-shadow: 0 0 0 1000vmax var(--prev-bg, transparent);
   pointer-events: none;
   z-index: 10000;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .theme-shockwave { display: none !important; }
 }
 
 /* Basic element resets */
@@ -276,74 +225,15 @@ margin-inline: auto;
   line-height: 1.1;
   letter-spacing: -0.03em;
   text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 2px;
 }
 
 /* =========================================================
-   Reusable components: CTAs, cards, pills, tags, icon boxes
+   Reusable components: tags, icon boxes
    ========================================================= */
-
-/* Reusable CTA + simple flex spread */
-.cta {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-gap: 10px;
-padding: 10px 14px;
-border-radius: 8px;
-border: 2px solid var(--border-secondary);
-background: var(--cta-bg);
-color: var(--cta-text);
-text-decoration: none;
-will-change: transform;
-transition: transform .18s ease;
-}
-
-.cta:hover,
-.cta:focus-visible { transform: scale(var(--hover-scale)); }
-
-.spread {
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 12px;
-}
-
-/* Generic card shell (used throughout sections) */
-.card {
-  background: var(--about-tile-bg, var(--bg-secondary));
-  border: 1px solid var(--about-tile-border, var(--border-primary));
-  border-radius: 16px;
-  padding: clamp(14px, 1.5vw, 24px);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
-}
-
-.card--hoverable:hover {
-  border-color: var(--border-secondary, var(--accent));
-  box-shadow: 0 20px 40px -16px var(--shadow-heavy, rgba(0,0,0,0.5));
-  transform: translateY(-2px);
-}
-
-/* Generic pill / badge */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.pill--accent {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-light);
-  color: var(--accent);
-}
 
 .tag {
   display: inline-flex;
@@ -385,101 +275,15 @@ gap: 12px;
   display: block;
 }
 
-/* Utility gray boxes used throughout the wireframe */
-.box {
-display: flex;
-align-items: center;
-justify-content: center;
-text-align: center;
-padding: 14px;
-background: var(--chip-bg);
-color: var(--chip-text);
-border: 2px solid var(--chip-border);
-border-radius: 8px;
-letter-spacing: .2px;
-}
-
-/* Subtle separators */
-.hr {
-height: 1px;
-background: var(--border-primary);
-margin: 12px 0;
-}
-
 
 
 /* =========================
-FOOTER (single row on desktop)
+FOOTER (base — layout in contact.css)
 ========================= */
 .site-footer {
 background: var(--bg-secondary);
 border-top: 1px solid var(--border-primary);
 padding: 10px 12px;
-}
-
-.footer-bar {
-max-width: 1200px;
-margin: 0 auto;
-display: grid;
-grid-template-columns: 1fr auto 1fr;
-grid-template-areas: "left center right";
-align-items: center;
-gap: 12px;
-min-height: 52px;
-}
-
-.footer-left { grid-area: left; justify-self: start; font-weight: 700; }
-.footer-center { grid-area: center; justify-self: center; }
-.footer-right { 
-grid-area: right; 
-justify-self: end; 
-white-space: nowrap; 
-color: var(--text-secondary); 
-}
-
-/* Social icons strip (center) */
-.footer-center .socials {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 14px;
-}
-
-.footer-center .socials a {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-padding: 6px;
-border-radius: 10px;
-text-decoration: none;
-outline-offset: 3px;
-}
-
-.footer-center .socials img {
-width: 22px;
-height: 22px;
-transform: translateZ(0);
-transition: transform .18s ease;
-}
-
-.footer-center .socials a:hover img,
-.footer-center .socials a:focus-visible img {
-transform: scale(var(--hover-scale));
-}
-
-/* Mobile & narrow layouts */
-@media (max-width: 680px) {
-.footer-bar {
-grid-template-columns: 1fr;
-grid-template-areas:
-"left"
-"center"
-"right";
-row-gap: 6px;
-text-align: center;
-}
-.footer-left, .footer-right { justify-self: center; }
-.footer-right { white-space: normal; }
 }
 
 /* Very short viewports */
@@ -488,25 +292,4 @@ text-align: center;
 padding-top: 32px;
 padding-bottom: 32px;
 }
-}
-
-/* Footer corners patch */
-.site-footer { padding: 0; }
-.footer-bar {
-max-width: none;
-width: 100%;
-margin: 0;
-padding: 10px 12px;
-display: grid;
-grid-template-columns: 1fr auto 1fr;
-grid-template-areas: "left center right";
-align-items: center;
-}
-
-.footer-left { grid-area: left; justify-self: start; }
-.footer-center{ grid-area: center; justify-self: center; }
-.footer-right { 
-grid-area: right; 
-justify-self: end; 
-white-space: nowrap; 
 }

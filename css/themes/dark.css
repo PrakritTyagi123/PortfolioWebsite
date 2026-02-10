@@ -2,7 +2,7 @@
    DARK THEME - White, Black, Red Only
    ========================================================= */
 
-   :root {
+   :root[data-theme="dark"] {
     /* Accent color */
     --accent: #ff0000;
     --accent-light: rgba(255, 0, 0, 0.3);
@@ -128,48 +128,30 @@
   }
   
   /* Contact form input focus */
-  .contact input:focus,
-  .contact textarea:focus,
-  [class*="contact"] input:focus,
-  [class*="contact"] textarea:focus {
+  :root[data-theme="dark"] .contact input:focus,
+  :root[data-theme="dark"] .contact textarea:focus,
+  :root[data-theme="dark"] [class*="contact"] input:focus,
+  :root[data-theme="dark"] [class*="contact"] textarea:focus {
     outline: none !important;
     border-color: var(--contact-input-focus) !important;
     box-shadow: 0 0 0 1px var(--contact-input-focus) !important;
   }
   
   /* Projects chevrons white in dark */
-  .projects .proj-nav-btn .chev-icon,
-  .projects .proj-control-btn .chev-icon {
+  :root[data-theme="dark"] .projects .proj-nav-btn .chev-icon,
+  :root[data-theme="dark"] .projects .proj-control-btn .chev-icon {
     filter: brightness(0) invert(1);
   }
   
   
   
-  /* Section label - no underline */
-  .section-label {
-    text-decoration: none !important;
-  }
-  
-  /* Section heading wrapper - no underline */
-  .section-heading {
-    text-decoration: none !important;
-  }
-  
-  /* Red underline on section titles */
-  .section-title {
-    text-decoration: underline !important;
-    text-decoration-color: var(--accent) !important;
-    text-underline-offset: 0.2em !important;
-    text-decoration-thickness: 2px !important;
-  }
-  
   /* Exclude sub-headings inside sections */
-  .extra-section h3,
-  .extra-section h4,
-  .extra-section h5,
-  .extra-section h6,
-  .ts-title,
-  .site-header a,
-  .site-header .nav a {
+  :root[data-theme="dark"] .extra-section h3,
+  :root[data-theme="dark"] .extra-section h4,
+  :root[data-theme="dark"] .extra-section h5,
+  :root[data-theme="dark"] .extra-section h6,
+  :root[data-theme="dark"] .ts-title,
+  :root[data-theme="dark"] .site-header a,
+  :root[data-theme="dark"] .site-header .nav a {
     text-decoration: none !important;
   }

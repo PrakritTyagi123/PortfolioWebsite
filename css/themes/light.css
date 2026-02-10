@@ -143,24 +143,6 @@
     filter: none;
   }
   
-  /* Section label - no underline */
-  :root[data-theme="light"] .section-label {
-    text-decoration: none !important;
-  }
-  
-  /* Section heading wrapper - no underline */
-  :root[data-theme="light"] .section-heading {
-    text-decoration: none !important;
-  }
-  
-  /* Red underline on section titles */
-  :root[data-theme="light"] .section-title {
-    text-decoration: underline !important;
-    text-decoration-color: var(--accent) !important;
-    text-underline-offset: 0.2em !important;
-    text-decoration-thickness: 2px !important;
-  }
-  
   /* Exclude sub-headings inside sections */
   :root[data-theme="light"] .extra-section h3,
   :root[data-theme="light"] .extra-section h4,

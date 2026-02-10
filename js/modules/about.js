@@ -77,9 +77,6 @@
   }
 
   function getHeaderH() {
-    if (window.scrollUtils && typeof window.scrollUtils.getHeaderHeight === 'function') {
-      return window.scrollUtils.getHeaderHeight();
-    }
     const rs = getComputedStyle(document.documentElement);
     const v = parseFloat(rs.getPropertyValue('--header-h'));
     return Number.isFinite(v) ? v : 56;
@@ -91,14 +88,10 @@
     const el = document.getElementById(id);
     if (!el) return;
 
-    if (window.scrollUtils && typeof window.scrollUtils.scrollToElement === 'function') {
-      window.scrollUtils.scrollToElement(el);
-    } else {
-      const headerH = getHeaderH();
-      const elementTop = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop);
-      const targetY = Math.max(0, elementTop - headerH);
-      rafSmoothScrollTo(targetY, 700);
-    }
+    const headerH = getHeaderH();
+    const elementTop = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop);
+    const targetY = Math.max(0, elementTop - headerH);
+    rafSmoothScrollTo(targetY, 700);
   }
 
   /* ---------- Compute about-grid cell ---------- */

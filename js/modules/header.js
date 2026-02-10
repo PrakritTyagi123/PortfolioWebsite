@@ -211,13 +211,6 @@ window.themeModule = (function() {
   function applyTheme(theme) {
     HTML.setAttribute('data-theme', theme);
 
-    const lightLink = document.querySelector('link[data-theme="light"]');
-    const darkLink  = document.querySelector('link[data-theme="dark"]');
-    if (lightLink && darkLink) {
-      lightLink.disabled = (theme !== LIGHT);
-      darkLink.disabled  = (theme !== DARK);
-    }
-
     const btn = document.getElementById(BTN_ID);
     if (btn) {
       const to = theme === DARK ? LIGHT : DARK;

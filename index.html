@@ -23,33 +23,15 @@
     })();
   </script>
 
-  <!-- Hide scrollbar -->
-  <style>
-    html {
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    html::-webkit-scrollbar {
-      display: none;
-    }
-  </style>
-
   <meta name="color-scheme" content="dark light">
 
-  <link id="theme-light" rel="stylesheet" href="css/themes/light.css?v=3" data-theme="light" disabled>
-  <link id="theme-dark"  rel="stylesheet" href="css/themes/dark.css?v=3"  data-theme="dark"  disabled>
+  <!-- Theme files — both loaded, scoped by [data-theme] attribute -->
+  <link rel="stylesheet" href="css/themes/dark.css?v=4">
+  <link rel="stylesheet" href="css/themes/light.css?v=4">
 
-  <script>
-    (function () {
-      var t = window.__savedTheme || 'light';
-      var light = document.getElementById('theme-light');
-      var dark  = document.getElementById('theme-dark');
-      if (light && dark) {
-        light.disabled = (t !== 'light');
-        dark.disabled  = (t !== 'dark');
-      }
-    })();
-  </script>
+  <!-- Preload fonts so they're ready before first paint -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="stylesheet" href="css/base.css?v=3" />
   <link rel="stylesheet" href="css/sections/header.css?v=3" />
@@ -61,38 +43,122 @@
   <link rel="stylesheet" href="css/sections/extra.css?v=3" />
   <link rel="stylesheet" href="css/sections/contact.css?v=3" />
   <link rel="stylesheet" href="css/sections/dividers.css?v=3" />
+
+  <!-- Preloader + scrollbar — inlined so they work before external CSS -->
+  <style>
+    /* Hide scrollbar globally */
+    html {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    html::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ===== Preloader ===== */
+    .preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: var(--bg-primary, #000000);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .preloader.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .preloader__name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      color: var(--text-primary, #ffffff);
+      letter-spacing: -0.03em;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: preloaderFadeUp 0.6s ease 0.1s forwards;
+    }
+
+    .preloader__name .dot {
+      color: var(--accent, #ff0000);
+    }
+
+    .preloader__track {
+      width: clamp(200px, 30vw, 320px);
+      height: 2px;
+      background: var(--border-primary, #333333);
+      border-radius: 2px;
+      overflow: hidden;
+      opacity: 0;
+      animation: preloaderFadeUp 0.4s ease 0.3s forwards;
+    }
+
+    .preloader__bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent, #ff0000);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 8px var(--accent-glow, rgba(255, 0, 0, 0.4));
+    }
+
+    .preloader__status {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted, #666666);
+      opacity: 0;
+      animation: preloaderFadeUp 0.4s ease 0.4s forwards;
+    }
+
+    @keyframes preloaderFadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hide app until ready */
+    #app {
+      opacity: 0;
+      transition: opacity 0.5s ease 0.1s;
+    }
+    #app.is-ready {
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
   <noscript>Please enable JavaScript to view the site.</noscript>
 
-  <!-- App container -->
+  <!-- Preloader overlay -->
+  <div class="preloader" id="preloader">
+    <div class="preloader__name">Prakrit Tyagi<span class="dot">.</span></div>
+    <div class="preloader__track">
+      <div class="preloader__bar" id="preloader-bar"></div>
+    </div>
+    <div class="preloader__status" id="preloader-status">Loading…</div>
+  </div>
+
+  <!-- App container — hidden until fully loaded -->
   <div id="app"></div>
 
   <script>
     // =========================================================
-    // BOOT SEQUENCE
+    // BOOT SEQUENCE — Load everything, then reveal
     // =========================================================
-
-    async function loadPartial(path, target) {
-      const res = await fetch(path);
-      if (!res.ok) throw new Error('Failed to fetch ' + path);
-      target.insertAdjacentHTML('beforeend', await res.text());
-    }
-
-    function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = src;
-        s.defer = false;
-        s.onload = () => resolve();
-        s.onerror = () => reject(new Error('Failed to load ' + src));
-        document.body.appendChild(s);
-      });
-    }
-
     (async function boot() {
       const app = document.getElementById('app');
+      const preloader = document.getElementById('preloader');
+      const bar = document.getElementById('preloader-bar');
+      const statusEl = document.getElementById('preloader-status');
 
+      // --- Resources to load ---
       const partials = [
         'partials/header.html',
         'partials/sections/about.html',
@@ -104,11 +170,8 @@
         'partials/sections/contact.html'
       ];
 
+      // Removed dead utility scripts: css.js, dom.js, scroll.js, io.js
       const scripts = [
-        'js/utils/css.js',
-        'js/utils/dom.js',
-        'js/utils/scroll.js',
-        'js/utils/io.js',
         'js/modules/header.js',
         'js/modules/hero.js',
         'js/modules/about.js',
@@ -117,32 +180,135 @@
         'js/modules/contact.js',
         'js/modules/reviews.js',
         'js/modules/extra.js',
-        'js/modules/animations.js',
-        'js/main.js'
+        'js/modules/animations.js'
       ];
 
+      // +2 for fonts and images stages
+      const totalSteps = partials.length + scripts.length + 2;
+      let completed = 0;
+
+      function progress(label) {
+        completed++;
+        const pct = Math.round((completed / totalSteps) * 100);
+        if (bar) bar.style.width = pct + '%';
+        if (statusEl) statusEl.textContent = label;
+      }
+
+      // --- Loaders ---
+      async function loadPartial(path, target) {
+        const res = await fetch(path);
+        if (!res.ok) throw new Error('Failed to fetch ' + path);
+        target.insertAdjacentHTML('beforeend', await res.text());
+      }
+
+      function loadScript(src) {
+        return new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.src = src;
+          s.defer = false;
+          s.onload = resolve;
+          s.onerror = function () { reject(new Error('Failed to load ' + src)); };
+          document.body.appendChild(s);
+        });
+      }
+
+      function waitForFonts() {
+        if (document.fonts && document.fonts.ready) {
+          return document.fonts.ready;
+        }
+        return new Promise(function (r) { setTimeout(r, 600); });
+      }
+
+      function waitForImages() {
+        var images = app.querySelectorAll('img[src]');
+        if (!images.length) return Promise.resolve();
+
+        // Only wait for non-lazy (critical) images
+        var promises = [];
+        images.forEach(function (img) {
+          if (img.loading === 'lazy') return;
+          if (img.complete && img.naturalWidth > 0) return;
+          promises.push(new Promise(function (resolve) {
+            img.addEventListener('load', resolve, { once: true });
+            img.addEventListener('error', resolve, { once: true });
+          }));
+        });
+
+        if (!promises.length) return Promise.resolve();
+
+        // Cap at 4s so a broken image doesn't block the site forever
+        return Promise.race([
+          Promise.all(promises),
+          new Promise(function (r) { setTimeout(r, 4000); })
+        ]);
+      }
+
+      // --- Boot ---
       try {
-        // HTML partials (sequential for DOM order)
-        for (const partial of partials) {
-          await loadPartial(partial, app);
+        // Stage 1: HTML partials (sequential — DOM order matters)
+        for (var i = 0; i < partials.length; i++) {
+          var name = partials[i].split('/').pop().replace('.html', '');
+          await loadPartial(partials[i], app);
+          progress('Loaded ' + name);
         }
 
-        // JavaScript (sequential for dependencies)
-        for (const src of scripts) {
-          await loadScript(src);
+        // Stage 2: JS modules (sequential — dependency order matters)
+        for (var j = 0; j < scripts.length; j++) {
+          var modName = scripts[j].split('/').pop().replace('.js', '');
+          await loadScript(scripts[j]);
+          progress('Init ' + modName);
         }
 
-        // Initialize theme
+        // Stage 3: Fonts
+        progress('Loading fonts…');
+        await waitForFonts();
+
+        // Stage 4: Critical images
+        progress('Loading images…');
+        await waitForImages();
+
+        // Stage 5: Theme finalization
         if (window.themeModule && window.themeModule.init) {
           window.themeModule.init();
         }
+
+        // Stage 6: Let browser do a full layout + paint pass
+        await new Promise(function (resolve) {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(resolve);
+          });
+        });
+
+        // --- Reveal ---
+        if (bar) bar.style.width = '100%';
+        if (statusEl) statusEl.textContent = 'Ready';
+
+        // Brief pause so user sees 100% complete
+        await new Promise(function (r) { setTimeout(r, 300); });
+
+        app.classList.add('is-ready');
+        preloader.classList.add('is-hidden');
+
+        // Remove preloader from DOM after fade-out
+        preloader.addEventListener('transitionend', function () {
+          preloader.remove();
+        }, { once: true });
+
+        // Safety cleanup if transitionend doesn't fire
+        setTimeout(function () {
+          if (document.body.contains(preloader)) preloader.remove();
+        }, 1000);
 
         console.log('✅ Site fully loaded!');
 
       } catch (error) {
         console.error('Boot error:', error);
+
+        // On error: still show the site rather than a blank screen
+        app.classList.add('is-ready');
+        if (preloader) preloader.classList.add('is-hidden');
       }
     })();
   </script>
 </body>
-</html> 
+</html>
