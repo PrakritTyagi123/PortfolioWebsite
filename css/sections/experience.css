@@ -15,10 +15,7 @@
   margin-bottom: clamp(20px, 2.5vh, 36px);
 }
 
-.work .section-title {
-  text-align: left;
-  margin: 0;
-}
+/* Section heading styles live in base.css - no need to duplicate */
 
 /* ---------- Two-column layout ---------- */
 .exp-layout {

@@ -99,14 +99,14 @@
     function numberCards() {
       const c = cards();
       c.forEach(function (card, i) {
-        var existing = card.querySelector('.proj-card-number');
+        const existing = card.querySelector('.proj-card-number');
         if (existing) existing.remove();
 
-        var badge = document.createElement('span');
+        const badge = document.createElement('span');
         badge.className = 'proj-card-number';
         badge.textContent = '#' + (i + 1);
 
-        var media = card.querySelector('.proj-card-media');
+        const media = card.querySelector('.proj-card-media');
         if (media) {
           media.appendChild(badge);
         } else {

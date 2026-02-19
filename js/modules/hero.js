@@ -95,13 +95,13 @@
     if (video && toggle) {
       function syncBtn() {
         if (video.paused) {
-          toggle.textContent = 'â–¶';
+          toggle.innerHTML = '&#9654;'; // Play symbol (▶)
           toggle.setAttribute('aria-label', 'Play video');
-          toggle.setAttribute('aria-pressed', 'true');
-        } else {
-          toggle.textContent = 'â¸';
-          toggle.setAttribute('aria-label', 'Pause video');
           toggle.setAttribute('aria-pressed', 'false');
+        } else {
+          toggle.innerHTML = '&#10074;&#10074;'; // Pause symbol (⏸)
+          toggle.setAttribute('aria-label', 'Pause video');
+          toggle.setAttribute('aria-pressed', 'true');
         }
       }
       toggle.addEventListener('click', () => {

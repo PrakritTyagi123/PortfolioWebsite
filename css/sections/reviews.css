@@ -12,10 +12,7 @@
   scroll-margin-top: var(--header-h, 56px);
 }
 
-.clients .section-title {
-  text-align: left;
-  margin: 0;
-}
+/* Section heading styles live in base.css - no need to duplicate */
 
 /* =========================================================
    STATS BANNER

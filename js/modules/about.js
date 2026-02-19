@@ -223,8 +223,6 @@
           globe = null;
         }
         
-        const dark = isDarkMode();
-        
         const config = {
           dark: 1,
           baseColor: [0.25, 0.25, 0.25],

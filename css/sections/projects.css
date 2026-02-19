@@ -12,11 +12,7 @@
   justify-content: center;
 }
 
-/* ---------- Section heading ---------- */
-.projects .section-title {
-  text-align: left;
-  margin: 0;
-}
+/* Section heading styles live in base.css - no need to duplicate */
 
 /* =========================================================
    FEATURED CARD
@@ -379,7 +375,8 @@
   pointer-events: none;
 }
 
-/* Always white icon boxes in projects */
+/* Always white icon boxes in projects section for logo visibility */
+/* This override ensures tech stack logos are always visible on dark backgrounds */
 .projects .icon-box,
 .projects .icon-box.icon-box--sm {
   background: #ffffff;

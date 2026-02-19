@@ -56,16 +56,23 @@
   border-radius: 50%;
   background: var(--bg-primary);
   border: 2px solid var(--accent);
-  display: grid;
-  place-items: center;
-  font-family: var(--font-mono, 'Space Mono', monospace);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display, 'Syne', sans-serif);
   font-size: clamp(9px, 0.7vw, 11px);
   font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  letter-spacing: 0;
   box-shadow: 0 0 30px var(--accent-glow, rgba(255,0,0,0.3));
   flex-shrink: 0;
   margin: 12px 0;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.hero-divider__badge .hero-divider-dot {
+  color: var(--accent);
 }
 
 /* ---------- Panels ---------- */
@@ -151,7 +158,7 @@
   box-shadow: 0 20px 50px -15px var(--shadow-heavy, rgba(0,0,0,0.5));
 }
 
-/* Placeholder removed - media-placeholder div is hidden */
+/* Panel media container - add image when available */
 
 /* Video inside panel */
 .panel-media .media-frame {

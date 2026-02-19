@@ -1,8 +1,8 @@
 /* =========================================================
-   SECTION DIVIDERS - Structural only
+   SECTION DIVIDERS - Structural positioning
    ========================================================= */
 
-/* Sections need stacking context for absolute children */
+/* Sections need stacking context for absolute-positioned children */
 .hero,
 .about,
 .work,
@@ -12,7 +12,7 @@
   position: relative;
 }
 
-/* Invisible structural divider */
+/* Optional invisible divider element for future use */
 .section-divider {
   position: absolute;
   bottom: 0;

@@ -8,10 +8,7 @@
   padding: clamp(48px, 6vh, 96px) 0;
 }
 
-.extra-section .section-title {
-  text-align: left;
-  margin: 0;
-}
+/* Section heading styles live in base.css - no need to duplicate */
 
 /* Screen reader utilities consolidated in base.css */
 

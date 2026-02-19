@@ -8,8 +8,8 @@
 window.reviewsModule = (function () {
   'use strict';
 
-  var SPEED = 45; // px per second
-  var initialized = false;
+  const SPEED = 45; // px per second
+  let initialized = false;
 
   // Use shared utilities (standardized naming)
   const q = window.utils?.$ || ((sel, root) => (root || document).querySelector(sel));
@@ -18,7 +18,7 @@ window.reviewsModule = (function () {
   // --- Avatar fallbacks ---
   function setupAvatars(scope) {
     qq('.rev-avatar', scope).forEach(function (av) {
-      var img = av.querySelector('img');
+      const img = av.querySelector('img');
       if (!img) { av.classList.add('fallback'); return; }
 
       av.classList.add('fallback');
@@ -37,15 +37,15 @@ window.reviewsModule = (function () {
 
   // --- Ensure group fills at least the viewport width ---
   function expandGroup(rowEl) {
-    var marquee = q('.marquee', rowEl);
+    const marquee = q('.marquee', rowEl);
     if (!marquee) return;
-    var group = q('.group', marquee);
+    const group = q('.group', marquee);
     if (!group) return;
 
-    var origCards = qq('.review', group);
+    const origCards = qq('.review', group);
     if (!origCards.length) return;
 
-    var guard = 0;
+    let guard = 0;
     while (group.scrollWidth < rowEl.clientWidth + 100 && guard < 8) {
       guard++;
       origCards.forEach(function (c) { group.appendChild(c.cloneNode(true)); });
@@ -54,34 +54,33 @@ window.reviewsModule = (function () {
 
   // --- Clone the group to create A|B pair for seamless loop ---
   function cloneGroup(rowEl) {
-    var marquee = q('.marquee', rowEl);
+    const marquee = q('.marquee', rowEl);
     if (!marquee) return;
-    var group = q('.group', marquee);
+    const group = q('.group', marquee);
     if (!group) return;
 
     // Remove any previous clones
     qq('.group', marquee).slice(1).forEach(function (g) { g.remove(); });
 
-    var clone = group.cloneNode(true);
+    const clone = group.cloneNode(true);
     clone.setAttribute('aria-hidden', 'true');
     marquee.appendChild(clone);
   }
 
   // --- Set animation duration based on group width ---
   function setDuration(rowEl) {
-    var marquee = q('.marquee', rowEl);
+    const marquee = q('.marquee', rowEl);
     if (!marquee) return;
-    var group = q('.group', marquee);
+    const group = q('.group', marquee);
     if (!group) return;
 
-    var w = group.scrollWidth;
-    var sec = Math.max(10, Math.round(w / SPEED));
+    const w = group.scrollWidth;
+    const sec = Math.max(10, Math.round(w / SPEED));
     marquee.style.setProperty('--marquee-duration', sec + 's');
   }
 
   // --- Prepare one row ---
   function prepareRow(rowEl) {
-    setupAvatars(rowEl);
     expandGroup(rowEl);
     cloneGroup(rowEl);
     setDuration(rowEl);
@@ -92,10 +91,10 @@ window.reviewsModule = (function () {
   function init() {
     if (initialized) return;
 
-    var section = q('.clients');
+    const section = q('.clients');
     if (!section) return;
 
-    var rows = qq('.marquee-row', section);
+    const rows = qq('.marquee-row', section);
     if (!rows.length) return;
 
     // Double rAF to let DOM settle before measuring
@@ -107,7 +106,7 @@ window.reviewsModule = (function () {
         section.classList.add('marquee-ready');
 
         // Recalculate on resize (debounced)
-        var timer = null;
+        let timer = null;
         window.addEventListener('resize', function () {
           clearTimeout(timer);
           timer = setTimeout(function () {

@@ -249,7 +249,10 @@
 
       enableAutoAndUserScroll(strip, row);
     } catch (err) {
-      console.error('YouTube load error →', err);
+      // Log error only in development
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.error('YouTube load error →', err);
+      }
       setStatus(section, 'YouTube error: ' + (err?.message || String(err)));
     }
   }

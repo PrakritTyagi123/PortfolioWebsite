@@ -232,6 +232,10 @@ margin-inline: auto;
   text-decoration-thickness: 2px;
 }
 
+.section-title .section-dot {
+  color: var(--accent);
+}
+
 /* =========================================================
    Screen Reader Utilities
    ========================================================= */

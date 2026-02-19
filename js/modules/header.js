@@ -32,7 +32,29 @@ window.headerModule = (function() {
 
       var start = window.pageYOffset;
       var rect = targetEl.getBoundingClientRect();
-      var end = Math.max(0, rect.top + start - headerH - 12);
+      
+      // Special handling for contact section - ensure footer is fully visible
+      var isContact = targetEl.id === 'contact' || targetEl.classList.contains('contact');
+      var end;
+      
+      if (isContact) {
+        // Find the footer and calculate scroll position to show full footer
+        var footer = document.querySelector('.site-footer');
+        if (footer) {
+          var footerRect = footer.getBoundingClientRect();
+          var footerBottom = footerRect.bottom + start;
+          var viewportHeight = window.innerHeight;
+          // Scroll so footer bottom aligns with viewport bottom
+          end = Math.max(0, footerBottom - viewportHeight);
+        } else {
+          // Fallback: scroll to contact section normally
+          end = Math.max(0, rect.top + start - headerH - 12);
+        }
+      } else {
+        // Normal scroll behavior for other sections
+        end = Math.max(0, rect.top + start - headerH - 12);
+      }
+      
       var distance = end - start;
       var duration = Math.min(1200, Math.max(400, Math.abs(distance) * 0.5));
       var startTime = null;
