@@ -1,5 +1,5 @@
 /* =========================================================
-   ABOUT â€” Bento Grid + Terminal + Stats Row
+   ABOUT Ã¢â‚¬â€ Bento Grid + Terminal + Stats Row
    ========================================================= */
 
 /* ---------- Section shell ---------- */
@@ -12,42 +12,9 @@
   justify-content: center;
 }
 
-/* ---------- Section heading (shared pattern) ---------- */
-.about .section-heading {
-  margin-bottom: clamp(20px, 2.5vh, 36px);
-}
+/* Section heading styles live in base.css - no need to duplicate */
 
-.about .section-label {
-  font-family: var(--font-mono, 'Space Mono', monospace);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.about .section-label::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--accent);
-}
-
-.about .section-title {
-  font-family: var(--font-display, 'Syne', sans-serif);
-  font-size: clamp(2rem, 3vw, 3.2rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  text-align: left;
-  text-decoration: none !important;
-  margin: 0;
-}
-
-/* ---------- Bento grid (3Ã—3) ---------- */
+/* ---------- Bento grid (3Ãƒâ€”3) ---------- */
 .about-grid {
   --about-cell: clamp(200px, 20vw, 320px);
   --about-gap: clamp(8px, 0.8vw, 14px);
@@ -110,8 +77,9 @@
   grid-column: 2 / span 2;
   grid-row: 3;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
+  position: relative;
 }
 
 /* ---------- Intro tile ---------- */
@@ -311,25 +279,23 @@
   50% { box-shadow: 0 0 0 6px transparent; }
 }
 
-/* Globe container */
+/* Globe container — large, dominant right side of tile */
 .about-avail__globe {
-  width: clamp(110px, 11vw, 180px);
-  height: clamp(110px, 11vw, 180px);
-  flex-shrink: 0;
-  align-self: center;
-  border-radius: 50%;
-  overflow: hidden;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  right: -25%;
+  transform: translateY(-50%);
+  width: 105%;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .about-avail__globe canvas {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: 140% !important;
-  height: 140% !important;
+  width: 100% !important;
+  height: 100% !important;
   max-width: none !important;
+  display: block;
 }
 
 /* =========================================================
@@ -461,8 +427,6 @@
 
 @keyframes tsBlink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 
-.ts-secondary { display: none; }
-
 /* =========================================================
    STATS ROW
    ========================================================= */
@@ -576,14 +540,4 @@
   opacity: 1;
 }
 
-/* =========================================================
-   UTILITY
-   ========================================================= */
-.visually-hidden {
-  position: absolute !important;
-  width: 1px; height: 1px;
-  margin: -1px; padding: 0; border: 0;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  white-space: nowrap;
-}
+/* Screen reader utilities consolidated in base.css */

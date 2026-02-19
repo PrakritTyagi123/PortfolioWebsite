@@ -1,7 +1,10 @@
 (function () {
+  // YouTube API Configuration
+  // SECURITY: In production, move API key to environment variable or backend proxy
+  // For now, restrict this key by HTTP referrer in Google Cloud Console
   const CONFIG = {
     handle: '@PrakritTyagi19',
-    apiKey: 'AIzaSyCffLilUHmhLy7ri1V_Kd7fC4CnNJ_ibq0',
+    apiKey: window.YOUTUBE_API_KEY || 'AIzaSyCffLilUHmhLy7ri1V_Kd7fC4CnNJ_ibq0', // Fallback for development
     pageSize: 50,
     maxPages: 100,
     scrollSpeed: 0.25
@@ -9,7 +12,8 @@
 
   const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-  const $ = (s, el = document) => el.querySelector(s);
+  // Use shared utilities
+  const $ = window.utils?.$ || ((s, el = document) => el.querySelector(s));
   const esc = (s) => (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   // ---------- Helpers
@@ -116,6 +120,8 @@
     }
 
     let paused = false;
+    let animationFrameId = null;
+
     function loop() {
       if (!paused) {
         stripEl.scrollLeft += CONFIG.scrollSpeed;
@@ -128,14 +134,35 @@
           }
         }
       }
-      requestAnimationFrame(loop);
+      animationFrameId = requestAnimationFrame(loop);
     }
-    requestAnimationFrame(loop);
 
-    stripEl.addEventListener('mouseenter', () => paused = true);
-    stripEl.addEventListener('mouseleave', () => paused = false);
-    stripEl.addEventListener('focusin', () => paused = true);
-    stripEl.addEventListener('focusout', () => paused = false);
+    // Use IntersectionObserver to pause when section is off-screen
+    const section = stripEl.closest('.extra-section') || stripEl.closest('#extra');
+    if (section) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (!animationFrameId) {
+              animationFrameId = requestAnimationFrame(loop);
+            }
+          } else {
+            if (animationFrameId) {
+              cancelAnimationFrame(animationFrameId);
+              animationFrameId = null;
+            }
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(section);
+    }
+
+    animationFrameId = requestAnimationFrame(loop);
+
+    stripEl.addEventListener('mouseenter', () => { paused = true; });
+    stripEl.addEventListener('mouseleave', () => { paused = false; });
+    stripEl.addEventListener('focusin', () => { paused = true; });
+    stripEl.addEventListener('focusout', () => { paused = false; });
 
     let userScrollTimer = null;
     stripEl.addEventListener('scroll', () => {

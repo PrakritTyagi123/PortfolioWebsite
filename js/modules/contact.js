@@ -107,5 +107,12 @@ ${message}`;
     initialized = true;
   }
 
+  // Self-init
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+
   return { init };
 })();

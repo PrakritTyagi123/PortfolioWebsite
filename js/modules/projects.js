@@ -1,9 +1,10 @@
 /* =========================================================
    PROJECTS — Scroll Carousel + Filter + Nav Buttons + Autoplay
    ========================================================= */
-   (function () {
-    'use strict';
-  
+(function () {
+  'use strict';
+
+  function init() {
     const section = document.querySelector('#projects');
     if (!section) return;
   
@@ -42,19 +43,56 @@
       return bestIdx;
     }
   
+    let currentScrollAnimation = null;
+
     function scrollToIndex(i, smooth) {
       if (smooth === undefined) smooth = true;
       const c = cards();
       if (c.length === 0) return;
-  
+
+      // Cancel any existing animation
+      if (currentScrollAnimation) {
+        cancelAnimationFrame(currentScrollAnimation);
+        currentScrollAnimation = null;
+      }
+
       const idx = clamp(i, 0, c.length - 1);
       const card = c[idx];
-  
-      const left = card.offsetLeft - ((track.clientWidth - card.clientWidth) / 2);
-      track.scrollTo({
-        left: left,
-        behavior: smooth ? 'smooth' : 'auto'
-      });
+
+      // Calculate target position once before animation
+      const targetLeft = card.offsetLeft - ((track.clientWidth - card.clientWidth) / 2);
+      const startLeft = track.scrollLeft;
+      const distance = targetLeft - startLeft;
+      
+      if (Math.abs(distance) < 1) return; // Already at target
+      
+      if (smooth) {
+        const duration = Math.min(600, Math.max(300, Math.abs(distance) * 0.4));
+        let startTime = null;
+
+        function ease(t) {
+          return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function step(now) {
+          if (!startTime) startTime = now;
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          track.scrollLeft = startLeft + distance * ease(progress);
+          
+          if (progress < 1) {
+            currentScrollAnimation = requestAnimationFrame(step);
+          } else {
+            track.scrollLeft = targetLeft;
+            currentScrollAnimation = null;
+          }
+        }
+
+        currentScrollAnimation = requestAnimationFrame(step);
+      } else {
+        track.scrollLeft = targetLeft;
+      }
     }
   
     /* ---------- Dynamic card numbering ---------- */
@@ -63,11 +101,11 @@
       c.forEach(function (card, i) {
         var existing = card.querySelector('.proj-card-number');
         if (existing) existing.remove();
-  
+
         var badge = document.createElement('span');
         badge.className = 'proj-card-number';
         badge.textContent = '#' + (i + 1);
-  
+
         var media = card.querySelector('.proj-card-media');
         if (media) {
           media.appendChild(badge);
@@ -76,7 +114,7 @@
         }
       });
     }
-  
+
     /* ---------- Nav buttons ---------- */
     prevBtn.addEventListener('click', function () {
       var c = cards();
@@ -84,7 +122,7 @@
       scrollToIndex(idx <= 0 ? c.length - 1 : idx - 1);
       restartAutoplay();
     });
-  
+
     nextBtn.addEventListener('click', function () {
       var c = cards();
       var idx = getActiveIndex();
@@ -161,6 +199,14 @@
     /* ---------- Init ---------- */
     numberCards();
     scheduleAutoplay();
-  
-    window.projectsModule = { init: function () { numberCards(); } };
-  })();
+  }
+
+  // Boot sequence guarantees DOM is ready, but add guard for consistency
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+
+  window.projectsModule = { init };
+})();

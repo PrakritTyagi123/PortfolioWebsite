@@ -32,7 +32,7 @@
   addEventListener('DOMContentLoaded', syncHeaderVar, { once: true });
   addEventListener('load', syncHeaderVar, { once: true });
   addEventListener('resize', syncHeaderVar);
-  addEventListener('orientationchange', syncHeaderVar);
+  // Note: orientationchange triggers resize on modern browsers, so no separate listener needed
 
   // ----- Video: autoplay loop, no UI -----
   function ensureTrailerPlays() {
@@ -59,47 +59,6 @@
     }
   }
 
-  // ----- Find next <section> after hero -----
-  function findNextSection(hero) {
-    let el = hero.nextElementSibling;
-    while (el) {
-      if (el.tagName === 'SECTION') return el;
-      el = el.nextElementSibling;
-    }
-    return null;
-  }
-
-  function smoothScrollTo(yTarget, duration = 650) {
-    const rootEl = document.scrollingElement || document.documentElement;
-    const startY = rootEl.scrollTop;
-    const deltaY = yTarget - startY;
-    const startT = performance.now();
-    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-    const step = (now) => {
-      const t = Math.min(1, (now - startT) / duration);
-      rootEl.scrollTop = startY + deltaY * ease(t);
-      if (t < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }
-
-  // ----- Scroll hint => next section -----
-  function bindScrollHint() {
-    const hero = document.getElementById('home');
-    const btn = hero && hero.querySelector('.hero-scroll-hint');
-    if (!hero || !btn) return;
-
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const next = findNextSection(hero) || document.querySelector('section[id]:not(#home)');
-      if (!next) return;
-      const top = next.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop);
-      const y = Math.max(0, top - headerHeight());
-      smoothScrollTo(y, 700);
-      if (next.id) history.pushState(null, '', '#' + next.id);
-    });
-  }
-
   // ----- Smooth scroll for in-hero nav links -----
   function bindHeroLinks() {
     const hero = document.getElementById('home');
@@ -116,9 +75,11 @@
       if (!target) return;
 
       e.preventDefault();
-      const top = target.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop);
-      const y = Math.max(0, top - headerHeight());
-      smoothScrollTo(y, 700);
+      if (window._smoothScroll) {
+        window._smoothScroll(target);
+      } else {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
       if (target.id) history.pushState(null, '', '#' + target.id);
     }, { passive: false });
   }
@@ -126,7 +87,6 @@
   // ----- Init -----
   function init() {
     ensureTrailerPlays();
-    bindScrollHint();
     bindHeroLinks();
 
     // Pause/Play toggle
@@ -135,11 +95,11 @@
     if (video && toggle) {
       function syncBtn() {
         if (video.paused) {
-          toggle.textContent = '▶';
+          toggle.textContent = 'â–¶';
           toggle.setAttribute('aria-label', 'Play video');
           toggle.setAttribute('aria-pressed', 'true');
         } else {
-          toggle.textContent = '⏸';
+          toggle.textContent = 'â¸';
           toggle.setAttribute('aria-label', 'Pause video');
           toggle.setAttribute('aria-pressed', 'false');
         }

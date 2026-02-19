@@ -6,8 +6,9 @@
 (function () {
   'use strict';
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  // Use shared utilities
+  const $ = window.utils?.$ || ((sel, root = document) => root.querySelector(sel));
+  const $$ = window.utils?.$$ || ((sel, root = document) => Array.from(root.querySelectorAll(sel)));
 
   let items = [];
   let dots = [];
@@ -84,22 +85,13 @@
     if (initialized) return;
 
     section = $('#work');
-    if (!section) {
-      setTimeout(init, 100);
-      return;
-    }
+    if (!section) return;
 
     timeline = section.querySelector('.timeline');
-    if (!timeline) {
-      setTimeout(init, 100);
-      return;
-    }
+    if (!timeline) return;
 
     items = $$('.t-item', section);
-    if (items.length === 0) {
-      setTimeout(init, 100);
-      return;
-    }
+    if (items.length === 0) return;
 
     dots = items.map(item => item.querySelector('.t-dot'));
 
@@ -114,17 +106,12 @@
     }, { passive: true });
   }
 
-  function tryInit() {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init, { once: true });
-    } else {
-      init();
-    }
+  // Boot sequence guarantees DOM is ready - no retries needed
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
   }
-
-  tryInit();
-  setTimeout(tryInit, 500);
-  setTimeout(tryInit, 1000);
 
   window.experienceModule = { init };
 })();

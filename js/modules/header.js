@@ -21,43 +21,53 @@ window.headerModule = (function() {
       return href && href.startsWith('#') && href.length > 1 && !link.classList.contains('nav-github');
     });
 
-    function headerHeight() {
-      const v = getComputedStyle(document.documentElement).getPropertyValue('--header-h').trim();
-      const n = parseFloat(v);
-      return Number.isFinite(n) ? n : 56;
-    }
-
-    function goToHash(hash) {
-      if (!hash || hash === '#') return;
-      const el = document.querySelector(hash);
-      if (!el) { console.warn('[header] Section not found:', hash); return; }
-
-      // Calculate target position accounting for fixed header
-      const hh = headerHeight();
-      const elTop = el.getBoundingClientRect().top + window.scrollY;
-      const target = Math.max(0, elTop - hh - 12);
-
-      // Use scrollTo with smooth behavior
+    // --- Manual smooth scroll (rAF) — works everywhere ---
+    function smoothScroll(targetEl) {
+      window._smoothScrolling = true;
+      var headerH = 56;
       try {
-        window.scrollTo({ top: target, behavior: 'smooth' });
-      } catch (e) {
-        // Fallback for older browsers
-        window.scrollTo(0, target);
+        var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h'));
+        if (v > 0) headerH = v;
+      } catch(e) {}
+
+      var start = window.pageYOffset;
+      var rect = targetEl.getBoundingClientRect();
+      var end = Math.max(0, rect.top + start - headerH - 12);
+      var distance = end - start;
+      var duration = Math.min(1200, Math.max(400, Math.abs(distance) * 0.5));
+      var startTime = null;
+
+      function ease(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
 
-      // Update URL hash without triggering scroll
-      if (history && history.replaceState) {
-        history.replaceState(null, '', hash);
+      function step(time) {
+        if (!startTime) startTime = time;
+        var elapsed = time - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        window.scrollTo(0, start + distance * ease(progress));
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          window._smoothScrolling = false;
+        }
       }
+
+      requestAnimationFrame(step);
     }
 
+    // Bind clicks on nav links
     links.forEach(a => {
       a.addEventListener('click', (e) => {
-        const hash = a.getAttribute('href');
+        var hash = a.getAttribute('href');
         if (!hash || hash === '#') return;
+
+        var target = document.querySelector(hash);
+        if (!target) return;
+
         e.preventDefault();
-        
-        // Find which nav link was clicked and move glass there first
+
+        // Update glass indicator
         const clickedIndex = navLinks.indexOf(a);
         if (clickedIndex >= 0 && glassIndicator) {
           const linkRect = a.getBoundingClientRect();
@@ -69,11 +79,29 @@ window.headerModule = (function() {
           glassIndicator.style.width = `${width}px`;
           currentActiveIndex = clickedIndex;
         }
-        
-        // Then scroll to section
-        goToHash(hash);
+
+        // Smooth scroll
+        smoothScroll(target);
+        if (history.pushState) history.pushState(null, '', hash);
       });
     });
+
+    // Brand link too
+    var brand = header.querySelector('.brand[href^="#"]');
+    if (brand) {
+      brand.addEventListener('click', (e) => {
+        var hash = brand.getAttribute('href');
+        if (!hash || hash === '#') return;
+        var target = document.querySelector(hash);
+        if (!target) return;
+        e.preventDefault();
+        smoothScroll(target);
+        if (history.pushState) history.pushState(null, '', hash);
+      });
+    }
+
+    // Expose for other modules
+    window._smoothScroll = smoothScroll;
 
     // Create glass indicator - append to header so it shares stacking context
     if (navLinks.length > 0) {
@@ -102,9 +130,10 @@ window.headerModule = (function() {
         });
       });
 
-      // Scroll listener with throttle
+      // Scroll listener with throttle (skip during programmatic smooth scroll to avoid stutter)
       let ticking = false;
       window.addEventListener('scroll', () => {
+        if (window._smoothScrolling) return;
         if (!ticking) {
           requestAnimationFrame(() => {
             updateGlassIndicator();
@@ -193,7 +222,7 @@ window.headerModule = (function() {
   return { init, updateGlassIndicator, get _initialized() { return initialized; } };
 })();
 
-// Self-init fallback
+// Self-init fallback (boot does not call headerModule.init)
 (function() {
   if (window.headerModule && !window.headerModule._initialized) {
     window.headerModule.init();

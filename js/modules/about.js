@@ -1,8 +1,9 @@
 (function () {
   'use strict';
 
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  // Use shared utilities
+  const $ = window.utils?.$ || ((s, r = document) => r.querySelector(s));
+  const $$ = window.utils?.$$ || ((s, r = document) => Array.from(r.querySelectorAll(s)));
 
   /* ===========================================
      TECH STACK CONFIGURATION
@@ -56,42 +57,19 @@
     ],
   };
 
-  /* ---------- Smooth scroll helpers ---------- */
-  function rafSmoothScrollTo(targetY, duration = 700) {
-    const root = document.scrollingElement || document.documentElement;
-    const startY = root.scrollTop;
-    const deltaY = targetY - startY;
-    const startTime = performance.now();
-
-    function easeInOutCubic(t) {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
-
-    function step(now) {
-      const elapsed = now - startTime;
-      const p = Math.min(1, elapsed / duration);
-      root.scrollTop = startY + deltaY * easeInOutCubic(p);
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  function getHeaderH() {
-    const rs = getComputedStyle(document.documentElement);
-    const v = parseFloat(rs.getPropertyValue('--header-h'));
-    return Number.isFinite(v) ? v : 56;
-  }
-
+  /* ---------- Smooth scroll helper (uses shared utility) ---------- */
   function smoothTo(hash) {
     const id = (hash || '').replace(/^#/, '');
     if (!id) return;
     const el = document.getElementById(id);
     if (!el) return;
-
-    const headerH = getHeaderH();
-    const elementTop = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop);
-    const targetY = Math.max(0, elementTop - headerH);
-    rafSmoothScrollTo(targetY, 700);
+    if (window.utils?.smoothScrollTo) {
+      window.utils.smoothScrollTo(el);
+    } else if (window._smoothScroll) {
+      window._smoothScroll(el);
+    } else {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   /* ---------- Compute about-grid cell ---------- */
@@ -118,7 +96,7 @@
       statsH = r.height + parseFloat(getComputedStyle(stats).marginTop || 0);
     }
 
-    const headerH = getHeaderH();
+    const headerH = window.utils?.getHeaderHeight() || 56;
     const availH = window.innerHeight - headerH - pt - pb - headingH - statsH;
     const capByWidth = window.innerWidth * 0.92;
     const maxBox = Math.min(1100, capByWidth, availH);
@@ -249,9 +227,9 @@
         
         const config = {
           dark: 1,
-          baseColor: [1, 1, 1],
-          glowColor: [0.2, 0.2, 0.2],
-          mapBrightness: 6,
+          baseColor: [0.25, 0.25, 0.25],
+          glowColor: [0.05, 0.05, 0.05],
+          mapBrightness: 8,
         };
         
         globe = createGlobe(canvas, {
@@ -259,10 +237,10 @@
           width: 1000,
           height: 1000,
           phi: phi,
-          theta: 0.3,
+          theta: 0.25,
           dark: config.dark,
-          diffuse: 1.2,
-          mapSamples: 16000,
+          diffuse: 2,
+          mapSamples: 20000,
           mapBrightness: config.mapBrightness,
           baseColor: config.baseColor,
           markerColor: [1, 0.2, 0.2],
@@ -281,16 +259,7 @@
       
       if (canvas) {
         setTimeout(createGlobeInstance, 100);
-        
-        const observer = new MutationObserver((mutations) => {
-          mutations.forEach((mutation) => {
-            if (mutation.attributeName === 'data-theme') {
-              setTimeout(createGlobeInstance, 50);
-            }
-          });
-        });
-        
-        observer.observe(document.documentElement, { attributes: true });
+        // Note: Theme changes handled by CSS filter in light.css - no JS recreation needed
       }
     `;
     document.body.appendChild(script);
@@ -373,15 +342,10 @@
     observeSection(section);
     bindContactCTA(section);
 
+    // Resize handler covers all cases (orientationchange triggers resize on modern browsers)
     window.addEventListener('resize', () => {
       computeAboutCell(section);
     }, { passive: true });
-    window.addEventListener('orientationchange', () => {
-      computeAboutCell(section);
-    }, { passive: true });
-    window.addEventListener('load', () => {
-      computeAboutCell(section);
-    });
   }
 
   window.aboutModule = { init };

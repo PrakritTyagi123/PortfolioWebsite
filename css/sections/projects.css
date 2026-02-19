@@ -16,7 +16,6 @@
 .projects .section-title {
   text-align: left;
   margin: 0;
-  text-decoration: none !important;
 }
 
 /* =========================================================
@@ -161,7 +160,6 @@
   display: flex;
   gap: clamp(16px, 1.5vw, 24px);
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   padding: 20px 0;
   outline: none;
 
@@ -179,7 +177,6 @@
    ========================================================= */
 .proj-card {
   flex: 0 0 clamp(300px, 28vw, 420px);
-  scroll-snap-align: center;
   background: var(--about-tile-bg, var(--bg-secondary));
   border: 1px solid var(--border-primary);
   border-radius: 16px;
@@ -380,31 +377,6 @@
   border-radius: 999px;
   letter-spacing: 0.05em;
   pointer-events: none;
-}
-
-/* Featured card in carousel - accent border */
-.proj-card--featured {
-  border-color: var(--accent);
-}
-.proj-card--featured:hover {
-  border-color: var(--accent);
-}
-
-/* Small featured badge on carousel card */
-.feat-badge-sm {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  font-family: var(--font-mono, 'Space Mono', monospace);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  z-index: 3;
 }
 
 /* Always white icon boxes in projects */

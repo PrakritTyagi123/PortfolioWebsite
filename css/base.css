@@ -38,12 +38,13 @@ Base stylesheet (structure only - colors from themes)
 --heading-6: 0.875rem;
 }
 
-html, body { height: 100%; }
-html { 
-scroll-behavior: smooth;
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
+min-height: 100%;
 margin: 0;
 font-family: var(--font-family);
 font-size: var(--font-size-base);
@@ -177,7 +178,7 @@ outline-offset: 2px;
 }
 
 /* Make sure anchor targets aren't hidden under the fixed header */
-.hero, .about, .work, .projects, .clients, .extra, .contact {
+.hero, .about, .work, .projects, .clients, .extra-section, .contact {
 scroll-margin-top: calc(var(--header-h) + 12px);
 }
 
@@ -232,6 +233,22 @@ margin-inline: auto;
 }
 
 /* =========================================================
+   Screen Reader Utilities
+   ========================================================= */
+.sr-only,
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* =========================================================
    Reusable components: tags, icon boxes
    ========================================================= */
 
@@ -277,13 +294,10 @@ margin-inline: auto;
 
 
 
-/* =========================
-FOOTER (base — layout in contact.css)
-========================= */
+/* Footer styles live in contact.css - base.css only provides minimal reset */
 .site-footer {
-background: var(--bg-secondary);
-border-top: 1px solid var(--border-primary);
-padding: 10px 12px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-primary);
 }
 
 /* Very short viewports */

@@ -46,10 +46,11 @@
 
   <!-- Preloader + scrollbar — inlined so they work before external CSS -->
   <style>
-    /* Hide scrollbar globally */
+    /* Hide scrollbar globally + ensure smooth scroll */
     html {
       scrollbar-width: none;
       -ms-overflow-style: none;
+      scroll-behavior: smooth !important;
     }
     html::-webkit-scrollbar {
       display: none;
@@ -172,6 +173,7 @@
 
       // Removed dead utility scripts: css.js, dom.js, scroll.js, io.js
       const scripts = [
+        'js/utils.js', // Shared utilities (load first)
         'js/modules/header.js',
         'js/modules/hero.js',
         'js/modules/about.js',
@@ -183,13 +185,12 @@
         'js/modules/animations.js'
       ];
 
-      // +2 for fonts and images stages
-      const totalSteps = partials.length + scripts.length + 2;
+      const totalSteps = 8; // HTML, CSS, images, videos, fonts/animations, JS, theme, reveal
       let completed = 0;
 
       function progress(label) {
         completed++;
-        const pct = Math.round((completed / totalSteps) * 100);
+        var pct = Math.min(100, Math.round((completed / totalSteps) * 100));
         if (bar) bar.style.width = pct + '%';
         if (statusEl) statusEl.textContent = label;
       }
@@ -223,7 +224,6 @@
         var images = app.querySelectorAll('img[src]');
         if (!images.length) return Promise.resolve();
 
-        // Only wait for non-lazy (critical) images
         var promises = [];
         images.forEach(function (img) {
           if (img.loading === 'lazy') return;
@@ -236,50 +236,88 @@
 
         if (!promises.length) return Promise.resolve();
 
-        // Cap at 4s so a broken image doesn't block the site forever
         return Promise.race([
           Promise.all(promises),
-          new Promise(function (r) { setTimeout(r, 4000); })
+          new Promise(function (r) { setTimeout(r, 5000); })
         ]);
+      }
+
+      function waitForVideos() {
+        var videoEls = app.querySelectorAll('video');
+        if (!videoEls.length) return Promise.resolve();
+
+        var promises = [];
+        videoEls.forEach(function (video) {
+          var src = video.getAttribute('src') || (video.querySelector('source') && video.querySelector('source').getAttribute('src'));
+          if (!src) return;
+          if (video.readyState >= 2) return;
+          promises.push(new Promise(function (resolve) {
+            video.addEventListener('canplay', resolve, { once: true });
+            video.addEventListener('error', resolve, { once: true });
+          }));
+        });
+
+        if (!promises.length) return Promise.resolve();
+
+        return Promise.race([
+          Promise.all(promises),
+          new Promise(function (r) { setTimeout(r, 5000); })
+        ]);
+      }
+
+      function waitForCSS() {
+        var sheets = document.styleSheets;
+        var count = 0;
+        for (var i = 0; i < sheets.length; i++) {
+          try {
+            if (sheets[i].cssRules) count++;
+          } catch (e) { count++; }
+        }
+        return Promise.resolve();
       }
 
       // --- Boot ---
       try {
-        // Stage 1: HTML partials (sequential — DOM order matters)
+        // Stage 1: HTML partials
+        progress('Loading HTML…');
         for (var i = 0; i < partials.length; i++) {
-          var name = partials[i].split('/').pop().replace('.html', '');
           await loadPartial(partials[i], app);
-          progress('Loaded ' + name);
         }
 
-        // Stage 2: JS modules (sequential — dependency order matters)
-        for (var j = 0; j < scripts.length; j++) {
-          var modName = scripts[j].split('/').pop().replace('.js', '');
-          await loadScript(scripts[j]);
-          progress('Init ' + modName);
-        }
+        // Stage 2: CSS
+        progress('Loading CSS…');
+        await waitForCSS();
 
-        // Stage 3: Fonts
-        progress('Loading fonts…');
-        await waitForFonts();
-
-        // Stage 4: Critical images
+        // Stage 3: Images
         progress('Loading images…');
         await waitForImages();
 
-        // Stage 5: Theme finalization
+        // Stage 4: Videos
+        progress('Loading videos…');
+        await waitForVideos();
+
+        // Stage 5: Fonts & animations
+        progress('Loading fonts & animations…');
+        await waitForFonts();
+
+        // Stage 6: JS modules
+        progress('Loading JavaScript…');
+        for (var j = 0; j < scripts.length; j++) {
+          await loadScript(scripts[j]);
+        }
+
+        // Stage 7: Theme finalization
         if (window.themeModule && window.themeModule.init) {
           window.themeModule.init();
         }
 
-        // Stage 6: Let browser do a full layout + paint pass
+        // Stage 8: Layout pass & reveal
+        progress('Ready');
         await new Promise(function (resolve) {
           requestAnimationFrame(function () {
             requestAnimationFrame(resolve);
           });
         });
-
-        // --- Reveal ---
         if (bar) bar.style.width = '100%';
         if (statusEl) statusEl.textContent = 'Ready';
 
