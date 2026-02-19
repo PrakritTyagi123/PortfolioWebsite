@@ -185,14 +185,21 @@
         'js/modules/animations.js'
       ];
 
-      const totalSteps = 8; // HTML, CSS, images, videos, fonts/animations, JS, theme, reveal
+      const totalSteps = 6; // HTML, CSS, JS, animations, videos, images
       let completed = 0;
 
-      function progress(label) {
+      function progress(label, pctOverride) {
         completed++;
-        var pct = Math.min(100, Math.round((completed / totalSteps) * 100));
+        var pct = pctOverride !== undefined ? pctOverride : Math.min(100, Math.round((completed / totalSteps) * 100));
         if (bar) bar.style.width = pct + '%';
         if (statusEl) statusEl.textContent = label;
+      }
+
+      // Hold progress for 1 second after completion
+      function holdProgress(duration) {
+        return new Promise(function(resolve) {
+          setTimeout(resolve, duration || 1000);
+        });
       }
 
       // --- Loaders ---
@@ -220,17 +227,27 @@
         return new Promise(function (r) { setTimeout(r, 600); });
       }
 
+
       function waitForImages() {
         var images = app.querySelectorAll('img[src]');
         if (!images.length) return Promise.resolve();
 
         var promises = [];
         images.forEach(function (img) {
-          if (img.loading === 'lazy') return;
-          if (img.complete && img.naturalWidth > 0) return;
+          var src = img.getAttribute('src');
+          if (!src || !src.startsWith('assets/')) return;
+          
+          // Force load the image if not already loaded
+          if (img.complete && img.naturalWidth > 0) {
+            return; // Already loaded
+          }
+          
+          // Create new image to force load
+          var loadImg = new Image();
           promises.push(new Promise(function (resolve) {
-            img.addEventListener('load', resolve, { once: true });
-            img.addEventListener('error', resolve, { once: true });
+            loadImg.onload = resolve;
+            loadImg.onerror = resolve;
+            loadImg.src = src;
           }));
         });
 
@@ -238,7 +255,7 @@
 
         return Promise.race([
           Promise.all(promises),
-          new Promise(function (r) { setTimeout(r, 5000); })
+          new Promise(function (r) { setTimeout(r, 10000); }) // 10 second timeout
         ]);
       }
 
@@ -249,11 +266,26 @@
         var promises = [];
         videoEls.forEach(function (video) {
           var src = video.getAttribute('src') || (video.querySelector('source') && video.querySelector('source').getAttribute('src'));
-          if (!src) return;
-          if (video.readyState >= 2) return;
+          if (!src || !src.startsWith('assets/')) return;
+          
+          // Force load the video
+          if (video.readyState >= 2) {
+            return; // Already loaded enough
+          }
+          
+          // Set preload and force load
+          video.preload = 'auto';
+          if (video.readyState === 0) {
+            video.load(); // Force reload
+          }
+          
           promises.push(new Promise(function (resolve) {
             video.addEventListener('canplay', resolve, { once: true });
             video.addEventListener('error', resolve, { once: true });
+            // Also try to play to force loading
+            video.play().catch(function() {
+              // Ignore play errors, just wait for canplay
+            });
           }));
         });
 
@@ -261,7 +293,7 @@
 
         return Promise.race([
           Promise.all(promises),
-          new Promise(function (r) { setTimeout(r, 5000); })
+          new Promise(function (r) { setTimeout(r, 10000); }) // 10 second timeout
         ]);
       }
 
@@ -304,62 +336,61 @@
       }
 
       // --- Boot ---
-      const startTime = Date.now();
-      const MIN_LOAD_TIME = 5000; // Always show preloader for at least 5 seconds
-
       try {
         // Stage 1: HTML partials
-        progress('Loading HTML…');
+        progress('Loading HTML…', 16);
         for (var i = 0; i < partials.length; i++) {
           await loadPartial(partials[i], app);
         }
+        await holdProgress(1000); // Hold for 1 second
 
         // Stage 2: CSS
-        progress('Loading CSS…');
+        progress('Loading CSS…', 33);
         await waitForCSS();
+        await holdProgress(1000); // Hold for 1 second
 
-        // Stage 3: Images
-        progress('Loading images…');
-        await waitForImages();
-
-        // Stage 4: Videos
-        progress('Loading videos…');
-        await waitForVideos();
-
-        // Stage 5: Fonts & animations
-        progress('Loading fonts & animations…');
-        await waitForFonts();
-
-        // Stage 6: JS modules
-        progress('Loading JavaScript…');
+        // Stage 3: JS modules
+        progress('Loading JavaScript…', 50);
         for (var j = 0; j < scripts.length; j++) {
           await loadScript(scripts[j]);
         }
+        await holdProgress(1000); // Hold for 1 second
 
-        // Stage 7: Theme finalization
+        // Stage 4: Assets (animations/fonts)
+        progress('Loading assets (animations)…', 66);
+        await waitForFonts();
+        // Wait for any CSS animations to be ready
+        await new Promise(function (resolve) {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(resolve);
+          });
+        });
+        await holdProgress(1000); // Hold for 1 second
+
+        // Stage 5: Assets (videos)
+        progress('Loading assets (videos)…', 83);
+        await waitForVideos();
+        await holdProgress(1000); // Hold for 1 second
+
+        // Stage 6: Assets (images)
+        progress('Loading assets (images)…', 100);
+        await waitForImages();
+        await holdProgress(1000); // Hold for 1 second
+
+        // Theme finalization (doesn't count as a step)
         if (window.themeModule && window.themeModule.init) {
           window.themeModule.init();
         }
 
-        // Stage 8: Layout pass
-        progress('Preparing site…');
+        // Layout pass
         await new Promise(function (resolve) {
           requestAnimationFrame(function () {
             requestAnimationFrame(resolve);
           });
         });
 
-        // Ensure minimum 5 second display time
-        const elapsed = Date.now() - startTime;
-        const remaining = Math.max(0, MIN_LOAD_TIME - elapsed);
-        
-        if (remaining > 0) {
-          progress('Almost ready…');
-          await new Promise(function (r) { setTimeout(r, remaining); });
-        }
-
         // --- Reveal ---
-        progress('Ready');
+        progress('Ready', 100);
         if (bar) bar.style.width = '100%';
         if (statusEl) statusEl.textContent = 'Ready';
 

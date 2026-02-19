@@ -1,31 +1,45 @@
 (function () {
-  // YouTube API Configuration
-  // SECURITY: In production, move API key to environment variable or backend proxy
-  // For now, restrict this key by HTTP referrer in Google Cloud Console
   const CONFIG = {
     handle: '@PrakritTyagi19',
-    apiKey: window.YOUTUBE_API_KEY || 'AIzaSyCffLilUHmhLy7ri1V_Kd7fC4CnNJ_ibq0', // Fallback for development
+    apiKey: window.YOUTUBE_API_KEY || 'AIzaSyCffLilUHmhLy7ri1V_Kd7fC4CnNJ_ibq0', // Set this before loading the script
     pageSize: 50,
-    maxPages: 100,
+    maxPages: 5, // Reduced to prevent excessive quota usage
     scrollSpeed: 0.25
   };
 
+  if (!CONFIG.apiKey) {
+    console.error('YouTube API key missing. Define window.YOUTUBE_API_KEY before this script loads.');
+    return;
+  }
+
   const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-  // Use shared utilities
-  const $ = window.utils?.$ || ((s, el = document) => el.querySelector(s));
-  const esc = (s) => (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const $ = (s, el = document) => el.querySelector(s);
+  const esc = (s) =>
+    (s || '').replace(/[&<>"']/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
+    );
 
   // ---------- Helpers
   async function fetchJSON(url) {
     const res = await fetch(url);
     let data = null;
-    try { data = await res.json(); } catch {}
+
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error('Invalid JSON response from YouTube API');
+    }
+
     if (!res.ok) {
-      const msg = data?.error?.message || res.statusText || 'HTTP ' + res.status;
+      const msg = data?.error?.message || res.statusText || `HTTP ${res.status}`;
       throw new Error(msg);
     }
-    if (data?.error?.message) throw new Error(data.error.message);
+
+    if (data?.error?.message) {
+      throw new Error(data.error.message);
+    }
+
     return data;
   }
 
@@ -41,17 +55,22 @@
 
   // ---------- YouTube helpers
   async function getUploadsPlaylistIdByHandle(handle) {
-    const tryHandles = [];
-    tryHandles.push(handle);
+    const tryHandles = [handle];
     if (handle.startsWith('@')) tryHandles.push(handle.slice(1));
 
     for (const h of tryHandles) {
-      const url = `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forHandle=${encodeURIComponent(h)}&key=${CONFIG.apiKey}`;
+      const url =
+        `https://www.googleapis.com/youtube/v3/channels` +
+        `?part=contentDetails` +
+        `&forHandle=${encodeURIComponent(h)}` +
+        `&key=${CONFIG.apiKey}`;
+
       const data = await fetchJSON(url);
-      const item = data.items?.[0];
-      const uploads = item?.contentDetails?.relatedPlaylists?.uploads;
+      const uploads = data.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
+
       if (uploads) return uploads;
     }
+
     throw new Error('Channel not found for handle');
   }
 
@@ -62,8 +81,10 @@
 
     while (pages < CONFIG.maxPages) {
       pages++;
+
       const url =
-        `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet` +
+        `https://www.googleapis.com/youtube/v3/playlistItems` +
+        `?part=snippet` +
         `&playlistId=${playlistId}` +
         `&maxResults=${CONFIG.pageSize}` +
         (pageToken ? `&pageToken=${pageToken}` : '') +
@@ -71,30 +92,38 @@
 
       const data = await fetchJSON(url);
       const items = data.items || [];
+
       for (const it of items) {
         const sn = it.snippet || {};
         const rid = sn.resourceId || {};
-        const videoId = rid.videoId || '';
+        const videoId = rid.videoId;
+
         if (!videoId) continue;
 
-        const title = sn.title || '';
         const publishedAt = sn.publishedAt || null;
-        const isLatest = publishedAt
-          ? (Date.now() - new Date(publishedAt).getTime()) <= ONE_WEEK_MS
-          : false;
 
-        const thumb = (sn.thumbnails && (sn.thumbnails.maxres?.url ||
-                                         sn.thumbnails.high?.url ||
-                                         sn.thumbnails.medium?.url ||
-                                         sn.thumbnails.default?.url)) ||
-                      `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+        const thumb =
+          sn.thumbnails?.maxres?.url ||
+          sn.thumbnails?.high?.url ||
+          sn.thumbnails?.medium?.url ||
+          sn.thumbnails?.default?.url ||
+          `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
 
-        videos.push({ id: videoId, title, thumb, url: `https://www.youtube.com/watch?v=${videoId}`, isLatest });
+        videos.push({
+          id: videoId,
+          title: sn.title || '',
+          thumb,
+          url: `https://www.youtube.com/watch?v=${videoId}`,
+          isLatest:
+            publishedAt &&
+            Date.now() - new Date(publishedAt).getTime() <= ONE_WEEK_MS
+        });
       }
 
-      pageToken = data.nextPageToken || '';
+      pageToken = data.nextPageToken;
       if (!pageToken) break;
     }
+
     return videos;
   }
 
@@ -102,6 +131,7 @@
     const latestBadge = v.isLatest
       ? `<span class="yt-badge" aria-label="Latest video">Latest</span>`
       : '';
+
     return `
       <a class="yt-card" href="${v.url}" target="_blank" rel="noopener noreferrer" aria-label="${esc(v.title)}">
         <div class="yt-thumb">
@@ -115,60 +145,42 @@
   // ---------- Auto & user scroll
   function enableAutoAndUserScroll(stripEl, rowEl) {
     const canSeamlessLoop = rowEl.scrollWidth < stripEl.clientWidth * 3;
+
     if (canSeamlessLoop && rowEl.children.length) {
       rowEl.innerHTML += rowEl.innerHTML;
     }
 
     let paused = false;
-    let animationFrameId = null;
 
     function loop() {
       if (!paused) {
         stripEl.scrollLeft += CONFIG.scrollSpeed;
+
         if (canSeamlessLoop) {
           const half = rowEl.scrollWidth / 2;
           if (stripEl.scrollLeft >= half) stripEl.scrollLeft -= half;
-        } else {
-          if (stripEl.scrollLeft + stripEl.clientWidth >= rowEl.scrollWidth - 1) {
-            stripEl.scrollLeft = 0;
-          }
+        } else if (
+          stripEl.scrollLeft + stripEl.clientWidth >= rowEl.scrollWidth - 1
+        ) {
+          stripEl.scrollLeft = 0;
         }
       }
-      animationFrameId = requestAnimationFrame(loop);
+
+      requestAnimationFrame(loop);
     }
 
-    // Use IntersectionObserver to pause when section is off-screen
-    const section = stripEl.closest('.extra-section') || stripEl.closest('#extra');
-    if (section) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            if (!animationFrameId) {
-              animationFrameId = requestAnimationFrame(loop);
-            }
-          } else {
-            if (animationFrameId) {
-              cancelAnimationFrame(animationFrameId);
-              animationFrameId = null;
-            }
-          }
-        });
-      }, { threshold: 0.1 });
-      observer.observe(section);
-    }
+    requestAnimationFrame(loop);
 
-    animationFrameId = requestAnimationFrame(loop);
-
-    stripEl.addEventListener('mouseenter', () => { paused = true; });
-    stripEl.addEventListener('mouseleave', () => { paused = false; });
-    stripEl.addEventListener('focusin', () => { paused = true; });
-    stripEl.addEventListener('focusout', () => { paused = false; });
+    stripEl.addEventListener('mouseenter', () => paused = true);
+    stripEl.addEventListener('mouseleave', () => paused = false);
+    stripEl.addEventListener('focusin', () => paused = true);
+    stripEl.addEventListener('focusout', () => paused = false);
 
     let userScrollTimer = null;
     stripEl.addEventListener('scroll', () => {
       paused = true;
       clearTimeout(userScrollTimer);
-      userScrollTimer = setTimeout(() => (paused = false), 1200);
+      userScrollTimer = setTimeout(() => paused = false, 1200);
     });
 
     stripEl.addEventListener('wheel', (e) => {
@@ -191,13 +203,14 @@
         suppressNextClick = true;
       }
     }
+
     function onUp() {
       if (!isDown) return;
       isDown = false;
-      if (suppressNextClick) setTimeout(() => (suppressNextClick = false), 50);
+      if (suppressNextClick) setTimeout(() => suppressNextClick = false, 50);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
-      setTimeout(() => (paused = false), 80);
+      setTimeout(() => paused = false, 80);
       stripEl.classList.remove('is-dragging');
     }
 
@@ -223,13 +236,15 @@
 
   // ---------- Init
   async function initYouTubeStrip() {
-    // Updated selector: look inside .extra-section or #extra
-    const section = document.querySelector('.extra-section .extra-youtube') ||
-                    document.querySelector('#extra .extra-youtube') ||
-                    document.querySelector('#extra .youtube-latest');
+    const section =
+      document.querySelector('.extra-section .extra-youtube') ||
+      document.querySelector('#extra .extra-youtube') ||
+      document.querySelector('#extra .youtube-latest');
+
     if (!section) return;
+
     const strip = section.querySelector('.yt-strip');
-    const row = strip && strip.querySelector('.yt-row');
+    const row = strip?.querySelector('.yt-row');
     if (!strip || !row) return;
 
     try {
@@ -244,15 +259,11 @@
       }
 
       row.innerHTML = videos.map(cardHTML).join('');
-      const status = section.querySelector('.yt-status');
-      if (status) status.remove();
+      section.querySelector('.yt-status')?.remove();
 
       enableAutoAndUserScroll(strip, row);
     } catch (err) {
-      // Log error only in development
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        console.error('YouTube load error →', err);
-      }
+      console.error('YouTube load error →', err);
       setStatus(section, 'YouTube error: ' + (err?.message || String(err)));
     }
   }

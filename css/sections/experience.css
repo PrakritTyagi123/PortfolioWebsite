@@ -83,7 +83,7 @@
   height: var(--progress-height, 0px);
   background: var(--accent);
   z-index: 1;
-  transition: height 0.08s linear;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 10px 2px var(--accent-glow-strong);
 }
 
