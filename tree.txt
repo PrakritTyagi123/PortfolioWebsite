@@ -1,5 +1,6 @@
 New Website
 │   index.html
+│   README.md
 │   tree.txt
 │
 ├───assets
@@ -488,27 +489,20 @@ New Website
 │           light.css
 │
 ├───js
-│   │   main.js
+│   │   utils.js
 │   │
-│   ├───modules
-│   │       about.js
-│   │       animations.js
-│   │       contact.js
-│   │       experience.js
-│   │       extra.js
-│   │       header.js
-│   │       hero.js
-│   │       projects.js
-│   │       reviews.js
-│   │
-│   └───utils
-│           css.js
-│           dom.js
-│           io.js
-│           scroll.js
+│   └───modules
+│           about.js
+│           animations.js
+│           contact.js
+│           experience.js
+│           extra.js
+│           header.js
+│           hero.js
+│           projects.js
+│           reviews.js
 │
 └───partials
-    │   head.html
     │   header.html
     │
     └───sections
