@@ -7,6 +7,27 @@ Base stylesheet (structure only - colors from themes)
 
 * { box-sizing: border-box; }
 
+/* =========================================================
+   NETWORK BACKGROUND CANVAS
+   ========================================================= */
+#network-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* Everything else sits above the canvas */
+.preloader,
+.site-header,
+#app,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
 /* Global scrollbar — red accent everywhere */
 * {
   scrollbar-width: thin;
@@ -59,9 +80,7 @@ Base stylesheet (structure only - colors from themes)
 
 html {
   min-height: 100%;
-  /* scroll-behavior: smooth removed — custom JS smooth scroll in header.js handles this.
-     Having both causes a "double scroll" where the browser's native smooth scroll
-     fights with the JS animation, making the nav indicator bounce back and forth. */
+  scroll-behavior: smooth;
 }
 
 body {

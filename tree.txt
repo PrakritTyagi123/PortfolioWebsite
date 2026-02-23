@@ -500,6 +500,7 @@ New Website
 │           extra.js
 │           header.js
 │           hero.js
+│           network.js
 │           projects.js
 │           reviews.js
 │

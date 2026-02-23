@@ -55,7 +55,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="stylesheet" href="css/base.css?v=3" />
+  <link rel="stylesheet" href="css/base.css?v=4" />
   <link rel="stylesheet" href="css/sections/header.css?v=3" />
   <link rel="stylesheet" href="css/sections/hero.css?v=3" />
   <link rel="stylesheet" href="css/sections/about.css?v=3" />
@@ -68,8 +68,10 @@
 
   <!-- Preloader + scrollbar — inlined so they work before external CSS -->
   <style>
-    /* Smooth scroll handled by JS in header.js — do NOT use CSS scroll-behavior
-       as it causes a double-scroll fight with the custom animation */
+    /* Smooth scroll */
+    html {
+      scroll-behavior: smooth !important;
+    }
 
     /* ===== Preloader ===== */
     .preloader {
@@ -150,6 +152,9 @@
   </style>
 </head>
 <body>
+  <!-- Network particle background — sits behind everything -->
+  <canvas id="network-bg" aria-hidden="true"></canvas>
+
   <noscript>
     <div style="max-width:600px;margin:80px auto;padding:24px;font-family:sans-serif;text-align:center;">
       <h1>Prakrit Tyagi — Portfolio</h1>
@@ -195,6 +200,7 @@
       // Removed dead utility scripts: css.js, dom.js, scroll.js, io.js
       const scripts = [
         'js/utils.js', // Shared utilities (load first)
+        'js/modules/network.js', // Particle network background
         'js/modules/header.js',
         'js/modules/hero.js',
         'js/modules/about.js',

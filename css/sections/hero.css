@@ -10,8 +10,6 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: var(--hero-bg);
-  color: var(--hero-text);
   margin: 0;
 }
 
