@@ -1,41 +1,30 @@
-// Contact form functionality (usable without backend)
-// - Validates required fields
-// - Opens default mail app with subject/body pre-filled
-// - Shows an inline success message as a friendly fallback
+// =========================================================
+// CONTACT — EmailJS integration + validation
+// Sends real emails without any backend
+// =========================================================
 
-window.contactModule = (function() {
-  let initialized = false;
+window.contactModule = (function () {
+  'use strict';
 
-  function encode(v) { return encodeURIComponent(v || ''); }
+  var EMAILJS_PUBLIC_KEY = '66T3xfhc3V5yHMSkC';
+  var EMAILJS_SERVICE_ID = 'service_f2qn8lj';
+  var EMAILJS_TEMPLATE_ID = 'template_y28t6sb';
 
-  function buildMailto(to, name, email, subject, message) {
-    const parts = [];
-    if (subject) parts.push('subject=' + encode(subject));
-    const body =
-`Name: ${name}
-Email: ${email}
+  var initialized = false;
 
-Message:
-${message}`;
-    parts.push('body=' + encode(body));
-    const qs = parts.join('&');
-    return `mailto:${to}${qs ? '?' + qs : ''}`;
-  }
-
-  function showStatus(form, text) {
-    let box = form.querySelector('.tf-status');
-    if (!box) {
-      box = document.createElement('div');
-      box.className = 'tf-status';
-      form.appendChild(box);
+  // ---- Init EmailJS ----
+  function initEmailJS() {
+    if (window.emailjs) {
+      window.emailjs.init(EMAILJS_PUBLIC_KEY);
     }
-    box.textContent = text;
   }
 
+  // ---- Validation helpers ----
   function markInvalid(el, msg) {
+    if (!el) return;
     el.classList.add('is-invalid');
-    let help = el.nextElementSibling;
-    if (!help || !help.classList || !help.classList.contains('tf-help')) {
+    var help = el.nextElementSibling;
+    if (!help || !help.classList.contains('tf-help')) {
       help = document.createElement('div');
       help.className = 'tf-help';
       el.insertAdjacentElement('afterend', help);
@@ -44,76 +33,167 @@ ${message}`;
   }
 
   function clearInvalid(el) {
+    if (!el) return;
     el.classList.remove('is-invalid');
-    const help = el.nextElementSibling;
-    if (help && help.classList && help.classList.contains('tf-help')) {
-      help.remove();
+    var help = el.nextElementSibling;
+    if (help && help.classList.contains('tf-help')) help.remove();
+  }
+
+  // ---- Status message ----
+  function showStatus(form, text, type) {
+    // type: 'success' | 'error' | 'sending'
+    var box = form.querySelector('.tf-status');
+    if (!box) {
+      box = document.createElement('div');
+      box.className = 'tf-status';
+      form.appendChild(box);
+    }
+    box.className = 'tf-status tf-status--' + (type || 'info');
+    box.textContent = text;
+    box.style.display = 'block';
+
+    // Auto-hide success after 8s
+    if (type === 'success') {
+      setTimeout(function () {
+        box.style.opacity = '0';
+        setTimeout(function () { box.style.display = 'none'; box.style.opacity = ''; }, 300);
+      }, 8000);
     }
   }
 
+  function clearStatus(form) {
+    var box = form.querySelector('.tf-status');
+    if (box) box.style.display = 'none';
+  }
+
+  // ---- Button states ----
+  function setButtonLoading(btn, loading) {
+    if (!btn) return;
+    if (loading) {
+      btn.disabled = true;
+      btn.dataset.originalText = btn.textContent;
+      btn.innerHTML = '<span class="tf-spinner"></span> Sending…';
+      btn.classList.add('is-sending');
+    } else {
+      btn.disabled = false;
+      btn.textContent = btn.dataset.originalText || 'Send Message →';
+      btn.classList.remove('is-sending');
+    }
+  }
+
+  // ---- Main init ----
   function init() {
     if (initialized) return;
 
-    const form = document.querySelector('.talk-form');
+    initEmailJS();
+
+    var form = document.querySelector('.talk-form');
     if (!form) return;
 
-    const nameEl = document.getElementById('tf-name');
-    const emailEl = document.getElementById('tf-email');
-    const subjectEl = document.getElementById('tf-subject');
-    const messageEl = document.getElementById('tf-message');
+    var nameEl = document.getElementById('tf-name');
+    var emailEl = document.getElementById('tf-email');
+    var subjectEl = document.getElementById('tf-subject');
+    var messageEl = document.getElementById('tf-message');
+    var submitBtn = form.querySelector('.tf-submit');
 
-    [nameEl, emailEl, subjectEl, messageEl].forEach(el => {
+    // Clear validation on input
+    [nameEl, emailEl, subjectEl, messageEl].forEach(function (el) {
       if (!el) return;
-      el.addEventListener('input', () => clearInvalid(el));
+      el.addEventListener('input', function () { clearInvalid(el); clearStatus(form); });
     });
 
-    form.addEventListener('submit', function(e) {
-      // If the form uses native mailto action we can still enhance it here
+    // Submit handler
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const name = ((nameEl && nameEl.value) || '').trim();
-      const email = ((emailEl && emailEl.value) || '').trim();
-      const subject = ((subjectEl && subjectEl.value) || '').trim();
-      const message = ((messageEl && messageEl.value) || '').trim();
+      var name = ((nameEl && nameEl.value) || '').trim();
+      var email = ((emailEl && emailEl.value) || '').trim();
+      var subject = ((subjectEl && subjectEl.value) || '').trim();
+      var message = ((messageEl && messageEl.value) || '').trim();
 
-      let hasError = false;
-      if (!name && nameEl) { markInvalid(nameEl, 'Please enter your name.'); hasError = true; }
+      // Validate
+      var hasError = false;
+      if (!name) { markInvalid(nameEl, 'Please enter your name.'); hasError = true; }
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        if (emailEl) markInvalid(emailEl, 'Please enter a valid email.');
-        hasError = true;
+        markInvalid(emailEl, 'Please enter a valid email.'); hasError = true;
       }
-      if (!subject && subjectEl) { markInvalid(subjectEl, 'Please add a subject.'); hasError = true; }
-      if (!message && messageEl) { markInvalid(messageEl, 'Please add a short message.'); hasError = true; }
-
+      if (!subject) { markInvalid(subjectEl, 'Please add a subject.'); hasError = true; }
+      if (!message) { markInvalid(messageEl, 'Please write a message.'); hasError = true; }
       if (hasError) return;
 
-      // Derive recipient from form action (mailto:you@domain)
-      let to = 'prakrittyagi.work@gmail.com';
-      const action = (form.getAttribute('action') || '').trim();
-      if (action.startsWith('mailto:')) {
-        to = action.slice('mailto:'.length).split('?')[0];
+      // Check EmailJS loaded
+      if (!window.emailjs) {
+        showStatus(form, 'Email service failed to load. Please email me directly at prakrittyagi.work@gmail.com', 'error');
+        return;
       }
 
-      const href = buildMailto(to, name, email, subject, message);
+      // Send via EmailJS
+      setButtonLoading(submitBtn, true);
+      showStatus(form, 'Sending your message…', 'sending');
 
-      // Try to open default mail client
-      try {
-        window.location.href = href;
-      } catch(_) { /* no-op */ }
+      var templateParams = {
+        from_name: name,
+        from_email: email,
+        subject: subject,
+        message: message
+      };
 
-      showStatus(form, 'Your message is ready to send in your email app. If it didn\'t open, copy the details above.');
+      window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+        .then(function () {
+          // Success
+          setButtonLoading(submitBtn, false);
+          showStatus(form, '✓ Message sent successfully! I\'ll get back to you soon.', 'success');
+
+          // Reset form
+          form.reset();
+          [nameEl, emailEl, subjectEl, messageEl].forEach(function (el) {
+            if (el) clearInvalid(el);
+          });
+
+          // Briefly change button text
+          if (submitBtn) {
+            submitBtn.textContent = '✓ Sent!';
+            setTimeout(function () {
+              submitBtn.textContent = 'Send Message →';
+            }, 3000);
+          }
+        })
+        .catch(function (err) {
+          // Error
+          setButtonLoading(submitBtn, false);
+          console.error('EmailJS error:', err);
+          console.error('EmailJS error status:', err && err.status);
+          console.error('EmailJS error text:', err && err.text);
+
+          var msg;
+          var status = err && err.status;
+          var text = (err && err.text) || '';
+
+          if (status === 412) {
+            // 412 can mean: rate limit, bad template vars, or account issue
+            msg = 'Email service error (412): ' + (text || 'Check your EmailJS dashboard for details.') +
+                  ' You can also email me directly at prakrittyagi.work@gmail.com';
+          } else if (status === 400) {
+            msg = 'Bad request — please check the form fields and try again.';
+          } else if (status === 403) {
+            msg = 'Service not authorized. Please email me directly at prakrittyagi.work@gmail.com';
+          } else {
+            msg = 'Something went wrong. Please try again or email me directly at prakrittyagi.work@gmail.com';
+          }
+          showStatus(form, msg, 'error');
+        });
     });
 
     initialized = true;
   }
 
-  // Dynamic copyright year (#72)
+  // ---- Copyright year ----
   function updateCopyrightYear() {
     var el = document.getElementById('copyright-year');
     if (el) el.textContent = new Date().getFullYear();
   }
 
-  // Hashchange for #contact (#50 - moved from about.js)
+  // ---- #contact hashchange ----
   function bindContactHash() {
     function scrollToContact() {
       var el = document.getElementById('contact');
@@ -121,26 +201,25 @@ ${message}`;
       if (window._smoothScroll) window._smoothScroll(el);
       else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    window.addEventListener('hashchange', function() {
+    window.addEventListener('hashchange', function () {
       if (location.hash === '#contact') scrollToContact();
     });
     if (location.hash === '#contact') setTimeout(scrollToContact, 0);
   }
 
-  // Extended init
+  // ---- Boot ----
   var origInit = init;
-  init = function() {
+  init = function () {
     origInit();
     updateCopyrightYear();
     bindContactHash();
   };
 
-  // Self-init
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once: true });
   } else {
     init();
   }
 
-  return { init };
+  return { init: init };
 })();
