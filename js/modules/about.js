@@ -265,53 +265,42 @@
   }
 
   /* ---------- Scroll observer ---------- */
+  /* One-shot: once the section is revealed, it stays visible permanently.
+     No more black screen when scrolling away and back. */
   function observeSection(section) {
-    const ENTER_RATIO = 0.52;
-    const EXIT_RATIO = 0.28;
-    let active = false;
+    const ENTER_RATIO = 0.25; // Lowered — reveal earlier for better feel
+    let revealed = false;
 
-    const setOn = () => {
-      if (!active) {
-        section.classList.add('is-inview');
-        active = true;
-      }
-    };
-    const setOff = () => {
-      if (active) {
-        section.classList.remove('is-inview');
-        active = false;
-      }
-    };
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      section.classList.add('is-inview');
+      // Done — disconnect immediately, never remove the class
+      io.disconnect();
+    }
 
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         if (e.target !== section) continue;
-        const ratio = e.intersectionRatio || 0;
-
-        if (!active) {
-          if (e.isIntersecting && ratio >= ENTER_RATIO) setOn();
-        } else {
-          if (!e.isIntersecting || ratio <= EXIT_RATIO) setOff();
+        if (e.isIntersecting && (e.intersectionRatio || 0) >= ENTER_RATIO) {
+          reveal();
         }
       }
     }, {
       root: null,
       rootMargin: '0px',
-      threshold: [0, 0.15, 0.28, 0.4, 0.52, 0.75, 1]
+      threshold: [0, 0.15, 0.25, 0.4, 0.52, 0.75, 1]
     });
 
     io.observe(section);
 
-    // Cleanup after section has been viewed
-    setTimeout(() => { io.disconnect(); }, 60000); // disconnect after 60s
-
+    // Also check immediately in case section is already visible on load
     requestAnimationFrame(() => {
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
       const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
       const ratio = visible / Math.max(1, rect.height);
-      if (ratio >= ENTER_RATIO) setOn();
-      else setOff();
+      if (ratio >= ENTER_RATIO) reveal();
     });
   }
 

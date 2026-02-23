@@ -1,5 +1,5 @@
 /* =========================================================
-   HEADER — Redesigned: frosted bar + underline indicator
+   HEADER — Frosted bar, underline-only active indicator
    ========================================================= */
 
 /* ---------- Bar ---------- */
@@ -13,7 +13,6 @@
   padding: 0 clamp(16px, 2vw, 32px);
   z-index: 100;
 
-  /* Frosted glass */
   background: color-mix(in srgb, var(--bg-primary) 72%, transparent);
   backdrop-filter: blur(14px) saturate(1.6);
   -webkit-backdrop-filter: blur(14px) saturate(1.6);
@@ -24,11 +23,9 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 0;
   text-decoration: none;
   color: var(--text-primary);
   flex-shrink: 0;
-  position: relative;
   padding: 6px 0;
 }
 
@@ -38,6 +35,7 @@
   font-size: clamp(17px, 1.35vw, 22px);
   letter-spacing: -0.03em;
   line-height: 1;
+  transition: color 0.15s ease;
 }
 
 .brand-dot {
@@ -48,13 +46,7 @@
   line-height: 1;
 }
 
-.brand:hover .brand-name {
-  color: var(--accent);
-}
-
-.brand:hover .brand-dot {
-  opacity: 1;
-}
+.brand:hover .brand-name { color: var(--accent); }
 
 .brand:focus-visible {
   outline: 2px solid var(--accent);
@@ -62,24 +54,22 @@
   border-radius: 4px;
 }
 
-/* ---------- Nav wrapper ---------- */
+/* ---------- Nav ---------- */
 .nav {
   display: flex;
   align-items: center;
   gap: clamp(8px, 1.2vw, 20px);
 }
 
-/* ---------- Nav links ---------- */
 .nav-links {
   display: flex;
   align-items: center;
   gap: 2px;
-  position: relative;
 }
 
+/* ---------- Nav link ---------- */
 .nav-links a {
   position: relative;
-  z-index: 2;
   text-decoration: none;
   color: var(--text-muted);
   font-family: var(--font-body, 'Instrument Sans', sans-serif);
@@ -88,7 +78,7 @@
   padding: 6px 10px;
   border-radius: 6px;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: color 0.15s ease;
 }
 
 .nav-links a:hover {
@@ -100,70 +90,29 @@
   outline-offset: 2px;
 }
 
-/* Active link — accent underline (set by JS) */
-.nav-links a.is-active {
-  color: var(--text-primary);
-}
-
-.nav-links a.is-active::after {
+/* ---- Active state: accent underline ---- */
+.nav-links a::after {
   content: '';
   position: absolute;
-  bottom: 1px;
+  bottom: 0;
   left: 10px;
   right: 10px;
   height: 2px;
   background: var(--accent);
   border-radius: 1px;
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
 }
 
-/* ---------- Glass indicator (scroll-driven, slides between links) ---------- */
-.nav-glass-indicator {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  height: 30px;
-  transform: translateY(-50%) translateX(0);
-  border-radius: 6px;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0;
-  width: 60px;
+.nav-links a.is-active {
+  color: var(--text-primary);
 }
 
-:root[data-theme="dark"] .nav-glass-indicator {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.nav-links a.is-active::after {
+  transform: scaleX(1);
 }
 
-:root[data-theme="light"] .nav-glass-indicator {
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.nav-glass-indicator.is-ready {
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.15s ease;
-}
-
-.nav-glass-indicator.is-visible {
-  opacity: 1;
-}
-
-/* Accent line under the glass */
-.nav-glass-indicator::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 20%;
-  right: 20%;
-  height: 2px;
-  background: var(--accent);
-  border-radius: 1px;
-  opacity: 0.7;
-}
-
-/* ---------- Actions group (GitHub + divider + theme toggle) ---------- */
+/* ---------- Actions (GitHub + divider + theme) ---------- */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -179,7 +128,6 @@
   opacity: 0.5;
 }
 
-/* Shared icon button base */
 .nav-icon-btn {
   display: inline-flex;
   align-items: center;
@@ -193,13 +141,12 @@
   cursor: pointer;
   line-height: 0;
   color: var(--text-muted);
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
 .nav-icon-btn:hover {
   background: var(--hover-overlay);
   border-color: var(--border-primary);
-  color: var(--text-primary);
   transform: translateY(-1px);
 }
 
@@ -208,7 +155,7 @@
   outline-offset: 2px;
 }
 
-/* ---------- GitHub icon ---------- */
+/* ---------- GitHub ---------- */
 .nav-github .gh {
   width: 18px;
   height: 18px;
@@ -216,11 +163,7 @@
   opacity: 0.7;
   transition: opacity 0.15s ease;
 }
-
-.nav-github:hover .gh {
-  opacity: 1;
-}
-
+.nav-github:hover .gh { opacity: 1; }
 :root[data-theme="light"] .nav-github .gh { filter: none; }
 :root[data-theme="dark"] .nav-github .gh { filter: brightness(0) invert(1); }
 
@@ -232,17 +175,6 @@
   opacity: 0.7;
   transition: opacity 0.15s ease;
 }
-
-.theme-toggle:hover .icon {
-  opacity: 1;
-}
-
-:root[data-theme="light"] .theme-toggle .icon-moon {
-  display: block;
-  filter: none;
-}
-
-:root[data-theme="dark"] .theme-toggle .icon-sun {
-  display: block;
-  filter: brightness(0) invert(1);
-}
+.theme-toggle:hover .icon { opacity: 1; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: block; filter: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; filter: brightness(0) invert(1); }

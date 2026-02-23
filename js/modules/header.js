@@ -1,120 +1,95 @@
 // =========================================================
-// HEADER — Navigation + Glass Indicator + Theme Toggle
+// HEADER — Navigation + Theme Toggle
+// Simple is-active class on links. No glass element.
 // =========================================================
 
 window.headerModule = (function () {
   'use strict';
 
-  let initialized = false;
-  let glass = null;
-  let navLinksContainer = null;
-  let navLinks = [];
-  let sections = [];
-  let activeIndex = -1;
-  let clickLock = 0; // timestamp — block scroll updates until this
+  var initialized = false;
+  var navLinks = [];
+  var sections = [];
+  var activeIndex = -1;
+  var clickLock = 0;
+  var scrollRafId = null;
 
-  // ---- Helpers ----
   function getHeaderH() {
-    return (window.utils && window.utils.getHeaderHeight)
-      ? window.utils.getHeaderHeight()
-      : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 56;
+    if (window.utils && window.utils.getHeaderHeight) return window.utils.getHeaderHeight();
+    return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 56;
   }
 
   // ---- Smooth scroll ----
   function smoothScroll(el) {
+    if (scrollRafId) { cancelAnimationFrame(scrollRafId); scrollRafId = null; }
     window._smoothScrolling = true;
-    const hh = getHeaderH();
-    const start = window.pageYOffset;
-    const isContact = el.id === 'contact' || el.classList.contains('contact');
-    let end;
 
-    if (isContact) {
-      const footer = document.querySelector('.site-footer');
-      if (footer) {
-        end = Math.max(0, footer.getBoundingClientRect().bottom + start - window.innerHeight);
-      } else {
-        end = Math.max(0, el.getBoundingClientRect().top + start - hh - 12);
-      }
+    var hh = getHeaderH();
+    var start = window.pageYOffset;
+    var end;
+
+    if (el.id === 'contact' || el.classList.contains('contact')) {
+      var footer = document.querySelector('.site-footer');
+      end = footer
+        ? Math.max(0, footer.getBoundingClientRect().bottom + start - window.innerHeight)
+        : Math.max(0, el.getBoundingClientRect().top + start - hh - 12);
     } else {
       end = Math.max(0, el.getBoundingClientRect().top + start - hh - 12);
     }
 
-    const dist = end - start;
-    const dur = Math.min(1200, Math.max(400, Math.abs(dist) * 0.5));
-    let t0 = null;
+    var dist = end - start;
+    if (Math.abs(dist) < 2) { window._smoothScrolling = false; return; }
 
-    function ease(t) {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
+    var dur = Math.min(700, Math.max(200, Math.abs(dist) * 0.3));
+    var t0 = 0;
 
-    (function step(ts) {
+    function step(ts) {
       if (!t0) t0 = ts;
-      const p = Math.min((ts - t0) / dur, 1);
-      window.scrollTo(0, start + dist * ease(p));
-      if (p < 1) requestAnimationFrame(step);
-      else window._smoothScrolling = false;
-    })(performance.now());
-  }
-
-  // ---- Glass indicator ----
-  function positionGlass(idx, instant) {
-    if (!glass || idx < 0 || idx >= navLinks.length) return;
-    const link = navLinks[idx];
-    const lr = link.getBoundingClientRect();
-    const pr = navLinksContainer.getBoundingClientRect();
-    const x = lr.left - pr.left;
-    const w = lr.width;
-
-    if (instant) {
-      glass.classList.remove('is-ready');
-      glass.style.transform = 'translateY(-50%) translateX(' + x + 'px)';
-      glass.style.width = w + 'px';
-      void glass.offsetWidth; // force reflow
-      glass.classList.add('is-ready');
-    } else {
-      glass.style.transform = 'translateY(-50%) translateX(' + x + 'px)';
-      glass.style.width = w + 'px';
+      var p = Math.min((ts - t0) / dur, 1);
+      window.scrollTo(0, start + dist * (1 - Math.pow(1 - p, 4))); // quart ease-out
+      if (p < 1) {
+        scrollRafId = requestAnimationFrame(step);
+      } else {
+        scrollRafId = null;
+        window._smoothScrolling = false;
+      }
     }
-    glass.classList.add('is-visible');
+
+    scrollRafId = requestAnimationFrame(step);
   }
 
+  // ---- Active link ----
   function setActive(idx) {
     if (idx === activeIndex) return;
-    // Remove old
     navLinks.forEach(function (a) { a.classList.remove('is-active'); });
-    // Set new
     if (idx >= 0 && idx < navLinks.length) {
       navLinks[idx].classList.add('is-active');
-      positionGlass(idx, false);
-    } else {
-      glass && glass.classList.remove('is-visible');
     }
     activeIndex = idx;
   }
 
-  // ---- Scroll-based section detection ----
+  // ---- Scroll detection ----
   function detectSection() {
-    if (!glass || !sections.length) return;
+    if (!sections.length) return;
     if (Date.now() < clickLock) return;
 
-    const hh = getHeaderH();
-    const trigger = hh + 100;
-    const vh = window.innerHeight;
-    let best = -1;
-    let bestScore = -Infinity;
+    var hh = getHeaderH();
+    var trigger = hh + 100;
+    var vh = window.innerHeight;
+    var best = -1;
+    var bestScore = -Infinity;
 
-    sections.forEach(function (sec, i) {
-      if (!sec) return;
-      const r = sec.getBoundingClientRect();
-      if (r.bottom <= hh || r.top >= vh) return; // off screen
+    for (var i = 0; i < sections.length; i++) {
+      var sec = sections[i];
+      if (!sec) continue;
+      var r = sec.getBoundingClientRect();
+      if (r.bottom <= hh || r.top >= vh) continue;
 
-      let score = 0;
-      // Inside section (top above trigger, bottom below)
-      if (r.top <= trigger && r.bottom > trigger) score = 3000 - Math.abs(r.top - trigger);
-      else score = 1000 - Math.abs(r.top - trigger);
+      var score = (r.top <= trigger && r.bottom > trigger)
+        ? 3000 - Math.abs(r.top - trigger)
+        : 1000 - Math.abs(r.top - trigger);
 
       if (score > bestScore) { bestScore = score; best = i; }
-    });
+    }
 
     if (best !== activeIndex) setActive(best);
   }
@@ -122,26 +97,18 @@ window.headerModule = (function () {
   // ---- Init ----
   function init() {
     if (initialized) return;
-    const header = document.querySelector('.site-header');
+    var header = document.querySelector('.site-header');
     if (!header) return;
 
-    navLinksContainer = header.querySelector('.nav-links');
-    if (!navLinksContainer) return;
+    var container = header.querySelector('.nav-links');
+    if (!container) return;
 
-    const allAs = navLinksContainer.querySelectorAll('a[href^="#"]');
-    navLinks = Array.from(allAs);
-
+    navLinks = Array.from(container.querySelectorAll('a[href^="#"]'));
     sections = navLinks.map(function (a) {
       return document.querySelector(a.getAttribute('href'));
     }).filter(Boolean);
 
-    // Build glass element inside .nav-links
-    glass = document.createElement('div');
-    glass.className = 'nav-glass-indicator';
-    navLinksContainer.style.position = 'relative';
-    navLinksContainer.appendChild(glass);
-
-    // ---- Click handler ----
+    // Click handler
     navLinks.forEach(function (a) {
       a.addEventListener('click', function (e) {
         var hash = a.getAttribute('href');
@@ -150,22 +117,20 @@ window.headerModule = (function () {
         if (!target) return;
         e.preventDefault();
 
+        // Set active immediately
         var idx = navLinks.indexOf(a);
         if (idx >= 0) {
-          // Snap glass instantly + lock out scroll updates
-          navLinks.forEach(function (l) { l.classList.remove('is-active'); });
-          a.classList.add('is-active');
-          positionGlass(idx, true);
-          activeIndex = idx;
-          clickLock = Date.now() + 1400;
+          setActive(idx);
+          clickLock = Date.now() + 1000;
         }
 
+        // Scroll
         smoothScroll(target);
         if (history.pushState && location.hash !== hash) history.pushState(null, '', hash);
       });
     });
 
-    // Brand link
+    // Brand
     var brand = header.querySelector('.brand');
     if (brand) {
       brand.addEventListener('click', function (e) {
@@ -181,22 +146,16 @@ window.headerModule = (function () {
 
     window._smoothScroll = smoothScroll;
 
-    // Initial position
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        detectSection();
-        setTimeout(function () { glass.classList.add('is-ready'); }, 80);
-      });
-    });
+    // Initial detection
+    requestAnimationFrame(detectSection);
 
     // Scroll listener
-    var scrollTick = false;
+    var tick = false;
     window.addEventListener('scroll', function () {
-      if (window._smoothScrolling) return;
-      if (Date.now() < clickLock) return;
-      if (!scrollTick) {
-        requestAnimationFrame(function () { detectSection(); scrollTick = false; });
-        scrollTick = true;
+      if (window._smoothScrolling || Date.now() < clickLock) return;
+      if (!tick) {
+        requestAnimationFrame(function () { detectSection(); tick = false; });
+        tick = true;
       }
     }, { passive: true });
 
@@ -238,9 +197,7 @@ window.themeModule = (function () {
   function apply(theme) {
     HTML.setAttribute('data-theme', theme);
     var btn = document.getElementById('theme-toggle');
-    if (btn) {
-      btn.setAttribute('aria-label', 'Switch to ' + (theme === DARK ? LIGHT : DARK) + ' mode');
-    }
+    if (btn) btn.setAttribute('aria-label', 'Switch to ' + (theme === DARK ? LIGHT : DARK) + ' mode');
   }
 
   function init() {
@@ -258,47 +215,34 @@ window.themeModule = (function () {
       btn.addEventListener('click', function () {
         var cur = HTML.getAttribute('data-theme') === DARK ? DARK : LIGHT;
         var next = cur === DARK ? LIGHT : DARK;
-
-        var prevBg = getComputedStyle(HTML).getPropertyValue('--bg-primary').trim();
-        if (!prevBg) prevBg = getComputedStyle(document.body).backgroundColor || '#000';
-
+        var prevBg = getComputedStyle(HTML).getPropertyValue('--bg-primary').trim() ||
+                     getComputedStyle(document.body).backgroundColor || '#000';
         apply(next);
 
-        // Expanding ring animation
         try {
           var r = btn.getBoundingClientRect();
-          var cx = r.left + r.width / 2;
-          var cy = r.top + r.height / 2;
+          var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
           document.querySelectorAll('.theme-ring').forEach(function (el) { el.remove(); });
-
           var ring = document.createElement('div');
           ring.className = 'theme-ring';
           ring.style.setProperty('--cxpx', cx + 'px');
           ring.style.setProperty('--cypx', cy + 'px');
           ring.style.setProperty('--prev-bg', prevBg);
-          var accent = getComputedStyle(HTML).getPropertyValue('--accent').trim() || '#ff0000';
-          ring.style.setProperty('--ring-color', accent);
+          ring.style.setProperty('--ring-color', getComputedStyle(HTML).getPropertyValue('--accent').trim() || '#ff0000');
           ring.style.willChange = 'width';
           document.body.appendChild(ring);
-
-          var vw = window.innerWidth, vh = window.innerHeight;
-          var dx = Math.max(cx, vw - cx), dy = Math.max(cy, vh - cy);
+          var dx = Math.max(cx, innerWidth - cx), dy = Math.max(cy, innerHeight - cy);
           var dia = Math.ceil(Math.hypot(dx, dy)) * 2;
-
           requestAnimationFrame(function () {
             ring.style.transition = 'width 1800ms cubic-bezier(.2,.7,.1,1)';
             ring.style.width = dia + 'px';
-            function cleanup() {
-              window.removeEventListener('resize', cleanup);
-              ring.remove();
-            }
+            function cleanup() { window.removeEventListener('resize', cleanup); ring.remove(); }
             window.addEventListener('resize', cleanup, { passive: true });
             ring.addEventListener('transitionend', cleanup, { once: true });
             setTimeout(function () { if (document.body.contains(ring)) cleanup(); }, 2200);
           });
-        } catch (e) { /* ignore */ }
-
-        try { localStorage.setItem(KEY, next); } catch (e) { /* ignore */ }
+        } catch (e) {}
+        try { localStorage.setItem(KEY, next); } catch (e) {}
       });
       btn._bound = true;
     }
