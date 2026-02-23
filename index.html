@@ -68,10 +68,8 @@
 
   <!-- Preloader + scrollbar — inlined so they work before external CSS -->
   <style>
-    /* Smooth scroll */
-    html {
-      scroll-behavior: smooth !important;
-    }
+    /* Smooth scroll handled by JS in header.js — do NOT use CSS scroll-behavior
+       as it causes a double-scroll fight with the custom animation */
 
     /* ===== Preloader ===== */
     .preloader {

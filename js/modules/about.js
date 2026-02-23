@@ -265,43 +265,67 @@
   }
 
   /* ---------- Scroll observer ---------- */
-  /* One-shot: once the section is revealed, it stays visible permanently.
-     No more black screen when scrolling away and back. */
+  /* Toggles is-inview on/off so tiles fade in when entering and fade out
+     when leaving. Waits for the preloader to finish before arming so the
+     first entrance animation is visible to the user. */
   function observeSection(section) {
-    const ENTER_RATIO = 0.25; // Lowered — reveal earlier for better feel
-    let revealed = false;
-
-    function reveal() {
-      if (revealed) return;
-      revealed = true;
-      section.classList.add('is-inview');
-      // Done — disconnect immediately, never remove the class
-      io.disconnect();
-    }
+    const ENTER_RATIO = 0.15;
+    const EXIT_RATIO  = 0.05; // Remove class when barely visible
+    let observerReady = false;
 
     const io = new IntersectionObserver((entries) => {
+      if (!observerReady) return;
       for (const e of entries) {
         if (e.target !== section) continue;
-        if (e.isIntersecting && (e.intersectionRatio || 0) >= ENTER_RATIO) {
-          reveal();
+        const ratio = e.intersectionRatio || 0;
+
+        if (e.isIntersecting && ratio >= ENTER_RATIO) {
+          section.classList.add('is-inview');
+        } else if (!e.isIntersecting || ratio < EXIT_RATIO) {
+          section.classList.remove('is-inview');
         }
       }
     }, {
       root: null,
       rootMargin: '0px',
-      threshold: [0, 0.15, 0.25, 0.4, 0.52, 0.75, 1]
+      threshold: [0, 0.05, 0.1, 0.15, 0.25, 0.4, 0.52, 0.75, 1]
     });
 
     io.observe(section);
 
-    // Also check immediately in case section is already visible on load
-    requestAnimationFrame(() => {
-      const rect = section.getBoundingClientRect();
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
-      const ratio = visible / Math.max(1, rect.height);
-      if (ratio >= ENTER_RATIO) reveal();
-    });
+    // Arm the observer once the preloader is gone so the first animation
+    // plays visibly instead of behind the loading screen.
+    function arm() {
+      observerReady = true;
+      // Immediately check current visibility
+      requestAnimationFrame(() => {
+        const rect = section.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
+        const ratio = visible / Math.max(1, rect.height);
+        if (ratio >= ENTER_RATIO) {
+          section.classList.add('is-inview');
+        }
+      });
+    }
+
+    const preloader = document.getElementById('preloader');
+    if (!preloader || preloader.classList.contains('is-hidden')) {
+      setTimeout(arm, 50);
+    } else {
+      const appEl = document.getElementById('app');
+      if (appEl) {
+        const mo = new MutationObserver(() => {
+          if (appEl.classList.contains('is-ready')) {
+            mo.disconnect();
+            setTimeout(arm, 100);
+          }
+        });
+        mo.observe(appEl, { attributes: true, attributeFilter: ['class'] });
+      }
+      // Safety: arm after 5s no matter what
+      setTimeout(() => { if (!observerReady) arm(); }, 5000);
+    }
   }
 
   /* ---------- Contact CTA smooth scroll ---------- */

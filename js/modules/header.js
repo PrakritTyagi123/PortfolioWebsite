@@ -39,18 +39,23 @@ window.headerModule = (function () {
     var dist = end - start;
     if (Math.abs(dist) < 2) { window._smoothScrolling = false; return; }
 
-    var dur = Math.min(700, Math.max(200, Math.abs(dist) * 0.3));
+    var dur = Math.min(1400, Math.max(400, Math.abs(dist) * 0.5));
     var t0 = 0;
 
     function step(ts) {
       if (!t0) t0 = ts;
       var p = Math.min((ts - t0) / dur, 1);
-      window.scrollTo(0, start + dist * (1 - Math.pow(1 - p, 4))); // quart ease-out
+      // Smooth ease-in-out cubic for a more natural feel
+      var ease = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      window.scrollTo(0, start + dist * ease);
       if (p < 1) {
         scrollRafId = requestAnimationFrame(step);
       } else {
         scrollRafId = null;
         window._smoothScrolling = false;
+        // Release click lock shortly after scroll finishes so detectSection
+        // doesn't override the active link during the scroll animation
+        clickLock = Date.now() + 150;
       }
     }
 

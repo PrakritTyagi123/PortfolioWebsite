@@ -59,7 +59,9 @@ Base stylesheet (structure only - colors from themes)
 
 html {
   min-height: 100%;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth removed — custom JS smooth scroll in header.js handles this.
+     Having both causes a "double scroll" where the browser's native smooth scroll
+     fights with the JS animation, making the nav indicator bounce back and forth. */
 }
 
 body {
