@@ -3,11 +3,30 @@ Base stylesheet (structure only - colors from themes)
 ========================================================= */
 
 /* Google Fonts - Syne (display), Instrument Sans (body), Space Mono (mono) */
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap');
+/* Google Fonts loaded via <link> in index.html for non-blocking render */
 
 * { box-sizing: border-box; }
 
+/* Global scrollbar — red accent everywhere */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent) 80%, white); }
+
 :root {
+  /* Shared accent colors (same in both themes) */
+  --accent: #e8341c;
+  --accent-rgb: 232, 52, 28;
+  --accent-light: rgba(232, 52, 28, 0.3);
+  --accent-soft: rgba(232, 52, 28, 0.08);
+  --accent-glow: rgba(255, 60, 30, 0.25);
+  --accent-glow-strong: rgba(255, 50, 20, 0.4);
+  --accent-glow-intense: rgba(255, 60, 30, 0.5);
+
 /* Layout + sizing tokens */
 --header-h: 56px;
 --proj-head-h: 36px;
@@ -143,7 +162,7 @@ h6 {
   width: 0;
   height: auto;
   aspect-ratio: 1 / 1; /* keep it a perfect circle */
-  border-radius: 9999px;
+  border-radius: 999px;
   border: 2px solid var(--ring-color, currentColor);
   /* Enormous box-shadow paints the outside area in previous theme bg */
   box-shadow: 0 0 0 1000vmax var(--prev-bg, transparent);
@@ -183,7 +202,7 @@ scroll-margin-top: calc(var(--header-h) + 12px);
 }
 
 /* Section shell defaults - each section fills the viewport */
-.hero, .about, .work, .projects, .clients, .extra, .extra-section, .contact {
+.hero, .about, .work, .projects, .clients, .extra-section, .contact {
   min-height: calc(100vh - var(--header-h));
   padding: var(--vpad-top) min(6vw, 48px) var(--vpad-bottom);
 }
@@ -310,4 +329,88 @@ margin-inline: auto;
 padding-top: 32px;
 padding-bottom: 32px;
 }
+}
+
+/* =========================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .about-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: auto !important;
+  }
+  .about-intro { grid-column: 1 / span 2; }
+  .about-socials { grid-column: 1 / span 2; grid-row: auto; }
+  .about-tech { grid-column: 1; grid-row: auto; }
+  .about-photo { grid-column: 2; grid-row: auto; }
+  .about-avail { grid-column: 1 / span 2; grid-row: auto; }
+
+  .exp-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .exp-sidebar {
+    position: static !important;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .hero-split {
+    grid-template-columns: 1fr !important;
+    gap: 0;
+  }
+  .hero-divider { display: none !important; }
+
+  .featured-card {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  :root {
+    --header-h: 48px;
+  }
+
+  .site-header .nav {
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .about-intro,
+  .about-socials,
+  .about-tech,
+  .about-photo,
+  .about-avail {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+
+  .about-stats {
+    flex-wrap: wrap;
+  }
+
+  .proj-card {
+    flex: 0 0 85vw !important;
+  }
+
+  .contact-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .rev-stats {
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .container {
+    width: 95vw;
+  }
 }

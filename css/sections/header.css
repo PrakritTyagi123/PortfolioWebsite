@@ -1,179 +1,240 @@
+/* =========================================================
+   HEADER — Redesigned: frosted bar + underline indicator
+   ========================================================= */
+
+/* ---------- Bar ---------- */
 .site-header {
   position: fixed;
   inset: 0 0 auto 0;
-  height: var(--header-h);
+  height: var(--header-h, 56px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 0 16px;
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-primary);
-  z-index: 20;
+  padding: 0 clamp(16px, 2vw, 32px);
+  z-index: 100;
+
+  /* Frosted glass */
+  background: color-mix(in srgb, var(--bg-primary) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(1.6);
+  -webkit-backdrop-filter: blur(14px) saturate(1.6);
+  border-bottom: 1px solid color-mix(in srgb, var(--border-primary) 50%, transparent);
 }
 
-/* === Brand (FONT + BIGGER SIZE + RED DOT) === */
-.site-header .brand {
-  font-family: var(--font-display, 'Syne', sans-serif);
-  font-weight: 700;
-  font-size: clamp(20px, 1.6vw, 28px); /* âœ… increased size */
+/* ---------- Brand ---------- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0;
   text-decoration: none;
   color: var(--text-primary);
-  padding: 4px 8px;
-  border-radius: 4px;
+  flex-shrink: 0;
   position: relative;
-  z-index: 2;
+  padding: 6px 0;
 }
 
-.site-header .brand-dot {
+.brand-name {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 800;
+  font-size: clamp(17px, 1.35vw, 22px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.brand-dot {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 800;
+  font-size: clamp(17px, 1.35vw, 22px);
+  color: var(--accent);
+  line-height: 1;
+}
+
+.brand:hover .brand-name {
   color: var(--accent);
 }
 
-.site-header .brand:hover,
-.site-header .brand:focus-visible {
-  text-decoration: underline;
-  background: var(--hover-overlay);
+.brand:hover .brand-dot {
+  opacity: 1;
 }
 
-.site-header .nav {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-
-.site-header .nav a {
-  text-decoration: none;
-  color: var(--text-primary);
-  padding: 4px 8px;
+.brand:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
   border-radius: 4px;
+}
+
+/* ---------- Nav wrapper ---------- */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 20px);
+}
+
+/* ---------- Nav links ---------- */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+}
+
+.nav-links a {
   position: relative;
   z-index: 2;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-family: var(--font-body, 'Instrument Sans', sans-serif);
+  font-size: clamp(12px, 0.88vw, 14px);
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
-.site-header .nav a:hover,
-.site-header .nav a:focus-visible {
-  background: var(--hover-overlay);
+.nav-links a:hover {
+  color: var(--text-primary);
 }
 
-/* ===== Glass Indicator ===== */
+.nav-links a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Active link — accent underline (set by JS) */
+.nav-links a.is-active {
+  color: var(--text-primary);
+}
+
+.nav-links a.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: 1px;
+  left: 10px;
+  right: 10px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+/* ---------- Glass indicator (scroll-driven, slides between links) ---------- */
 .nav-glass-indicator {
   position: absolute;
   top: 50%;
   left: 0;
-  height: 32px;
+  height: 30px;
   transform: translateY(-50%) translateX(0);
   border-radius: 6px;
   pointer-events: none;
   z-index: 1;
-  will-change: transform, width;
-
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
   opacity: 0;
   width: 60px;
 }
 
+:root[data-theme="dark"] .nav-glass-indicator {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="light"] .nav-glass-indicator {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
 .nav-glass-indicator.is-ready {
-  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
-              width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
-              opacity 0.2s ease;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.15s ease;
 }
 
 .nav-glass-indicator.is-visible {
   opacity: 1;
 }
 
-:root[data-theme="light"] .nav-glass-indicator {
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-}
-
-:root[data-theme="dark"] .nav-glass-indicator {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
+/* Accent line under the glass */
 .nav-glass-indicator::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 10%;
-  right: 10%;
+  left: 20%;
+  right: 20%;
   height: 2px;
   background: var(--accent);
-  border-radius: 2px;
-  opacity: 0.6;
+  border-radius: 1px;
+  opacity: 0.7;
 }
 
-/* === GitHub icon === */
-.site-header .nav .nav-github {
+/* ---------- Actions group (GitHub + divider + theme toggle) ---------- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: clamp(4px, 0.8vw, 12px);
+}
+
+.nav-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border-primary);
+  margin: 0 4px;
+  opacity: 0.5;
+}
+
+/* Shared icon button base */
+.nav-icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   padding: 0;
-  border-radius: 4px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
   line-height: 0;
+  color: var(--text-muted);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
 
+.nav-icon-btn:hover {
+  background: var(--hover-overlay);
+  border-color: var(--border-primary);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.nav-icon-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- GitHub icon ---------- */
 .nav-github .gh {
-  width: 30px;
-  height: 30px;
+  width: 18px;
+  height: 18px;
   display: block;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.nav-github:hover .gh {
+  opacity: 1;
 }
 
 :root[data-theme="light"] .nav-github .gh { filter: none; }
 :root[data-theme="dark"] .nav-github .gh { filter: brightness(0) invert(1); }
 
-.nav-github:hover {
-  background: var(--hover-overlay);
-}
-
-.nav-github:hover .gh {
-  transform: translateY(-1px);
-  transition: transform .18s ease;
-}
-
-/* === Theme toggle === */
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border: 0;
-  border-radius: 4px;
-  background: transparent;
-  cursor: pointer;
-  line-height: 0;
-}
-
-.theme-toggle:hover {
-  background: var(--hover-overlay);
-  transform: translateY(-1px);
-  transition: transform .18s ease;
-}
-
-.theme-toggle:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-
+/* ---------- Theme toggle ---------- */
 .theme-toggle .icon {
   display: none;
-  width: 30px;
-  height: 30px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.theme-toggle:hover .icon {
+  opacity: 1;
 }
 
 :root[data-theme="light"] .theme-toggle .icon-moon {

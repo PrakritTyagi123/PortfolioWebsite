@@ -1,346 +1,312 @@
-// Header navigation + Theme toggle + Glass indicator
+// =========================================================
+// HEADER — Navigation + Glass Indicator + Theme Toggle
+// =========================================================
 
-window.headerModule = (function() {
+window.headerModule = (function () {
+  'use strict';
+
   let initialized = false;
-  let glassIndicator = null;
+  let glass = null;
+  let navLinksContainer = null;
   let navLinks = [];
   let sections = [];
-  let currentActiveIndex = -1;
+  let activeIndex = -1;
+  let clickLock = 0; // timestamp — block scroll updates until this
 
+  // ---- Helpers ----
+  function getHeaderH() {
+    return (window.utils && window.utils.getHeaderHeight)
+      ? window.utils.getHeaderHeight()
+      : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 56;
+  }
+
+  // ---- Smooth scroll ----
+  function smoothScroll(el) {
+    window._smoothScrolling = true;
+    const hh = getHeaderH();
+    const start = window.pageYOffset;
+    const isContact = el.id === 'contact' || el.classList.contains('contact');
+    let end;
+
+    if (isContact) {
+      const footer = document.querySelector('.site-footer');
+      if (footer) {
+        end = Math.max(0, footer.getBoundingClientRect().bottom + start - window.innerHeight);
+      } else {
+        end = Math.max(0, el.getBoundingClientRect().top + start - hh - 12);
+      }
+    } else {
+      end = Math.max(0, el.getBoundingClientRect().top + start - hh - 12);
+    }
+
+    const dist = end - start;
+    const dur = Math.min(1200, Math.max(400, Math.abs(dist) * 0.5));
+    let t0 = null;
+
+    function ease(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    (function step(ts) {
+      if (!t0) t0 = ts;
+      const p = Math.min((ts - t0) / dur, 1);
+      window.scrollTo(0, start + dist * ease(p));
+      if (p < 1) requestAnimationFrame(step);
+      else window._smoothScrolling = false;
+    })(performance.now());
+  }
+
+  // ---- Glass indicator ----
+  function positionGlass(idx, instant) {
+    if (!glass || idx < 0 || idx >= navLinks.length) return;
+    const link = navLinks[idx];
+    const lr = link.getBoundingClientRect();
+    const pr = navLinksContainer.getBoundingClientRect();
+    const x = lr.left - pr.left;
+    const w = lr.width;
+
+    if (instant) {
+      glass.classList.remove('is-ready');
+      glass.style.transform = 'translateY(-50%) translateX(' + x + 'px)';
+      glass.style.width = w + 'px';
+      void glass.offsetWidth; // force reflow
+      glass.classList.add('is-ready');
+    } else {
+      glass.style.transform = 'translateY(-50%) translateX(' + x + 'px)';
+      glass.style.width = w + 'px';
+    }
+    glass.classList.add('is-visible');
+  }
+
+  function setActive(idx) {
+    if (idx === activeIndex) return;
+    // Remove old
+    navLinks.forEach(function (a) { a.classList.remove('is-active'); });
+    // Set new
+    if (idx >= 0 && idx < navLinks.length) {
+      navLinks[idx].classList.add('is-active');
+      positionGlass(idx, false);
+    } else {
+      glass && glass.classList.remove('is-visible');
+    }
+    activeIndex = idx;
+  }
+
+  // ---- Scroll-based section detection ----
+  function detectSection() {
+    if (!glass || !sections.length) return;
+    if (Date.now() < clickLock) return;
+
+    const hh = getHeaderH();
+    const trigger = hh + 100;
+    const vh = window.innerHeight;
+    let best = -1;
+    let bestScore = -Infinity;
+
+    sections.forEach(function (sec, i) {
+      if (!sec) return;
+      const r = sec.getBoundingClientRect();
+      if (r.bottom <= hh || r.top >= vh) return; // off screen
+
+      let score = 0;
+      // Inside section (top above trigger, bottom below)
+      if (r.top <= trigger && r.bottom > trigger) score = 3000 - Math.abs(r.top - trigger);
+      else score = 1000 - Math.abs(r.top - trigger);
+
+      if (score > bestScore) { bestScore = score; best = i; }
+    });
+
+    if (best !== activeIndex) setActive(best);
+  }
+
+  // ---- Init ----
   function init() {
     if (initialized) return;
-
     const header = document.querySelector('.site-header');
     if (!header) return;
 
-    const links = header.querySelectorAll('.nav a[href^="#"]');
-    
-    // Filter to only section links (exclude github, etc)
-    navLinks = Array.from(links).filter(link => {
-      const href = link.getAttribute('href');
-      return href && href.startsWith('#') && href.length > 1 && !link.classList.contains('nav-github');
-    });
+    navLinksContainer = header.querySelector('.nav-links');
+    if (!navLinksContainer) return;
 
-    // --- Manual smooth scroll (rAF) — works everywhere ---
-    function smoothScroll(targetEl) {
-      window._smoothScrolling = true;
-      var headerH = 56;
-      try {
-        var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h'));
-        if (v > 0) headerH = v;
-      } catch(e) {}
+    const allAs = navLinksContainer.querySelectorAll('a[href^="#"]');
+    navLinks = Array.from(allAs);
 
-      var start = window.pageYOffset;
-      var rect = targetEl.getBoundingClientRect();
-      
-      // Special handling for contact section - ensure footer is fully visible
-      var isContact = targetEl.id === 'contact' || targetEl.classList.contains('contact');
-      var end;
-      
-      if (isContact) {
-        // Find the footer and calculate scroll position to show full footer
-        var footer = document.querySelector('.site-footer');
-        if (footer) {
-          var footerRect = footer.getBoundingClientRect();
-          var footerBottom = footerRect.bottom + start;
-          var viewportHeight = window.innerHeight;
-          // Scroll so footer bottom aligns with viewport bottom
-          end = Math.max(0, footerBottom - viewportHeight);
-        } else {
-          // Fallback: scroll to contact section normally
-          end = Math.max(0, rect.top + start - headerH - 12);
-        }
-      } else {
-        // Normal scroll behavior for other sections
-        end = Math.max(0, rect.top + start - headerH - 12);
-      }
-      
-      var distance = end - start;
-      var duration = Math.min(1200, Math.max(400, Math.abs(distance) * 0.5));
-      var startTime = null;
+    sections = navLinks.map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    }).filter(Boolean);
 
-      function ease(t) {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      }
+    // Build glass element inside .nav-links
+    glass = document.createElement('div');
+    glass.className = 'nav-glass-indicator';
+    navLinksContainer.style.position = 'relative';
+    navLinksContainer.appendChild(glass);
 
-      function step(time) {
-        if (!startTime) startTime = time;
-        var elapsed = time - startTime;
-        var progress = Math.min(elapsed / duration, 1);
-        window.scrollTo(0, start + distance * ease(progress));
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        } else {
-          window._smoothScrolling = false;
-        }
-      }
-
-      requestAnimationFrame(step);
-    }
-
-    // Bind clicks on nav links
-    links.forEach(a => {
-      a.addEventListener('click', (e) => {
+    // ---- Click handler ----
+    navLinks.forEach(function (a) {
+      a.addEventListener('click', function (e) {
         var hash = a.getAttribute('href');
         if (!hash || hash === '#') return;
-
         var target = document.querySelector(hash);
         if (!target) return;
-
         e.preventDefault();
 
-        // Update glass indicator
-        const clickedIndex = navLinks.indexOf(a);
-        if (clickedIndex >= 0 && glassIndicator) {
-          const linkRect = a.getBoundingClientRect();
-          const headerRect = header.getBoundingClientRect();
-          const x = linkRect.left - headerRect.left - 2;
-          const width = linkRect.width + 4;
-          
-          glassIndicator.style.transform = `translateY(-50%) translateX(${x}px)`;
-          glassIndicator.style.width = `${width}px`;
-          currentActiveIndex = clickedIndex;
+        var idx = navLinks.indexOf(a);
+        if (idx >= 0) {
+          // Snap glass instantly + lock out scroll updates
+          navLinks.forEach(function (l) { l.classList.remove('is-active'); });
+          a.classList.add('is-active');
+          positionGlass(idx, true);
+          activeIndex = idx;
+          clickLock = Date.now() + 1400;
         }
 
-        // Smooth scroll
         smoothScroll(target);
-        if (history.pushState) history.pushState(null, '', hash);
+        if (history.pushState && location.hash !== hash) history.pushState(null, '', hash);
       });
     });
 
-    // Brand link too
-    var brand = header.querySelector('.brand[href^="#"]');
+    // Brand link
+    var brand = header.querySelector('.brand');
     if (brand) {
-      brand.addEventListener('click', (e) => {
+      brand.addEventListener('click', function (e) {
         var hash = brand.getAttribute('href');
         if (!hash || hash === '#') return;
         var target = document.querySelector(hash);
         if (!target) return;
         e.preventDefault();
         smoothScroll(target);
-        if (history.pushState) history.pushState(null, '', hash);
+        if (history.pushState && location.hash !== hash) history.pushState(null, '', hash);
       });
     }
 
-    // Expose for other modules
     window._smoothScroll = smoothScroll;
 
-    // Create glass indicator - append to header so it shares stacking context
-    if (navLinks.length > 0) {
-      // Remove any existing indicator first
-      const existing = document.querySelector('.nav-glass-indicator');
-      if (existing) existing.remove();
-      
-      glassIndicator = document.createElement('div');
-      glassIndicator.className = 'nav-glass-indicator';
-      header.appendChild(glassIndicator);
-
-      // Collect sections
-      sections = navLinks.map(link => {
-        const href = link.getAttribute('href');
-        return document.querySelector(href);
-      }).filter(Boolean);
-
-      // Initial update after layout settles - no animation
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          updateGlassIndicator();
-          // Add transition class AFTER first position is set (with delay)
-          setTimeout(() => {
-            glassIndicator.classList.add('is-ready');
-          }, 100);
-        });
+    // Initial position
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        detectSection();
+        setTimeout(function () { glass.classList.add('is-ready'); }, 80);
       });
+    });
 
-      // Scroll listener with throttle (skip during programmatic smooth scroll to avoid stutter)
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (window._smoothScrolling) return;
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            updateGlassIndicator();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      }, { passive: true });
+    // Scroll listener
+    var scrollTick = false;
+    window.addEventListener('scroll', function () {
+      if (window._smoothScrolling) return;
+      if (Date.now() < clickLock) return;
+      if (!scrollTick) {
+        requestAnimationFrame(function () { detectSection(); scrollTick = false; });
+        scrollTick = true;
+      }
+    }, { passive: true });
 
-      // Resize listener - recalc immediately so indicator doesn't lag/misalign
-      window.addEventListener('resize', () => {
-        currentActiveIndex = -1;
-        requestAnimationFrame(updateGlassIndicator);
-      }, { passive: true });
-    }
+    // Resize
+    window.addEventListener('resize', function () {
+      clickLock = 0;
+      activeIndex = -1;
+      requestAnimationFrame(detectSection);
+    }, { passive: true });
 
     initialized = true;
   }
 
-  function updateGlassIndicator() {
-    if (!glassIndicator || navLinks.length === 0 || sections.length === 0) return;
+  return { init: init, get _initialized() { return initialized; } };
+})();
 
-    const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 56;
-    const viewportHeight = window.innerHeight;
-    
-    // Find which section is most visible
-    let activeIndex = -1;
-    let bestScore = -Infinity;
-
-    sections.forEach((section, index) => {
-      if (!section) return;
-      
-      const rect = section.getBoundingClientRect();
-      
-      // Calculate visibility score
-      // Prefer sections that are near the top of the viewport (just below header)
-      const triggerLine = headerH + 100; // 100px below header
-      const distanceFromTrigger = Math.abs(rect.top - triggerLine);
-      
-      // Section must be at least partially visible
-      const isVisible = rect.bottom > headerH && rect.top < viewportHeight;
-      
-      if (isVisible) {
-        // Score based on proximity to trigger line (closer = higher score)
-        // Also bonus if section top is at or above trigger line
-        let score = 1000 - distanceFromTrigger;
-        
-        // Big bonus if we're inside this section (top is above trigger, bottom is below)
-        if (rect.top <= triggerLine && rect.bottom > triggerLine) {
-          score += 2000;
-        }
-        
-        if (score > bestScore) {
-          bestScore = score;
-          activeIndex = index;
-        }
-      }
-    });
-
-    // Update indicator position
-    if (activeIndex >= 0 && activeIndex < navLinks.length) {
-      // Only update position if section changed
-      if (activeIndex !== currentActiveIndex) {
-        const activeLink = navLinks[activeIndex];
-        const linkRect = activeLink.getBoundingClientRect();
-        const headerRect = document.querySelector('.site-header').getBoundingClientRect();
-        
-        // Position relative to header using transform (GPU accelerated)
-        const x = linkRect.left - headerRect.left - 2;
-        const width = linkRect.width + 4;
-        
-        glassIndicator.style.transform = `translateY(-50%) translateX(${x}px)`;
-        glassIndicator.style.width = `${width}px`;
-        glassIndicator.classList.add('is-visible');
-        
-        currentActiveIndex = activeIndex;
-      }
+// Self-init
+(function () {
+  if (window.headerModule && !window.headerModule._initialized) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', window.headerModule.init, { once: true });
     } else {
-      if (currentActiveIndex !== -1) {
-        glassIndicator.classList.remove('is-visible');
-        currentActiveIndex = -1;
-      }
+      window.headerModule.init();
     }
   }
-
-  return { init, updateGlassIndicator, get _initialized() { return initialized; } };
 })();
 
-// Self-init fallback (boot does not call headerModule.init)
-(function() {
-  if (window.headerModule && !window.headerModule._initialized) {
-    window.headerModule.init();
-  }
-})();
 
-// === Theme toggle functionality ===
-window.themeModule = (function() {
-  const HTML = document.documentElement;
-  const BTN_ID = 'theme-toggle';
-  const STORAGE_KEY = 'theme';
-  const DARK = 'dark';
-  const LIGHT = 'light';
+// =========================================================
+// THEME TOGGLE
+// =========================================================
+window.themeModule = (function () {
+  'use strict';
+  var HTML = document.documentElement;
+  var KEY = 'theme';
+  var DARK = 'dark';
+  var LIGHT = 'light';
 
-  function applyTheme(theme) {
+  function apply(theme) {
     HTML.setAttribute('data-theme', theme);
-
-    const btn = document.getElementById(BTN_ID);
+    var btn = document.getElementById('theme-toggle');
     if (btn) {
-      const to = theme === DARK ? LIGHT : DARK;
-      btn.setAttribute('aria-label', `Switch to ${to} mode`);
-      btn.title = 'Switch theme';
+      btn.setAttribute('aria-label', 'Switch to ' + (theme === DARK ? LIGHT : DARK) + ' mode');
     }
   }
 
   function init() {
-    const existing = HTML.getAttribute('data-theme') || (window.__savedTheme || '').toString();
-    const saved = localStorage.getItem(STORAGE_KEY);
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const base =
+    var existing = HTML.getAttribute('data-theme') || (window.__savedTheme || '').toString();
+    var saved = localStorage.getItem(KEY);
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var base =
       (existing === DARK || existing === LIGHT) ? existing :
       (saved === DARK || saved === LIGHT) ? saved :
       (prefersDark ? DARK : LIGHT);
-    applyTheme(base);
+    apply(base);
 
-    const btn = document.getElementById(BTN_ID);
+    var btn = document.getElementById('theme-toggle');
     if (btn && !btn._bound) {
-      btn.addEventListener('click', () => {
-        const current = HTML.getAttribute('data-theme') === DARK ? DARK : LIGHT;
-        const next = current === DARK ? LIGHT : DARK;
+      btn.addEventListener('click', function () {
+        var cur = HTML.getAttribute('data-theme') === DARK ? DARK : LIGHT;
+        var next = cur === DARK ? LIGHT : DARK;
 
-        let prevBg = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim();
+        var prevBg = getComputedStyle(HTML).getPropertyValue('--bg-primary').trim();
         if (!prevBg) prevBg = getComputedStyle(document.body).backgroundColor || '#000';
 
-        applyTheme(next);
+        apply(next);
 
+        // Expanding ring animation
         try {
-          const r = btn.getBoundingClientRect();
-          const cxpx = (r.left + r.width / 2) + 'px';
-          const cypx = (r.top + r.height / 2) + 'px';
-          document.querySelectorAll('.theme-ring').forEach(el => el.remove());
+          var r = btn.getBoundingClientRect();
+          var cx = r.left + r.width / 2;
+          var cy = r.top + r.height / 2;
+          document.querySelectorAll('.theme-ring').forEach(function (el) { el.remove(); });
 
-          const ring = document.createElement('div');
+          var ring = document.createElement('div');
           ring.className = 'theme-ring';
-          ring.style.setProperty('--cxpx', cxpx);
-          ring.style.setProperty('--cypx', cypx);
+          ring.style.setProperty('--cxpx', cx + 'px');
+          ring.style.setProperty('--cypx', cy + 'px');
           ring.style.setProperty('--prev-bg', prevBg);
-          const computedStyle = getComputedStyle(document.documentElement);
-          const accentColor = computedStyle.getPropertyValue('--accent').trim() || '#ff0000';
-          ring.style.setProperty('--ring-color', accentColor);
+          var accent = getComputedStyle(HTML).getPropertyValue('--accent').trim() || '#ff0000';
+          ring.style.setProperty('--ring-color', accent);
           ring.style.willChange = 'width';
           document.body.appendChild(ring);
-          
-          const vw = window.innerWidth;
-          const vh = window.innerHeight;
-          const cxNum = r.left + r.width / 2;
-          const cyNum = r.top + r.height / 2;
-          const dx = Math.max(cxNum, vw - cxNum);
-          const dy = Math.max(cyNum, vh - cyNum);
-          const finalDiameter = Math.ceil(Math.hypot(dx, dy)) * 2;
 
-          const expand = () => {
+          var vw = window.innerWidth, vh = window.innerHeight;
+          var dx = Math.max(cx, vw - cx), dy = Math.max(cy, vh - cy);
+          var dia = Math.ceil(Math.hypot(dx, dy)) * 2;
+
+          requestAnimationFrame(function () {
             ring.style.transition = 'width 1800ms cubic-bezier(.2,.7,.1,1)';
-            ring.style.width = finalDiameter + 'px';
-            const cleanup = () => {
-              window.removeEventListener('resize', onResize, { passive: true });
-              window.removeEventListener('orientationchange', onResize, { passive: true });
+            ring.style.width = dia + 'px';
+            function cleanup() {
+              window.removeEventListener('resize', cleanup);
               ring.remove();
-            };
-            const onResize = () => { cleanup(); };
-            window.addEventListener('resize', onResize, { passive: true });
-            window.addEventListener('orientationchange', onResize, { passive: true });
+            }
+            window.addEventListener('resize', cleanup, { passive: true });
             ring.addEventListener('transitionend', cleanup, { once: true });
-            setTimeout(() => { if (document.body.contains(ring)) cleanup(); }, 2200);
-          };
-          requestAnimationFrame(expand);
-        } catch(e) {}
-        try { localStorage.setItem(STORAGE_KEY, next); } catch(e) {}
+            setTimeout(function () { if (document.body.contains(ring)) cleanup(); }, 2200);
+          });
+        } catch (e) { /* ignore */ }
+
+        try { localStorage.setItem(KEY, next); } catch (e) { /* ignore */ }
       });
       btn._bound = true;
     }
 
     if (!saved && window.matchMedia) {
-      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
       if (mq && mq.addEventListener) {
-        mq.addEventListener('change', (e) => applyTheme(e.matches ? DARK : LIGHT));
+        mq.addEventListener('change', function (e) { apply(e.matches ? DARK : LIGHT); });
       }
     }
   }
@@ -351,5 +317,5 @@ window.themeModule = (function() {
     init();
   }
 
-  return { init, applyTheme };
+  return { init: init, applyTheme: apply };
 })();

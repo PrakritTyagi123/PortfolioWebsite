@@ -22,43 +22,41 @@
   function updateProgress() {
     if (!timeline || dots.length === 0) return;
 
+    // --- BATCH READS first (avoid layout thrashing) ---
     const scrollTriggerY = window.innerHeight * 0.35;
-
     const timelineRect = timeline.getBoundingClientRect();
-
     const firstDot = dots[0];
     if (!firstDot) return;
     const firstDotRect = firstDot.getBoundingClientRect();
     const spineStartY = firstDotRect.top + (firstDotRect.height / 2);
 
+    // Read all dot positions upfront
+    const dotPositions = dots.map(function(dot) {
+      if (!dot) return null;
+      const r = dot.getBoundingClientRect();
+      return r.top + (r.height / 2);
+    });
+
+    // --- BATCH WRITES ---
     let progressHeight = scrollTriggerY - spineStartY;
-
     if (progressHeight < 0) progressHeight = 0;
-
     const spineFullHeight = timelineRect.bottom - spineStartY - 10;
-
     if (progressHeight > spineFullHeight) progressHeight = spineFullHeight;
 
     timeline.style.setProperty('--progress-height', progressHeight + 'px');
 
     const progressTipY = spineStartY + progressHeight;
 
-    dots.forEach((dot, index) => {
-      if (!dot) return;
-
+    dotPositions.forEach(function(dotCenterY, index) {
+      if (dotCenterY === null) return;
       const item = items[index];
-      const dotRect = dot.getBoundingClientRect();
-      const dotCenterY = dotRect.top + (dotRect.height / 2);
-
       item.classList.remove('is-active', 'is-past', 'is-future');
 
       if (progressTipY >= dotCenterY + 5) {
         item.classList.add('is-past');
-      }
-      else if (progressTipY >= dotCenterY - 15) {
+      } else if (progressTipY >= dotCenterY - 15) {
         item.classList.add('is-active');
-      }
-      else {
+      } else {
         item.classList.add('is-future');
       }
     });
@@ -106,12 +104,13 @@
     }, { passive: true });
   }
 
-  // Boot sequence guarantees DOM is ready - no retries needed
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
+  // Boot using shared helper
+  (window.utils && window.utils.onReady) ? window.utils.onReady(init) : (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init, { once: true }) : init());
+
+  function destroy() {
+    window.removeEventListener('scroll', onScroll);
+    initialized = false;
   }
 
-  window.experienceModule = { init };
+  window.experienceModule = { init, destroy };
 })();

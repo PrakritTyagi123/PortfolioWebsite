@@ -118,6 +118,7 @@
     /* ---------- Nav buttons ---------- */
     prevBtn.addEventListener('click', function () {
       var c = cards();
+      if (c.length === 0) return;
       var idx = getActiveIndex();
       scrollToIndex(idx <= 0 ? c.length - 1 : idx - 1);
       restartAutoplay();
@@ -125,6 +126,7 @@
 
     nextBtn.addEventListener('click', function () {
       var c = cards();
+      if (c.length === 0) return;
       var idx = getActiveIndex();
       scrollToIndex(idx >= c.length - 1 ? 0 : idx + 1);
       restartAutoplay();
@@ -143,8 +145,8 @@
   
     /* ---------- Autoplay ---------- */
     var AUTOPLAY_MS = 8000;
-    var autoTimer = null;
-    var autoPaused = false;
+    let autoTimer = null;
+    let autoPaused = false;
   
     function scheduleAutoplay() {
       clearTimeout(autoTimer);
@@ -165,6 +167,8 @@
   
     track.addEventListener('mouseenter', function () { autoPaused = true; clearTimeout(autoTimer); });
     track.addEventListener('mouseleave', function () { autoPaused = false; scheduleAutoplay(); });
+    track.addEventListener('touchstart', function () { autoPaused = true; clearTimeout(autoTimer); }, { passive: true });
+    track.addEventListener('touchend', function () { setTimeout(function() { autoPaused = false; scheduleAutoplay(); }, 3000); }, { passive: true });
   
     /* ---------- Filter ---------- */
     function applyFilter(filter) {
@@ -188,10 +192,10 @@
       btn.addEventListener('click', function () {
         filterBtns.forEach(function (b) {
           b.classList.remove('active');
-          b.setAttribute('aria-selected', 'false');
+          b.setAttribute('aria-pressed', 'false');
         });
         btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
+        btn.setAttribute('aria-pressed', 'true');
         applyFilter(btn.dataset.filter);
       });
     });

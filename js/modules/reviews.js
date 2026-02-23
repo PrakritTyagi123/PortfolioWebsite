@@ -125,11 +125,7 @@ window.reviewsModule = (function () {
   }
 
   // --- Self-init ---
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
+  (window.utils && window.utils.onReady) ? window.utils.onReady(init) : (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init, { once: true }) : init());
 
   return { init: init };
 })();

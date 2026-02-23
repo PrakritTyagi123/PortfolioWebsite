@@ -71,19 +71,19 @@ ${message}`;
       // If the form uses native mailto action we can still enhance it here
       e.preventDefault();
 
-      const name = (nameEl && nameEl.value || '').trim();
-      const email = (emailEl && emailEl.value || '').trim();
-      const subject = (subjectEl && subjectEl.value || '').trim();
-      const message = (messageEl && messageEl.value || '').trim();
+      const name = ((nameEl && nameEl.value) || '').trim();
+      const email = ((emailEl && emailEl.value) || '').trim();
+      const subject = ((subjectEl && subjectEl.value) || '').trim();
+      const message = ((messageEl && messageEl.value) || '').trim();
 
       let hasError = false;
-      if (!name) { markInvalid(nameEl, 'Please enter your name.'); hasError = true; }
+      if (!name && nameEl) { markInvalid(nameEl, 'Please enter your name.'); hasError = true; }
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        markInvalid(emailEl, 'Please enter a valid email.');
+        if (emailEl) markInvalid(emailEl, 'Please enter a valid email.');
         hasError = true;
       }
-      if (!subject) { markInvalid(subjectEl, 'Please add a subject.'); hasError = true; }
-      if (!message) { markInvalid(messageEl, 'Please add a short message.'); hasError = true; }
+      if (!subject && subjectEl) { markInvalid(subjectEl, 'Please add a subject.'); hasError = true; }
+      if (!message && messageEl) { markInvalid(messageEl, 'Please add a short message.'); hasError = true; }
 
       if (hasError) return;
 
@@ -106,6 +106,34 @@ ${message}`;
 
     initialized = true;
   }
+
+  // Dynamic copyright year (#72)
+  function updateCopyrightYear() {
+    var el = document.getElementById('copyright-year');
+    if (el) el.textContent = new Date().getFullYear();
+  }
+
+  // Hashchange for #contact (#50 - moved from about.js)
+  function bindContactHash() {
+    function scrollToContact() {
+      var el = document.getElementById('contact');
+      if (!el) return;
+      if (window._smoothScroll) window._smoothScroll(el);
+      else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    window.addEventListener('hashchange', function() {
+      if (location.hash === '#contact') scrollToContact();
+    });
+    if (location.hash === '#contact') setTimeout(scrollToContact, 0);
+  }
+
+  // Extended init
+  var origInit = init;
+  init = function() {
+    origInit();
+    updateCopyrightYear();
+    bindContactHash();
+  };
 
   // Self-init
   if (document.readyState === 'loading') {

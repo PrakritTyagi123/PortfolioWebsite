@@ -7,14 +7,11 @@
     scrollSpeed: 0.25
   };
 
-  if (!CONFIG.apiKey) {
-    console.error('YouTube API key missing. Define window.YOUTUBE_API_KEY before this script loads.');
-    return;
-  }
+  // API key is loaded from window.YOUTUBE_API_KEY or uses built-in fallback
 
   const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-  const $ = (s, el = document) => el.querySelector(s);
+  const $ = window.utils?.$ || ((s, el = document) => el.querySelector(s));
   const esc = (s) =>
     (s || '').replace(/[&<>"']/g, c =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
@@ -151,6 +148,7 @@
     }
 
     let paused = false;
+    let rafId = null;
 
     function loop() {
       if (!paused) {
@@ -166,10 +164,20 @@
         }
       }
 
-      requestAnimationFrame(loop);
+      rafId = requestAnimationFrame(loop);
     }
 
-    requestAnimationFrame(loop);
+    // Only run when visible (#10 - prevents battery drain)
+    const visObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          if (!rafId) rafId = requestAnimationFrame(loop);
+        } else {
+          if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        }
+      });
+    }, { threshold: 0 });
+    visObserver.observe(stripEl);
 
     stripEl.addEventListener('mouseenter', () => paused = true);
     stripEl.addEventListener('mouseleave', () => paused = false);
@@ -263,14 +271,10 @@
 
       enableAutoAndUserScroll(strip, row);
     } catch (err) {
-      console.error('YouTube load error →', err);
-      setStatus(section, 'YouTube error: ' + (err?.message || String(err)));
+      console.error('YouTube load error:', err);
+      setStatus(section, 'Could not load videos. Please try again later.');
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initYouTubeStrip, { once: true });
-  } else {
-    initYouTubeStrip();
-  }
+  (window.utils && window.utils.onReady) ? window.utils.onReady(initYouTubeStrip) : (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', initYouTubeStrip, { once: true }) : initYouTubeStrip());
 })();

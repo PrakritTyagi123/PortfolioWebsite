@@ -9,7 +9,6 @@
   justify-content: center;
   padding: clamp(48px, 6vh, 96px) 0;
   overflow: hidden;
-  scroll-margin-top: var(--header-h, 56px);
 }
 
 /* Section heading styles live in base.css - no need to duplicate */
@@ -129,7 +128,6 @@
    ========================================================= */
 .review {
   width: clamp(280px, 24vw, 340px);
-  min-width: clamp(280px, 24vw, 340px);
   flex-shrink: 0;
 }
 
@@ -248,3 +246,13 @@
 .rev-avatar[data-color="fuchsia"] { background: #d946ef; }
 .rev-avatar[data-color="pink"] { background: #ec4899; }
 .rev-avatar[data-color="rose"] { background: #f43f5e; }
+
+/* #29 - Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none !important;
+  }
+  .clients.marquee-ready .marquee {
+    animation: none !important;
+  }
+}

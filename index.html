@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Prakrit Tyagi - Portfolio</title>
+  <meta name="description" content="Prakrit Tyagi — Game Developer & Full Stack Developer. Portfolio showcasing Unity, web, AI/ML projects. B.Tech in Computer Science.">
+  <meta name="author" content="Prakrit Tyagi">
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/misc/TabImage.svg">
+  <link rel="icon" type="image/png" href="assets/img/misc/TabImage.png">
 
   <!-- Apply saved theme ASAP to avoid flash -->
   <script>
@@ -25,12 +30,26 @@
 
   <meta name="color-scheme" content="dark light">
 
+  <!-- Open Graph -->
+  <meta property="og:title" content="Prakrit Tyagi - Portfolio">
+  <meta property="og:description" content="Game Developer & Full Stack Developer. Unity, web, AI/ML projects.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/img/me/profile.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Prakrit Tyagi - Portfolio">
+  <meta name="twitter:description" content="Game Developer & Full Stack Developer.">
+  <meta name="twitter:image" content="assets/img/me/profile.jpg">
+
   <!-- Theme files — both loaded, scoped by [data-theme] attribute -->
   <link rel="stylesheet" href="css/themes/dark.css?v=4">
   <link rel="stylesheet" href="css/themes/light.css?v=4">
 
   <!-- Preload fonts so they're ready before first paint -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="stylesheet" href="css/base.css?v=3" />
@@ -46,14 +65,9 @@
 
   <!-- Preloader + scrollbar — inlined so they work before external CSS -->
   <style>
-    /* Hide scrollbar globally + ensure smooth scroll */
+    /* Smooth scroll */
     html {
-      scrollbar-width: none;
-      -ms-overflow-style: none;
       scroll-behavior: smooth !important;
-    }
-    html::-webkit-scrollbar {
-      display: none;
     }
 
     /* ===== Preloader ===== */
@@ -135,7 +149,13 @@
   </style>
 </head>
 <body>
-  <noscript>Please enable JavaScript to view the site.</noscript>
+  <noscript>
+    <div style="max-width:600px;margin:80px auto;padding:24px;font-family:sans-serif;text-align:center;">
+      <h1>Prakrit Tyagi — Portfolio</h1>
+      <p>This portfolio requires JavaScript for interactive features. Please enable JavaScript in your browser settings to view the full site.</p>
+      <p>Contact: <a href="mailto:prakrittyagi.work@gmail.com">prakrittyagi.work@gmail.com</a></p>
+    </div>
+  </noscript>
 
   <!-- Preloader overlay -->
   <div class="preloader" id="preloader">
@@ -147,7 +167,7 @@
   </div>
 
   <!-- App container — hidden until fully loaded -->
-  <div id="app"></div>
+  <main id="app"></main>
 
   <script>
     // =========================================================
@@ -297,64 +317,33 @@
         ]);
       }
 
-      function waitForCSS() {
-        // CSS files are loaded synchronously in <head>, so they're ready immediately
-        // Just verify stylesheets are accessible
-        return new Promise(function(resolve) {
-          var sheets = document.styleSheets;
-          var loaded = 0;
-          var total = sheets.length;
-          
-          if (total === 0) {
-            resolve();
-            return;
-          }
-          
-          function checkSheet(i) {
-            try {
-              if (sheets[i].cssRules || sheets[i].rules) {
-                loaded++;
-              }
-            } catch (e) {
-              // Cross-origin stylesheet - assume loaded
-              loaded++;
-            }
-            
-            if (loaded >= total || i >= total - 1) {
-              resolve();
-            }
-          }
-          
-          // Check all sheets
-          for (var i = 0; i < total; i++) {
-            checkSheet(i);
-          }
-          
-          // Resolve after short delay to ensure CSS is applied
-          setTimeout(resolve, 50);
-        });
-      }
+      // CSS is loaded synchronously via <link> in <head>, no wait needed
 
       // --- Boot ---
       try {
         // Stage 1: HTML partials
         progress('Loading HTML…', 16);
-        for (var i = 0; i < partials.length; i++) {
-          await loadPartial(partials[i], app);
-        }
-        await holdProgress(1000); // Hold for 1 second
+        // Load partials in order (insertAdjacentHTML preserves order)
+        var partialContents = await Promise.all(partials.map(function(path) {
+          return fetch(path).then(function(res) {
+            if (!res.ok) throw new Error('Failed to fetch ' + path);
+            return res.text();
+          });
+        }));
+        partialContents.forEach(function(html) {
+          app.insertAdjacentHTML('beforeend', html);
+        });
+        await holdProgress(250);
 
-        // Stage 2: CSS
+        // Stage 2: CSS (synchronous via <link> tags, already loaded)
         progress('Loading CSS…', 33);
-        await waitForCSS();
-        await holdProgress(1000); // Hold for 1 second
 
         // Stage 3: JS modules
         progress('Loading JavaScript…', 50);
         for (var j = 0; j < scripts.length; j++) {
           await loadScript(scripts[j]);
         }
-        await holdProgress(1000); // Hold for 1 second
+        await holdProgress(250);
 
         // Stage 4: Assets (animations/fonts)
         progress('Loading assets (animations)…', 66);
@@ -365,17 +354,30 @@
             requestAnimationFrame(resolve);
           });
         });
-        await holdProgress(1000); // Hold for 1 second
+        await holdProgress(250);
 
         // Stage 5: Assets (videos)
         progress('Loading assets (videos)…', 83);
         await waitForVideos();
-        await holdProgress(1000); // Hold for 1 second
+        await holdProgress(250);
 
         // Stage 6: Assets (images)
         progress('Loading assets (images)…', 100);
         await waitForImages();
-        await holdProgress(1000); // Hold for 1 second
+        await holdProgress(250);
+
+        // Consolidate modules under single namespace (#64)
+        window.Portfolio = {
+          utils: window.utils,
+          header: window.headerModule,
+          theme: window.themeModule,
+          hero: window.heroModule,
+          about: window.aboutModule,
+          projects: window.projectsModule,
+          reviews: window.reviewsModule,
+          experience: window.experienceModule,
+          contact: window.contactModule
+        };
 
         // Theme finalization (doesn't count as a step)
         if (window.themeModule && window.themeModule.init) {

@@ -1,5 +1,5 @@
 /* =========================================================
-   WORK EXPERIENCE â€” Timeline + Sticky Sidebar
+   WORK EXPERIENCE -- Timeline + Sticky Sidebar
    ========================================================= */
 
 /* ---------- Section shell ---------- */
@@ -123,23 +123,15 @@
   transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease, opacity 0.4s ease;
 }
 
-/* Dot states */
-.t-item.is-past .t-dot {
-  background: var(--accent) !important;
-  box-shadow:
-    0 0 0 var(--dot-ring-w) var(--accent-light),
-    0 0 12px 4px var(--accent-glow) !important;
-  animation: exp-dot-pulse 2s ease-in-out infinite !important;
-  opacity: 1 !important;
-}
-
+/* Dot states — past and active share the same style */
+.t-item.is-past .t-dot,
 .t-item.is-active .t-dot {
-  background: var(--accent) !important;
+  background: var(--accent);
   box-shadow:
     0 0 0 var(--dot-ring-w) var(--accent-light),
-    0 0 12px 4px var(--accent-glow) !important;
-  animation: exp-dot-pulse 2s ease-in-out infinite !important;
-  opacity: 1 !important;
+    0 0 12px 4px var(--accent-glow);
+  animation: exp-dot-pulse 2s ease-in-out infinite;
+  opacity: 1;
 }
 
 @keyframes exp-dot-pulse {
@@ -158,10 +150,10 @@
 }
 
 .t-item.is-future .t-dot {
-  background: var(--dot) !important;
-  opacity: 1 !important;
-  box-shadow: 0 0 0 var(--dot-ring-w) var(--dot-ring) !important;
-  animation: none !important;
+  background: var(--dot);
+  opacity: 1;
+  box-shadow: 0 0 0 var(--dot-ring-w) var(--dot-ring);
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -391,7 +383,7 @@
   border-radius: 999px;
   border: 1px solid var(--border-primary);
   color: var(--text-muted);
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .exp-tool-chip:hover {

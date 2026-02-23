@@ -1,5 +1,5 @@
 /* =========================================================
-   HERO Ã¢â‚¬â€ Vertical Split: Professional + Personal
+   HERO -- Vertical Split: Professional + Personal
    ========================================================= */
 
 /* ---------- Section shell ---------- */
@@ -183,6 +183,7 @@
   background: var(--bg-primary);
 }
 
+/* Native controls hidden - custom play/pause toggle (.trailer-toggle) provided */
 .panel-media .trailer::-webkit-media-controls,
 .panel-media .trailer::-webkit-media-controls-enclosure {
   display: none !important;
@@ -332,7 +333,7 @@
   background: transparent;
   color: var(--text-primary);
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -350,10 +351,16 @@
 }
 
 .hero .btn--filled:hover {
-  background: #c92a14;
-  border-color: #c92a14;
+  background: color-mix(in srgb, var(--accent) 80%, black);
+  border-color: color-mix(in srgb, var(--accent) 80%, black);
   color: #fff;
   box-shadow: 0 8px 30px var(--accent-glow, rgba(255,0,0,0.35));
 }
 
 /* Scroll hint removed per design */
+
+/* #29 - Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .status-pill__dot { animation: none; }
+  .hero-panel { transition: none; }
+}

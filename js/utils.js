@@ -75,11 +75,12 @@ window.utils = (function() {
     // Initial setup
     attachHandlers();
 
-    // Watch for new images
+    // Watch for new images, disconnect after 30s (boot is long done by then)
     observer.observe(document.body, {
       childList: true,
       subtree: true
     });
+    setTimeout(function() { observer.disconnect(); }, 30000);
   }
 
   // Initialize on DOM ready
@@ -89,10 +90,26 @@ window.utils = (function() {
     setupImageErrorHandling();
   }
 
+  // DOMContentLoaded helper - shared instead of copy-pasting in every module
+  function onReady(fn) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn, { once: true });
+    } else {
+      fn();
+    }
+  }
+
+  // Shared cubic ease-in-out (used by smooth scroll and carousel)
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
   return {
     $,
     $$,
     getHeaderHeight,
-    smoothScrollTo
+    smoothScrollTo,
+    onReady,
+    easeInOutCubic
   };
 })();

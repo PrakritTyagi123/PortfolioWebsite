@@ -9,7 +9,7 @@
     <div class="proj-featured">
       <div class="featured-card">
         <div class="featured-media">
-          <span class="feat-badge">â˜… Featured</span>
+          <span class="feat-badge">★ Featured</span>
           <img class="featured-img" src="assets/img/projects/UnityParkourSystem.png" alt="Unity Parkour System">
         </div>
         <div class="featured-body">
@@ -42,18 +42,18 @@
     </div>
 
     <!-- Filter bar -->
-    <div class="proj-filters" role="tablist" aria-label="Filter projects by category">
-      <button class="proj-filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
-      <button class="proj-filter-btn" data-filter="gamedev" role="tab" aria-selected="false">Game Dev</button>
-      <button class="proj-filter-btn" data-filter="web" role="tab" aria-selected="false">Web / Full Stack</button>
-      <button class="proj-filter-btn" data-filter="ai" role="tab" aria-selected="false">AI / ML</button>
-      <button class="proj-filter-btn" data-filter="tools" role="tab" aria-selected="false">Tools</button>
+    <div class="proj-filters" role="toolbar" aria-label="Filter projects by category">
+      <button class="proj-filter-btn active" data-filter="all" aria-pressed="true">All</button>
+      <button class="proj-filter-btn" data-filter="gamedev" aria-pressed="false">Game Dev</button>
+      <button class="proj-filter-btn" data-filter="web" aria-pressed="false">Web / Full Stack</button>
+      <button class="proj-filter-btn" data-filter="ai" aria-pressed="false">AI / ML</button>
+      <button class="proj-filter-btn" data-filter="tools" aria-pressed="false">Tools</button>
     </div>
   </div>
 
   <!-- Carousel (full-width overflow) -->
   <div class="proj-carousel">
-    <div class="proj-track" tabindex="0" aria-label="Projects carousel">
+    <div class="proj-track" tabindex="0" aria-label="Projects carousel" aria-roledescription="carousel" aria-live="polite">
 
       <!-- 1 Survival Game -->
       <article class="proj-card" data-category="gamedev">
@@ -94,7 +94,7 @@
       <!-- 2 Video Hashing -->
       <article class="proj-card" data-category="web">
         <a class="proj-card-media" href="#" aria-label="Video Hashing Web App">
-          <img src="assets/img/projects/SnakeAI.png" alt="Video Hashing" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Video Hashing">
         </a>
         <div class="proj-card-body">
           <h3>Video Hashing Web App</h3>
@@ -136,7 +136,7 @@
       <!-- 3 Document Scanner -->
       <article class="proj-card" data-category="ai">
         <a class="proj-card-media" href="#" aria-label="Document Scanner">
-          <img src="assets/img/projects/SnakeAI.png" alt="Document Scanner" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Document Scanner">
         </a>
         <div class="proj-card-body">
           <h3>Document Scanner</h3>
@@ -172,7 +172,7 @@
       <!-- 4 FPS Template -->
       <article class="proj-card" data-category="gamedev">
         <a class="proj-card-media" href="#" aria-label="FPS Template">
-          <img src="assets/img/projects/SnakeAI.png" alt="FPS Template" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="FPS Template">
         </a>
         <div class="proj-card-body">
           <h3>FPS Template</h3>
@@ -202,7 +202,7 @@
       <!-- 5 Object Detector -->
       <article class="proj-card" data-category="ai">
         <a class="proj-card-media" href="#" aria-label="Object Detector">
-          <img src="assets/img/projects/SnakeAI.png" alt="Object Detector" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Object Detector">
         </a>
         <div class="proj-card-body">
           <h3>Object Detector</h3>
@@ -238,7 +238,7 @@
       <!-- 6 Object Measurement -->
       <article class="proj-card" data-category="ai">
         <a class="proj-card-media" href="#" aria-label="Object Measurement">
-          <img src="assets/img/projects/SnakeAI.png" alt="Object Measurement" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Object Measurement">
         </a>
         <div class="proj-card-body">
           <h3>Object Measurement</h3>
@@ -274,7 +274,7 @@
       <!-- 7 AI Pacman -->
       <article class="proj-card" data-category="ai">
         <a class="proj-card-media" href="#" aria-label="AI Pacman Game">
-          <img src="assets/img/projects/SnakeAI.png" alt="AI Pacman" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="AI Pacman">
         </a>
         <div class="proj-card-body">
           <h3>AI Pacman Game</h3>
@@ -304,7 +304,7 @@
       <!-- 8 Snake AI -->
       <article class="proj-card" data-category="ai">
         <a class="proj-card-media" href="#" aria-label="Snake AI Game">
-          <img src="assets/img/projects/SnakeAI.png" alt="Snake AI" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Snake AI">
         </a>
         <div class="proj-card-body">
           <h3>Snake AI Game</h3>
@@ -334,7 +334,7 @@
       <!-- 9 2D to 3D -->
       <article class="proj-card" data-category="ai">
         <a class="proj-card-media" href="#" aria-label="2D to 3D Converter">
-          <img src="assets/img/projects/SnakeAI.png" alt="2D to 3D" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="2D to 3D">
         </a>
         <div class="proj-card-body">
           <h3>2D Images to 3D Converter</h3>
@@ -376,7 +376,7 @@
       <!-- 10 Talking Chatbot -->
       <article class="proj-card" data-category="ai">
         <a class="proj-card-media" href="#" aria-label="Talking Chatbot">
-          <img src="assets/img/projects/SnakeAI.png" alt="Talking Chatbot" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Talking Chatbot">
         </a>
         <div class="proj-card-body">
           <h3>Talking Chatbot</h3>
@@ -412,7 +412,7 @@
       <!-- 11 Game Launcher -->
       <article class="proj-card" data-category="tools">
         <a class="proj-card-media" href="#" aria-label="Game Launcher">
-          <img src="assets/img/projects/SnakeAI.png" alt="Game Launcher" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Game Launcher">
         </a>
         <div class="proj-card-body">
           <h3>Game Launcher</h3>
@@ -437,7 +437,7 @@
       <!-- 12 Thumbnail Maker -->
       <article class="proj-card" data-category="tools">
         <a class="proj-card-media" href="#" aria-label="Video Thumbnail Maker">
-          <img src="assets/img/projects/SnakeAI.png" alt="Thumbnail Maker" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Thumbnail Maker">
         </a>
         <div class="proj-card-body">
           <h3>Video Thumbnail Maker</h3>
@@ -468,7 +468,7 @@
       <!-- 13 Video Concatenator -->
       <article class="proj-card" data-category="tools">
         <a class="proj-card-media" href="#" aria-label="Video Concatenator">
-          <img src="assets/img/projects/SnakeAI.png" alt="Video Concatenator" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Video Concatenator">
         </a>
         <div class="proj-card-body">
           <h3>Video Concatenator</h3>
@@ -493,7 +493,7 @@
       <!-- 14 Video Downloader -->
       <article class="proj-card" data-category="tools">
         <a class="proj-card-media" href="#" aria-label="Video Downloader">
-          <img src="assets/img/projects/SnakeAI.png" alt="Video Downloader" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="Video Downloader">
         </a>
         <div class="proj-card-body">
           <h3>Video Downloader</h3>
@@ -523,7 +523,7 @@
       <!-- 15 N Queen Game -->
       <article class="proj-card" data-category="web">
         <a class="proj-card-media" href="#" aria-label="N Queen Game">
-          <img src="assets/img/projects/SnakeAI.png" alt="N Queen Game" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="N Queen Game">
         </a>
         <div class="proj-card-body">
           <h3>N Queen Game</h3>
@@ -565,7 +565,7 @@
       <!-- 16 DeepFake Software -->
       <article class="proj-card" data-category="ai">
         <a class="proj-card-media" href="#" aria-label="DeepFake Software">
-          <img src="assets/img/projects/SnakeAI.png" alt="DeepFake Software" onerror="this.style.display='none'">
+          <img src="assets/img/projects/SnakeAI.png" alt="DeepFake Software">
         </a>
         <div class="proj-card-body">
           <h3>DeepFake Software</h3>

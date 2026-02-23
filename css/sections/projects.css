@@ -1,5 +1,5 @@
 /* =========================================================
-   PROJECTS â€” Featured Card + Filter Bar + Scroll Carousel
+   PROJECTS -- Featured Card + Filter Bar + Scroll Carousel
    ========================================================= */
 
 /* ---------- Section shell ---------- */
@@ -132,7 +132,7 @@
   border-radius: 999px;
   border: 1px solid var(--border-primary);
   color: var(--text-muted);
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
   cursor: pointer;
   background: transparent;
 }
@@ -159,13 +159,20 @@
   padding: 20px 0;
   outline: none;
 
-  /* Hide scrollbar */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  /* Thin scrollbar for scroll affordance */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
 }
 
 .proj-track::-webkit-scrollbar {
-  display: none;
+  height: 4px;
+}
+.proj-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+.proj-track::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 4px;
 }
 
 /* =========================================================
@@ -179,7 +186,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .proj-card:hover {
@@ -325,7 +332,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease;
   cursor: pointer;
   padding: 0;
   color: var(--text-primary);

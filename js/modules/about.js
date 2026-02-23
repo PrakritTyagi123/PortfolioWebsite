@@ -184,6 +184,7 @@
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
           if (section.classList.contains('is-inview')) {
             setTimeout(startAnimation, 400);
+            observer.disconnect(); // #60 - Disconnect after animation triggered
           }
         }
       });
@@ -231,9 +232,9 @@
         };
         
         globe = createGlobe(canvas, {
-          devicePixelRatio: 2,
-          width: 1000,
-          height: 1000,
+          devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+          width: canvas.clientWidth * Math.min(window.devicePixelRatio || 1, 2),
+          height: canvas.clientHeight * Math.min(window.devicePixelRatio || 1, 2),
           phi: phi,
           theta: 0.25,
           dark: config.dark,
@@ -301,6 +302,9 @@
 
     io.observe(section);
 
+    // Cleanup after section has been viewed
+    setTimeout(() => { io.disconnect(); }, 60000); // disconnect after 60s
+
     requestAnimationFrame(() => {
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
@@ -321,12 +325,7 @@
       history.pushState(null, '', '#contact');
     }, { passive: false });
 
-    window.addEventListener('hashchange', () => {
-      if (location.hash === '#contact') smoothTo('#contact');
-    });
-    if (location.hash === '#contact') {
-      setTimeout(() => smoothTo('#contact'), 0);
-    }
+    // hashchange for #contact moved to contact module
   }
 
   /* ---------- Init ---------- */
@@ -340,9 +339,11 @@
     observeSection(section);
     bindContactCTA(section);
 
-    // Resize handler covers all cases (orientationchange triggers resize on modern browsers)
+    // Resize handler with debounce
+    let aboutResizeTimer = null;
     window.addEventListener('resize', () => {
-      computeAboutCell(section);
+      clearTimeout(aboutResizeTimer);
+      aboutResizeTimer = setTimeout(() => computeAboutCell(section), 150);
     }, { passive: true });
   }
 

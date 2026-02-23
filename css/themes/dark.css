@@ -132,14 +132,14 @@
   :root[data-theme="dark"] .contact textarea:focus,
   :root[data-theme="dark"] [class*="contact"] input:focus,
   :root[data-theme="dark"] [class*="contact"] textarea:focus {
-    outline: none !important;
-    border-color: var(--contact-input-focus) !important;
-    box-shadow: 0 0 0 1px var(--contact-input-focus) !important;
+    outline: 2px solid var(--contact-input-focus);
+    outline-offset: -2px;
+    border-color: var(--contact-input-focus);
+    box-shadow: 0 0 0 1px var(--contact-input-focus);
   }
   
   /* Projects chevrons white in dark */
-  :root[data-theme="dark"] .projects .proj-nav-btn .chev-icon,
-  :root[data-theme="dark"] .projects .proj-control-btn .chev-icon {
+  :root[data-theme="dark"] .projects .proj-nav-btn .chev-icon {
     filter: brightness(0) invert(1);
   }
   

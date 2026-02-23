@@ -31,7 +31,11 @@
   }
   addEventListener('DOMContentLoaded', syncHeaderVar, { once: true });
   addEventListener('load', syncHeaderVar, { once: true });
-  addEventListener('resize', syncHeaderVar);
+  let resizeTimer = null;
+  addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(syncHeaderVar, 150);
+  });
   // Note: orientationchange triggers resize on modern browsers, so no separate listener needed
 
   // ----- Video: autoplay loop, no UI -----
@@ -84,10 +88,25 @@
     }, { passive: false });
   }
 
+  // ----- Watch Trailer button -----
+  function bindWatchTrailer() {
+    const btn = document.getElementById('watch-trailer-btn');
+    const video = document.getElementById('trailer');
+    if (!btn || !video) return;
+
+    btn.addEventListener('click', function() {
+      const frame = video.closest('.media-frame') || video;
+      frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      video.currentTime = 0;
+      video.play().catch(function() {});
+    });
+  }
+
   // ----- Init -----
   function init() {
     ensureTrailerPlays();
     bindHeroLinks();
+    bindWatchTrailer();
 
     // Pause/Play toggle
     const video = document.getElementById('trailer');
