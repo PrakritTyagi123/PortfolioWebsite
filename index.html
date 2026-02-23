@@ -78,7 +78,7 @@
       position: fixed;
       inset: 0;
       z-index: 99999;
-      background: var(--bg-primary, #000000);
+      background: var(--bg-primary, #0f1117);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -105,13 +105,13 @@
     }
 
     .preloader__name .dot {
-      color: var(--accent, #ff0000);
+      color: var(--accent, #e0a046);
     }
 
     .preloader__track {
       width: clamp(200px, 30vw, 320px);
       height: 2px;
-      background: var(--border-primary, #333333);
+      background: var(--border-primary, #2a2e3a);
       border-radius: 2px;
       overflow: hidden;
       opacity: 0;
@@ -121,10 +121,10 @@
     .preloader__bar {
       height: 100%;
       width: 0%;
-      background: var(--accent, #ff0000);
+      background: var(--accent, #e0a046);
       border-radius: 2px;
       transition: width 0.3s ease;
-      box-shadow: 0 0 8px var(--accent-glow, rgba(255, 0, 0, 0.4));
+      box-shadow: 0 0 8px var(--accent-glow, rgba(224, 160, 70, 0.3));
     }
 
     .preloader__status {

@@ -95,7 +95,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.02), transparent);
+  background: transparent;
   pointer-events: none;
 }
 
@@ -103,7 +103,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(225deg, var(--accent-soft, rgba(232,52,28,0.03)), transparent);
+  background: transparent;
   pointer-events: none;
 }
 
