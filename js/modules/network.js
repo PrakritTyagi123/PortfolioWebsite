@@ -17,7 +17,7 @@
   var isVisible = true;
 
   var CFG = {
-    density: 0.00012,
+    density: 0.00010,
     minParticles: 80,
     maxDist: 250,
     mouseRadius: 300,
