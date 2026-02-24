@@ -1,9 +1,9 @@
 (function () {
   'use strict';
 
-  // Use shared utilities
-  const $ = window.utils?.$ || ((s, r = document) => r.querySelector(s));
-  const $$ = window.utils?.$$ || ((s, r = document) => Array.from(r.querySelectorAll(s)));
+  // Use shared utilities (utils.js is guaranteed loaded first by boot sequence)
+  const $ = window.utils.$;
+  const $$ = window.utils.$$;
 
   /* ===========================================
      TECH STACK CONFIGURATION
@@ -63,13 +63,7 @@
     if (!id) return;
     const el = document.getElementById(id);
     if (!el) return;
-    if (window.utils?.smoothScrollTo) {
-      window.utils.smoothScrollTo(el);
-    } else if (window._smoothScroll) {
-      window._smoothScroll(el);
-    } else {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    window.utils.smoothScrollTo(el);
   }
 
   /* ---------- Compute about-grid cell ---------- */
@@ -399,7 +393,6 @@
 
   window.aboutModule = { init };
 
-  (document.readyState === 'loading')
-    ? document.addEventListener('DOMContentLoaded', init)
-    : init();
+  // Boot sequence guarantees DOM is ready
+  init();
 })();

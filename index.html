@@ -19,124 +19,124 @@
   <script>
     (function () {
       // ── Palette registry ──
-var PALETTES = [
-      { id: "neon-cherry", name: "Neon Cherry" },
-      { id: "blaze-orange", name: "Blaze Orange" },
-      { id: "electric-yellow", name: "Electric Yellow" },
-      { id: "neon-green", name: "Neon Green" },
-      { id: "cyan-pulse", name: "Cyan Pulse" },
-      { id: "hot-magenta", name: "Hot Magenta" },
-      { id: "uv-purple", name: "UV Purple" },
-      { id: "deep-pink", name: "Deep Pink" },
-      { id: "mint-neon", name: "Mint Neon" },
-      { id: "lava", name: "Lava" },
-      { id: "terracotta", name: "Terracotta" },
-      { id: "saddle-brown", name: "Saddle Brown" },
-      { id: "sienna", name: "Sienna" },
-      { id: "dark-goldenrod", name: "Dark Goldenrod" },
-      { id: "warm-tan", name: "Warm Tan" },
-      { id: "walnut", name: "Walnut" },
-      { id: "chocolate", name: "Chocolate" },
-      { id: "ochre", name: "Ochre" },
-      { id: "burnt-sunset", name: "Burnt Sunset" },
-      { id: "roasted-coffee", name: "Roasted Coffee" },
-      { id: "baby-pink", name: "Baby Pink" },
-      { id: "baby-blue", name: "Baby Blue" },
-      { id: "mint-cream", name: "Mint Cream" },
-      { id: "butter", name: "Butter" },
-      { id: "lavender-mist", name: "Lavender Mist" },
-      { id: "peach-puff", name: "Peach Puff" },
-      { id: "ice-blue", name: "Ice Blue" },
-      { id: "rose-quartz", name: "Rose Quartz" },
-      { id: "pistachio", name: "Pistachio" },
-      { id: "orchid-blush", name: "Orchid Blush" },
-      { id: "royal-blue", name: "Royal Blue" },
-      { id: "dodger-blue", name: "Dodger Blue" },
-      { id: "classic-royal", name: "Classic Royal" },
-      { id: "sky-beam", name: "Sky Beam" },
-      { id: "cobalt", name: "Cobalt" },
-      { id: "periwinkle-bold", name: "Periwinkle Bold" },
-      { id: "navy-sapphire", name: "Navy Sapphire" },
-      { id: "steel-blue", name: "Steel Blue" },
-      { id: "azure", name: "Azure" },
-      { id: "bright-cobalt", name: "Bright Cobalt" },
-      { id: "emerald", name: "Emerald" },
-      { id: "forest", name: "Forest" },
-      { id: "sage", name: "Sage" },
-      { id: "lime-spark", name: "Lime Spark" },
-      { id: "material-green", name: "Material Green" },
-      { id: "deep-pine", name: "Deep Pine" },
-      { id: "chartreuse", name: "Chartreuse" },
-      { id: "teal-classic", name: "Teal Classic" },
-      { id: "aqua-green", name: "Aqua Green" },
-      { id: "olive", name: "Olive" },
-      { id: "violet", name: "Violet" },
-      { id: "amethyst", name: "Amethyst" },
-      { id: "soft-purple", name: "Soft Purple" },
-      { id: "deep-violet", name: "Deep Violet" },
-      { id: "wisteria", name: "Wisteria" },
-      { id: "grape", name: "Grape" },
-      { id: "dark-plum", name: "Dark Plum" },
-      { id: "indigo-lite", name: "Indigo Lite" },
-      { id: "fuchsia", name: "Fuchsia" },
-      { id: "magenta-dark", name: "Magenta Dark" },
-      { id: "crimson", name: "Crimson" },
-      { id: "rose-red", name: "Rose Red" },
-      { id: "soft-red", name: "Soft Red" },
-      { id: "maroon", name: "Maroon" },
-      { id: "coral-red", name: "Coral Red" },
-      { id: "salmon", name: "Salmon" },
-      { id: "brick", name: "Brick" },
-      { id: "flat-red", name: "Flat Red" },
-      { id: "vermillion", name: "Vermillion" },
-      { id: "material-red", name: "Material Red" },
-      { id: "tangerine", name: "Tangerine" },
-      { id: "soft-orange", name: "Soft Orange" },
-      { id: "burnt-orange", name: "Burnt Orange" },
-      { id: "amber", name: "Amber" },
-      { id: "dark-amber", name: "Dark Amber" },
-      { id: "dark-orange", name: "Dark Orange" },
-      { id: "marigold", name: "Marigold" },
-      { id: "deep-orange", name: "Deep Orange" },
-      { id: "honey", name: "Honey" },
-      { id: "material-orange", name: "Material Orange" },
-      { id: "silver", name: "Silver" },
-      { id: "slate-gray", name: "Slate Gray" },
-      { id: "charcoal", name: "Charcoal" },
-      { id: "cool-gray", name: "Cool Gray" },
-      { id: "warm-gray", name: "Warm Gray" },
-      { id: "graphite", name: "Graphite" },
-      { id: "light-silver", name: "Light Silver" },
-      { id: "ash", name: "Ash" },
-      { id: "cyan", name: "Cyan" },
-      { id: "dark-cyan", name: "Dark Cyan" },
-      { id: "teal", name: "Teal" },
-      { id: "light-teal", name: "Light Teal" },
-      { id: "deep-teal", name: "Deep Teal" },
-      { id: "sky-cyan", name: "Sky Cyan" },
-      { id: "pale-cyan", name: "Pale Cyan" },
-      { id: "petrol", name: "Petrol" },
-      { id: "dark-teal", name: "Dark Teal" },
-      { id: "seafoam", name: "Seafoam" },
-      { id: "classic-gold", name: "Classic Gold" },
-      { id: "antique-gold", name: "Antique Gold" },
-      { id: "pure-gold", name: "Pure Gold" },
-      { id: "muted-gold", name: "Muted Gold" },
-      { id: "goldenrod", name: "Goldenrod" },
-      { id: "old-gold", name: "Old Gold" },
-      { id: "saffron-gold", name: "Saffron Gold" },
-      { id: "bronze-gold", name: "Bronze Gold" },
-      { id: "sunflower", name: "Sunflower" },
-      { id: "brass", name: "Brass" },
-      { id: "ember-and-ash", name: "Ember & Ash" },
-      { id: "electric-indigo", name: "Electric Indigo" },
-      { id: "saffron-and-ink", name: "Saffron & Ink" },
-      { id: "midnight-teal", name: "Midnight Teal" },
-      { id: "neon-magenta", name: "Neon Magenta" },
-      { id: "arctic-steel", name: "Arctic Steel" },
-      { id: "verdant-night", name: "Verdant Night" },
-      { id: "obsidian-crimson", name: "Obsidian & Crimson" }
-    ];
+      var PALETTES = [
+        { id: "neon-cherry", name: "Neon Cherry" },
+        { id: "blaze-orange", name: "Blaze Orange" },
+        { id: "electric-yellow", name: "Electric Yellow" },
+        { id: "neon-green", name: "Neon Green" },
+        { id: "cyan-pulse", name: "Cyan Pulse" },
+        { id: "hot-magenta", name: "Hot Magenta" },
+        { id: "uv-purple", name: "UV Purple" },
+        { id: "deep-pink", name: "Deep Pink" },
+        { id: "mint-neon", name: "Mint Neon" },
+        { id: "lava", name: "Lava" },
+        { id: "terracotta", name: "Terracotta" },
+        { id: "saddle-brown", name: "Saddle Brown" },
+        { id: "sienna", name: "Sienna" },
+        { id: "dark-goldenrod", name: "Dark Goldenrod" },
+        { id: "warm-tan", name: "Warm Tan" },
+        { id: "walnut", name: "Walnut" },
+        { id: "chocolate", name: "Chocolate" },
+        { id: "ochre", name: "Ochre" },
+        { id: "burnt-sunset", name: "Burnt Sunset" },
+        { id: "roasted-coffee", name: "Roasted Coffee" },
+        { id: "baby-pink", name: "Baby Pink" },
+        { id: "baby-blue", name: "Baby Blue" },
+        { id: "mint-cream", name: "Mint Cream" },
+        { id: "butter", name: "Butter" },
+        { id: "lavender-mist", name: "Lavender Mist" },
+        { id: "peach-puff", name: "Peach Puff" },
+        { id: "ice-blue", name: "Ice Blue" },
+        { id: "rose-quartz", name: "Rose Quartz" },
+        { id: "pistachio", name: "Pistachio" },
+        { id: "orchid-blush", name: "Orchid Blush" },
+        { id: "royal-blue", name: "Royal Blue" },
+        { id: "dodger-blue", name: "Dodger Blue" },
+        { id: "classic-royal", name: "Classic Royal" },
+        { id: "sky-beam", name: "Sky Beam" },
+        { id: "cobalt", name: "Cobalt" },
+        { id: "periwinkle-bold", name: "Periwinkle Bold" },
+        { id: "navy-sapphire", name: "Navy Sapphire" },
+        { id: "steel-blue", name: "Steel Blue" },
+        { id: "azure", name: "Azure" },
+        { id: "bright-cobalt", name: "Bright Cobalt" },
+        { id: "emerald", name: "Emerald" },
+        { id: "forest", name: "Forest" },
+        { id: "sage", name: "Sage" },
+        { id: "lime-spark", name: "Lime Spark" },
+        { id: "material-green", name: "Material Green" },
+        { id: "deep-pine", name: "Deep Pine" },
+        { id: "chartreuse", name: "Chartreuse" },
+        { id: "teal-classic", name: "Teal Classic" },
+        { id: "aqua-green", name: "Aqua Green" },
+        { id: "olive", name: "Olive" },
+        { id: "violet", name: "Violet" },
+        { id: "amethyst", name: "Amethyst" },
+        { id: "soft-purple", name: "Soft Purple" },
+        { id: "deep-violet", name: "Deep Violet" },
+        { id: "wisteria", name: "Wisteria" },
+        { id: "grape", name: "Grape" },
+        { id: "dark-plum", name: "Dark Plum" },
+        { id: "indigo-lite", name: "Indigo Lite" },
+        { id: "fuchsia", name: "Fuchsia" },
+        { id: "magenta-dark", name: "Magenta Dark" },
+        { id: "crimson", name: "Crimson" },
+        { id: "rose-red", name: "Rose Red" },
+        { id: "soft-red", name: "Soft Red" },
+        { id: "maroon", name: "Maroon" },
+        { id: "coral-red", name: "Coral Red" },
+        { id: "salmon", name: "Salmon" },
+        { id: "brick", name: "Brick" },
+        { id: "flat-red", name: "Flat Red" },
+        { id: "vermillion", name: "Vermillion" },
+        { id: "material-red", name: "Material Red" },
+        { id: "tangerine", name: "Tangerine" },
+        { id: "soft-orange", name: "Soft Orange" },
+        { id: "burnt-orange", name: "Burnt Orange" },
+        { id: "amber", name: "Amber" },
+        { id: "dark-amber", name: "Dark Amber" },
+        { id: "dark-orange", name: "Dark Orange" },
+        { id: "marigold", name: "Marigold" },
+        { id: "deep-orange", name: "Deep Orange" },
+        { id: "honey", name: "Honey" },
+        { id: "material-orange", name: "Material Orange" },
+        { id: "silver", name: "Silver" },
+        { id: "slate-gray", name: "Slate Gray" },
+        { id: "charcoal", name: "Charcoal" },
+        { id: "cool-gray", name: "Cool Gray" },
+        { id: "warm-gray", name: "Warm Gray" },
+        { id: "graphite", name: "Graphite" },
+        { id: "light-silver", name: "Light Silver" },
+        { id: "ash", name: "Ash" },
+        { id: "cyan", name: "Cyan" },
+        { id: "dark-cyan", name: "Dark Cyan" },
+        { id: "teal", name: "Teal" },
+        { id: "light-teal", name: "Light Teal" },
+        { id: "deep-teal", name: "Deep Teal" },
+        { id: "sky-cyan", name: "Sky Cyan" },
+        { id: "pale-cyan", name: "Pale Cyan" },
+        { id: "petrol", name: "Petrol" },
+        { id: "dark-teal", name: "Dark Teal" },
+        { id: "seafoam", name: "Seafoam" },
+        { id: "classic-gold", name: "Classic Gold" },
+        { id: "antique-gold", name: "Antique Gold" },
+        { id: "pure-gold", name: "Pure Gold" },
+        { id: "muted-gold", name: "Muted Gold" },
+        { id: "goldenrod", name: "Goldenrod" },
+        { id: "old-gold", name: "Old Gold" },
+        { id: "saffron-gold", name: "Saffron Gold" },
+        { id: "bronze-gold", name: "Bronze Gold" },
+        { id: "sunflower", name: "Sunflower" },
+        { id: "brass", name: "Brass" },
+        { id: "ember-and-ash", name: "Ember & Ash" },
+        { id: "electric-indigo", name: "Electric Indigo" },
+        { id: "saffron-and-ink", name: "Saffron & Ink" },
+        { id: "midnight-teal", name: "Midnight Teal" },
+        { id: "neon-magenta", name: "Neon Magenta" },
+        { id: "arctic-steel", name: "Arctic Steel" },
+        { id: "verdant-night", name: "Verdant Night" },
+        { id: "obsidian-crimson", name: "Obsidian & Crimson" }
+      ];
 
       // ── Pick random palette ──
       var pick = PALETTES[Math.floor(Math.random() * PALETTES.length)];
@@ -194,6 +194,8 @@ var PALETTES = [
   <!-- Preload fonts so they're ready before first paint -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.skypack.dev" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap">
 
   <link rel="stylesheet" href="css/base.css?v=5" />
@@ -209,11 +211,6 @@ var PALETTES = [
 
   <!-- Preloader + scrollbar — inlined so they work before external CSS -->
   <style>
-    /* Smooth scroll */
-    html {
-      scroll-behavior: smooth !important;
-    }
-
     /* ===== Preloader ===== */
     .preloader {
       position: fixed;
@@ -363,8 +360,9 @@ var PALETTES = [
         'partials/sections/contact.html'
       ];
 
-      const scripts = [
-        'js/utils.js',
+      // utils.js must load first (dependency), rest can load in parallel
+      const utilsScript = 'js/utils.js';
+      const moduleScripts = [
         'js/modules/network.js',
         'js/modules/header.js',
         'js/modules/hero.js',
@@ -377,26 +375,9 @@ var PALETTES = [
         'js/modules/animations.js'
       ];
 
-      const totalSteps = 6;
-      let completed = 0;
-
-      function progress(label, pctOverride) {
-        completed++;
-        var pct = pctOverride !== undefined ? pctOverride : Math.min(100, Math.round((completed / totalSteps) * 100));
+      function progress(label, pct) {
         if (bar) bar.style.width = pct + '%';
         if (statusEl) statusEl.textContent = label;
-      }
-
-      function holdProgress(duration) {
-        return new Promise(function(resolve) {
-          setTimeout(resolve, duration || 1000);
-        });
-      }
-
-      async function loadPartial(path, target) {
-        const res = await fetch(path);
-        if (!res.ok) throw new Error('Failed to fetch ' + path);
-        target.insertAdjacentHTML('beforeend', await res.text());
       }
 
       function loadScript(src) {
@@ -412,54 +393,12 @@ var PALETTES = [
 
       function waitForFonts() {
         if (document.fonts && document.fonts.ready) {
-          return document.fonts.ready;
+          return Promise.race([
+            document.fonts.ready,
+            new Promise(function (r) { setTimeout(r, 3000); })
+          ]);
         }
         return new Promise(function (r) { setTimeout(r, 600); });
-      }
-
-      function waitForImages() {
-        var images = app.querySelectorAll('img[src]');
-        if (!images.length) return Promise.resolve();
-        var promises = [];
-        images.forEach(function (img) {
-          var src = img.getAttribute('src');
-          if (!src || !src.startsWith('assets/')) return;
-          if (img.complete && img.naturalWidth > 0) return;
-          var loadImg = new Image();
-          promises.push(new Promise(function (resolve) {
-            loadImg.onload = resolve;
-            loadImg.onerror = resolve;
-            loadImg.src = src;
-          }));
-        });
-        if (!promises.length) return Promise.resolve();
-        return Promise.race([
-          Promise.all(promises),
-          new Promise(function (r) { setTimeout(r, 10000); })
-        ]);
-      }
-
-      function waitForVideos() {
-        var videoEls = app.querySelectorAll('video');
-        if (!videoEls.length) return Promise.resolve();
-        var promises = [];
-        videoEls.forEach(function (video) {
-          var src = video.getAttribute('src') || (video.querySelector('source') && video.querySelector('source').getAttribute('src'));
-          if (!src || !src.startsWith('assets/')) return;
-          if (video.readyState >= 2) return;
-          video.preload = 'auto';
-          if (video.readyState === 0) video.load();
-          promises.push(new Promise(function (resolve) {
-            video.addEventListener('canplay', resolve, { once: true });
-            video.addEventListener('error', resolve, { once: true });
-            video.play().catch(function() {});
-          }));
-        });
-        if (!promises.length) return Promise.resolve();
-        return Promise.race([
-          Promise.all(promises),
-          new Promise(function (r) { setTimeout(r, 10000); })
-        ]);
       }
 
       try {
@@ -473,44 +412,22 @@ var PALETTES = [
         partialContents.forEach(function(html) {
           app.insertAdjacentHTML('beforeend', html);
         });
-        await holdProgress(250);
 
-        progress('Loading CSS…', 33);
+        progress('Loading JavaScript…', 40);
+        // Load utils first (dependency), then all modules in parallel
+        await loadScript(utilsScript);
+        await Promise.all(moduleScripts.map(loadScript));
 
-        progress('Loading JavaScript…', 50);
-        for (var j = 0; j < scripts.length; j++) {
-          await loadScript(scripts[j]);
-        }
-        await holdProgress(250);
-
-        progress('Loading assets (animations)…', 66);
+        progress('Preparing layout…', 70);
         await waitForFonts();
         await new Promise(function (resolve) {
           requestAnimationFrame(function () {
             requestAnimationFrame(resolve);
           });
         });
-        await holdProgress(250);
 
-        progress('Loading assets (videos)…', 83);
-        await waitForVideos();
-        await holdProgress(250);
-
-        progress('Loading assets (images)…', 100);
-        await waitForImages();
-        await holdProgress(250);
-
-        window.Portfolio = {
-          utils: window.utils,
-          header: window.headerModule,
-          theme: window.themeModule,
-          hero: window.heroModule,
-          about: window.aboutModule,
-          projects: window.projectsModule,
-          reviews: window.reviewsModule,
-          experience: window.experienceModule,
-          contact: window.contactModule
-        };
+        // Let images and video load lazily — don't block the preloader
+        progress('Finalizing…', 90);
 
         if (window.themeModule && window.themeModule.init) {
           window.themeModule.init();

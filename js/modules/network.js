@@ -1,6 +1,7 @@
 /* =========================================================
    NETWORK BACKGROUND — MONOCHROME
    Reads colors & config from :root[data-theme] CSS custom properties
+   Uses spatial grid for O(n) neighbor lookups instead of O(n²)
    ========================================================= */
 
 (function () {
@@ -15,9 +16,7 @@
   var mouse = { x: -9999, y: -9999 };
   var particles = [];
   var raf = null;
-  var isVisible = true;
 
-  // Default config — overridden by CSS custom properties
   var CFG = {
     density: 0.00010,
     minParticles: 80,
@@ -35,6 +34,13 @@
     lineColor: 'rgba(0,0,0,1)'
   };
 
+  // Cached parsed line color RGB to avoid string creation per-frame
+  var lineR = 0, lineG = 0, lineB = 0;
+
+  // Spatial grid
+  var gridCells = {};
+  var gridSize = 250;
+
   function getCSSVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   }
@@ -42,6 +48,17 @@
   function getCSSVarFloat(name, fallback) {
     var val = parseFloat(getCSSVar(name));
     return isNaN(val) ? fallback : val;
+  }
+
+  function parseRGB(color) {
+    if (color.startsWith('#')) {
+      lineR = parseInt(color.slice(1, 3), 16);
+      lineG = parseInt(color.slice(3, 5), 16);
+      lineB = parseInt(color.slice(5, 7), 16);
+      return;
+    }
+    var m = color.match(/(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if (m) { lineR = +m[1]; lineG = +m[2]; lineB = +m[3]; }
   }
 
   function applyTheme() {
@@ -55,6 +72,8 @@
     CFG.mouseRadius = getCSSVarFloat('--network-mouse-radius', CFG.mouseRadius);
     CFG.speed = getCSSVarFloat('--network-speed', CFG.speed);
     CFG.density = getCSSVarFloat('--network-density', CFG.density);
+    parseRGB(CFG.lineColor);
+    gridSize = CFG.maxDist;
   }
 
   function resize() {
@@ -64,7 +83,10 @@
 
   function init() {
     particles = [];
-    var count = Math.max(Math.floor(W * H * CFG.density), CFG.minParticles);
+    var isMobile = W < 768;
+    var density = isMobile ? CFG.density * 0.5 : CFG.density;
+    var minP = isMobile ? 40 : CFG.minParticles;
+    var count = Math.max(Math.floor(W * H * density), minP);
 
     for (var i = 0; i < count; i++) {
       particles.push({
@@ -77,10 +99,19 @@
     }
   }
 
+  function buildGrid() {
+    gridCells = {};
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      var key = ((p.x / gridSize) | 0) + ',' + ((p.y / gridSize) | 0);
+      if (!gridCells[key]) gridCells[key] = [];
+      gridCells[key].push(i);
+    }
+  }
+
   function update() {
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
-
       var dx = p.x - mouse.x;
       var dy = p.y - mouse.y;
       var dist = Math.sqrt(dx * dx + dy * dy);
@@ -105,7 +136,6 @@
 
       if (p.x <= 0) { p.x = 0; p.vx = Math.abs(p.vx); }
       else if (p.x >= W) { p.x = W; p.vx = -Math.abs(p.vx); }
-
       if (p.y <= 0) { p.y = 0; p.vy = Math.abs(p.vy); }
       else if (p.y >= H) { p.y = H; p.vy = -Math.abs(p.vy); }
     }
@@ -117,26 +147,36 @@
     var maxDist2 = CFG.maxDist * CFG.maxDist;
     var mouseR2 = CFG.mouseRadius * CFG.mouseRadius;
 
-    // Draw connections
+    buildGrid();
+
+    // Draw connections using spatial grid — only check 3x3 neighborhood
     for (var i = 0; i < particles.length; i++) {
       var a = particles[i];
+      var cx = (a.x / gridSize) | 0;
+      var cy = (a.y / gridSize) | 0;
 
-      for (var j = i + 1; j < particles.length; j++) {
-        var b = particles[j];
-        var dx = a.x - b.x;
-        var dy = a.y - b.y;
-        var d2 = dx * dx + dy * dy;
-
-        if (d2 < maxDist2) {
-          var dist = Math.sqrt(d2);
-          var opacity = 1 - dist / CFG.maxDist;
-
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = hexToRgba(CFG.lineColor, opacity * CFG.lineAlpha);
-          ctx.lineWidth = CFG.lineWidth * opacity;
-          ctx.stroke();
+      for (var nx = cx - 1; nx <= cx + 1; nx++) {
+        for (var ny = cy - 1; ny <= cy + 1; ny++) {
+          var cell = gridCells[nx + ',' + ny];
+          if (!cell) continue;
+          for (var ci = 0; ci < cell.length; ci++) {
+            var j = cell[ci];
+            if (j <= i) continue;
+            var b = particles[j];
+            var dx = a.x - b.x;
+            var dy = a.y - b.y;
+            var d2 = dx * dx + dy * dy;
+            if (d2 < maxDist2) {
+              var d = Math.sqrt(d2);
+              var t = 1 - d / CFG.maxDist;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.strokeStyle = 'rgba(' + lineR + ',' + lineG + ',' + lineB + ',' + (t * CFG.lineAlpha) + ')';
+              ctx.lineWidth = CFG.lineWidth * t;
+              ctx.stroke();
+            }
+          }
         }
       }
     }
@@ -148,72 +188,60 @@
         var mdx = mouse.x - p.x;
         var mdy = mouse.y - p.y;
         var md2 = mdx * mdx + mdy * mdy;
-
         if (md2 < mouseR2) {
-          var mdist = Math.sqrt(md2);
-          var mop = 1 - mdist / CFG.mouseRadius;
-
+          var md = Math.sqrt(md2);
+          var mop = (1 - md / CFG.mouseRadius) * CFG.mouseLineAlpha;
           ctx.beginPath();
           ctx.moveTo(mouse.x, mouse.y);
           ctx.lineTo(p.x, p.y);
-          ctx.strokeStyle = hexToRgba(CFG.lineColor, mop * CFG.mouseLineAlpha);
-          ctx.lineWidth = CFG.lineWidth * mop * 1.2;
+          ctx.strokeStyle = 'rgba(' + lineR + ',' + lineG + ',' + lineB + ',' + mop + ')';
+          ctx.lineWidth = CFG.lineWidth * (1 - md / CFG.mouseRadius) * 1.2;
           ctx.stroke();
         }
       }
     }
 
-    // Draw dots
+    // Draw dots — set fillStyle once
+    ctx.fillStyle = CFG.dotColor;
     for (var d = 0; d < particles.length; d++) {
       var pt = particles[d];
-
       ctx.beginPath();
       ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
-      ctx.fillStyle = CFG.dotColor;
       ctx.fill();
     }
   }
 
-  function hexToRgba(hex, alpha) {
-    if (!hex.startsWith('#')) return hex;
-
-    var r = parseInt(hex.slice(1, 3), 16);
-    var g = parseInt(hex.slice(3, 5), 16);
-    var b = parseInt(hex.slice(5, 7), 16);
-
-    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-  }
-
   function loop() {
-    if (!isVisible) { raf = requestAnimationFrame(loop); return; }
     update();
     render();
     raf = requestAnimationFrame(loop);
   }
 
+  // Fix #19: Properly stop/start rAF on visibility change
+  function startLoop() { if (!raf) raf = requestAnimationFrame(loop); }
+  function stopLoop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
   function onResize() { resize(); init(); }
   function onMouse(e) { mouse.x = e.clientX; mouse.y = e.clientY; }
   function onMouseOut() { mouse.x = -9999; mouse.y = -9999; }
-  function onVisibility() { isVisible = !document.hidden; }
+  function onVisibility() {
+    if (document.hidden) stopLoop(); else startLoop();
+  }
 
   window.addEventListener('resize', onResize);
-  window.addEventListener('mousemove', onMouse);
+  window.addEventListener('mousemove', onMouse, { passive: true });
   window.addEventListener('mouseout', onMouseOut);
   document.addEventListener('visibilitychange', onVisibility);
 
-  // Observe theme change
-  var observer = new MutationObserver(function () {
-    applyTheme();
-  });
-
-  observer.observe(document.documentElement, {
+  // Observe theme + palette changes
+  new MutationObserver(applyTheme).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['data-theme']
+    attributeFilter: ['data-theme', 'data-palette']
   });
 
   applyTheme();
   resize();
   init();
-  loop();
+  startLoop();
 
 })();

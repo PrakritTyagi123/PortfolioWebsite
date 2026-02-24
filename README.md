@@ -128,9 +128,9 @@ There is no build step. `index.html` runs a simple async boot sequence:
 
 - **Scroll-driven experience timeline** — A red progress bar grows down the spine as you scroll; dots transition from white → pulsing red as the bar reaches them.
 - **Terminal tech stack** — The About section renders your stack as a fake terminal window with typing animation, organized by category (Frontend, Backend, Gamedev, DevOps, AI/ML, Design).
-- **Project carousel** — 17 projects in a paged slider with autoplay (10s), hover-pause with remaining-time resume, keyboard arrows, and an Instagram-style sliding 5-dot window.
+- **Project carousel** — 17 projects in a paged slider with autoplay (8s), hover-pause, keyboard arrows, and an Instagram-style sliding 5-dot window.
 - **Live YouTube feed** — Pulls all uploads via the YouTube Data API, renders thumbnails in an auto-scrolling strip with drag support, and badges videos posted within the last week as "Latest."
-- **Glass nav indicator** — A frosted-glass pill slides behind the active nav link based on which section is most visible in the viewport.
+- **Active nav indicator** — The active nav link is highlighted with an `is-active` class based on which section is most visible in the viewport. The header has a frosted-glass backdrop effect.
 - **Marquee client reviews** — Two rows scrolling in opposite directions, CSS-animated with JS-calculated duration for constant px/sec speed. Avatar images fall back to colored initials.
 - **Zero-backend contact form** — Validates client-side, then constructs a `mailto:` link that opens the user's default email client with the form data pre-filled.
 

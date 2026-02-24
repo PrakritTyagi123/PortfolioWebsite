@@ -9,7 +9,9 @@
     if (!section) return;
   
     const track = section.querySelector('.proj-track');
-    const cards = () => Array.from(track.querySelectorAll('.proj-card:not([data-hidden="true"])'));
+    let _cachedCards = null;
+    const cards = () => { if (!_cachedCards) _cachedCards = Array.from(track.querySelectorAll('.proj-card:not([data-hidden="true"])')); return _cachedCards; };
+    function invalidateCards() { _cachedCards = null; }
     const prevBtn = section.querySelector('#proj-prev');
     const nextBtn = section.querySelector('#proj-next');
     const filterBtns = Array.from(section.querySelectorAll('.proj-filter-btn'));
@@ -70,9 +72,8 @@
         const duration = Math.min(600, Math.max(300, Math.abs(distance) * 0.4));
         let startTime = null;
 
-        function ease(t) {
-          return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        }
+        // Use shared easing function from utils
+        var ease = window.utils.easeInOutCubic;
 
         function step(now) {
           if (!startTime) startTime = now;
@@ -182,6 +183,7 @@
       });
   
       track.scrollLeft = 0;
+      invalidateCards();
       requestAnimationFrame(function () {
         numberCards();
         restartAutoplay();
@@ -205,12 +207,8 @@
     scheduleAutoplay();
   }
 
-  // Boot sequence guarantees DOM is ready, but add guard for consistency
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
+  // Boot sequence guarantees DOM is ready
+  init();
 
   window.projectsModule = { init };
 })();

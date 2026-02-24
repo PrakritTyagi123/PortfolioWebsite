@@ -1,5 +1,5 @@
 /* =========================================================
-   ABOUT Ã¢â‚¬â€ Bento Grid + Terminal + Stats Row
+   ABOUT - Bento Grid + Terminal + Stats Row
    ========================================================= */
 
 /* ---------- Section shell ---------- */
@@ -14,7 +14,7 @@
 
 /* Section heading styles live in base.css - no need to duplicate */
 
-/* ---------- Bento grid (3Ãƒâ€”3) ---------- */
+/* ---------- Bento grid (3x3) ---------- */
 .about-grid {
   --about-cell: clamp(200px, 20vw, 320px);
   --about-gap: clamp(8px, 0.8vw, 14px);

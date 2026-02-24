@@ -46,6 +46,8 @@ window.contactModule = (function () {
     if (!box) {
       box = document.createElement('div');
       box.className = 'tf-status';
+      box.setAttribute('role', 'alert');
+      box.setAttribute('aria-live', 'polite');
       form.appendChild(box);
     }
     box.className = 'tf-status tf-status--' + (type || 'info');

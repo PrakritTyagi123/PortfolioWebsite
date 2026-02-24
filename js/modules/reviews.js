@@ -11,9 +11,9 @@ window.reviewsModule = (function () {
   const SPEED = 45; // px per second
   let initialized = false;
 
-  // Use shared utilities (standardized naming)
-  const q = window.utils?.$ || ((sel, root) => (root || document).querySelector(sel));
-  const qq = window.utils?.$$ || ((sel, root) => Array.from((root || document).querySelectorAll(sel)));
+  // Use shared utilities (utils.js is guaranteed loaded first)
+  const q = window.utils.$;
+  const qq = window.utils.$$;
 
   // --- Avatar fallbacks ---
   function setupAvatars(scope) {
@@ -124,8 +124,8 @@ window.reviewsModule = (function () {
     });
   }
 
-  // --- Self-init ---
-  (window.utils && window.utils.onReady) ? window.utils.onReady(init) : (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init, { once: true }) : init());
+  // Boot sequence guarantees DOM is ready
+  init();
 
   return { init: init };
 })();

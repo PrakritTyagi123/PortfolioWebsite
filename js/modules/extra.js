@@ -3,7 +3,7 @@
     handle: '@PrakritTyagi19',
     apiKey: window.YOUTUBE_API_KEY || 'AIzaSyCffLilUHmhLy7ri1V_Kd7fC4CnNJ_ibq0', // Set this before loading the script
     pageSize: 50,
-    maxPages: 5, // Reduced to prevent excessive quota usage
+    maxPages: 1, // Only fetch first page; user can scroll for more
     scrollSpeed: 0.25
   };
 
@@ -11,7 +11,7 @@
 
   const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-  const $ = window.utils?.$ || ((s, el = document) => el.querySelector(s));
+  const $ = window.utils.$;
   const esc = (s) =>
     (s || '').replace(/[&<>"']/g, c =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
@@ -276,5 +276,6 @@
     }
   }
 
-  (window.utils && window.utils.onReady) ? window.utils.onReady(initYouTubeStrip) : (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', initYouTubeStrip, { once: true }) : initYouTubeStrip());
+  // Boot sequence guarantees DOM is ready
+  initYouTubeStrip();
 })();

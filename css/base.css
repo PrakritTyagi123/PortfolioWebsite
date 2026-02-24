@@ -5,7 +5,8 @@ Base stylesheet (structure only - colors from themes)
 /* Google Fonts - Syne (display), Instrument Sans (body), Space Mono (mono) */
 /* Google Fonts loaded via <link> in index.html for non-blocking render */
 
-* { box-sizing: border-box; }
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
 
 /* =========================================================
    NETWORK BACKGROUND CANVAS
@@ -28,8 +29,14 @@ Base stylesheet (structure only - colors from themes)
   z-index: 1;
 }
 
-/* Global scrollbar — red accent everywhere */
-* {
+/* Global scrollbar — applied only to scrollable elements */
+html,
+body,
+.proj-track,
+.yt-strip,
+.marquee-row,
+.extra-journey-strip,
+.about-tech {
   scrollbar-width: thin;
   scrollbar-color: var(--accent) transparent;
 }
@@ -73,7 +80,6 @@ Base stylesheet (structure only - colors from themes)
 
 html {
   min-height: 100%;
-  scroll-behavior: smooth;
 }
 
 body {

@@ -75,12 +75,12 @@ window.utils = (function() {
     // Initial setup
     attachHandlers();
 
-    // Watch for new images, disconnect after 30s (boot is long done by then)
+    // Watch for new images, disconnect after 5s (boot completes fast)
     observer.observe(document.body, {
       childList: true,
       subtree: true
     });
-    setTimeout(function() { observer.disconnect(); }, 30000);
+    setTimeout(function() { observer.disconnect(); }, 5000);
   }
 
   // Initialize on DOM ready

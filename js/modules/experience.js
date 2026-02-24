@@ -6,9 +6,9 @@
 (function () {
   'use strict';
 
-  // Use shared utilities
-  const $ = window.utils?.$ || ((sel, root = document) => root.querySelector(sel));
-  const $$ = window.utils?.$$ || ((sel, root = document) => Array.from(root.querySelectorAll(sel)));
+  // Use shared utilities (utils.js is guaranteed loaded first)
+  const $ = window.utils.$;
+  const $$ = window.utils.$$;
 
   let items = [];
   let dots = [];
@@ -104,8 +104,8 @@
     }, { passive: true });
   }
 
-  // Boot using shared helper
-  (window.utils && window.utils.onReady) ? window.utils.onReady(init) : (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init, { once: true }) : init());
+  // Boot sequence guarantees DOM is ready
+  init();
 
   function destroy() {
     window.removeEventListener('scroll', onScroll);

@@ -177,14 +177,10 @@ window.headerModule = (function () {
   return { init: init, get _initialized() { return initialized; } };
 })();
 
-// Self-init
+// Self-init (boot sequence guarantees DOM is ready)
 (function () {
   if (window.headerModule && !window.headerModule._initialized) {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', window.headerModule.init, { once: true });
-    } else {
-      window.headerModule.init();
-    }
+    window.headerModule.init();
   }
 })();
 
@@ -260,12 +256,7 @@ window.themeModule = (function () {
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
-
+  // themeModule.init() is called by boot sequence after all scripts load
   return { init: init, applyTheme: apply };
 })();
 
@@ -317,11 +308,8 @@ window.paletteModule = (function () {
     btn._bound = true;
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
+  // Boot sequence guarantees DOM is ready
+  init();
 
   return { init: init, switchPalette: switchPalette, getNextPalette: getNextPalette };
 })();

@@ -36,9 +36,6 @@
     document.querySelectorAll('.reveal, .reveal-up, .reveal-left, .reveal-scale').forEach(el => io.observe(el));
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupReveals, { once: true });
-  } else {
-    setupReveals();
-  }
+  // Boot sequence guarantees DOM is ready
+  setupReveals();
 })();
