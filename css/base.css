@@ -39,16 +39,7 @@ Base stylesheet (structure only - colors from themes)
 ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent) 80%, white); }
 
 :root {
-  /* Shared accent colors — fallback before theme loads */
-  /* Dark theme uses amber #e0a046, light uses teal #2a9d8f */
-  /* Using dark theme accent as default since most users prefer dark */
-  --accent: #e0a046;
-  --accent-rgb: 224, 160, 70;
-  --accent-light: rgba(224, 160, 70, 0.3);
-  --accent-soft: rgba(224, 160, 70, 0.08);
-  --accent-glow: rgba(224, 160, 70, 0.25);
-  --accent-glow-strong: rgba(224, 160, 70, 0.4);
-  --accent-glow-intense: rgba(224, 160, 70, 0.4);
+  /* Accent colors — defined per-palette in css/themes/<palette>/dark.css & light.css */
 
 /* Layout + sizing tokens */
 --header-h: 56px;

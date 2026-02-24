@@ -1,0 +1,169 @@
+/* =========================================================
+   LIGHT THEME — Verdant Night
+   ========================================================= */
+
+:root[data-theme="light"] {
+  /* Accent color */
+  --accent: #16a34a;
+  --accent-rgb: 22, 163, 74;
+  --accent-light: rgba(22, 163, 74, 0.25);
+  --accent-glow: rgba(22, 163, 74, 0.3);
+  --accent-glow-strong: rgba(22, 163, 74, 0.45);
+  --accent-glow-intense: rgba(22, 163, 74, 0.4);
+  --accent-soft: rgba(22, 163, 74, 0.07);
+
+  /* Base colors */
+  --bg-primary: #f0faf4;
+  --bg-secondary: #dcfce7;
+  --bg-tertiary: #bbf7d0;
+  --text-primary: #052e16;
+  --text-secondary: #365a45;
+  --text-muted: #6b9e80;
+  --text-inverted: #f0faf4;
+  --border-primary: #a7f3d0;
+  --border-secondary: #6ee7a0;
+
+  /* Component colors */
+  --chip-bg: #dcfce7;
+  --chip-border: #a7f3d0;
+  --chip-text: #052e16;
+  --cta-bg: var(--accent);
+  --cta-text: #ffffff;
+
+  /* Hero colors */
+  --hero-bg: #f0faf4;
+  --hero-text: #052e16;
+
+  /* About section colors */
+  --about-tile-bg: #dcfce7;
+  --about-tile-border: #a7f3d0;
+  --about-tile-text: #052e16;
+  --about-stack-bg: #f0faf4;
+  --about-stack-border: #a7f3d0;
+  --about-stack-dashed: #a7f3d0;
+  --about-socials-bg: #f0faf4;
+  --about-socials-border: #a7f3d0;
+  --about-btn-bg: #f0faf4;
+  --about-btn-border: #a7f3d0;
+  --about-btn-text: #052e16;
+  --about-orbit-line: #052e16;
+
+  /* Globe colors (cobe WebGL — read by about.js) */
+  --about-globe-dark: 0;
+  --about-globe-map-brightness: 2;
+  --about-globe-diffuse: 3;
+  --about-globe-base-r: 0.85;
+  --about-globe-base-g: 0.95;
+  --about-globe-base-b: 0.88;
+  --about-globe-glow-r: 0.92;
+  --about-globe-glow-g: 0.98;
+  --about-globe-glow-b: 0.94;
+  --about-globe-marker-r: 0.09;
+  --about-globe-marker-g: 0.64;
+  --about-globe-marker-b: 0.29;
+
+  /* Terminal Tech Stack colors */
+  --ts-terminal-bg: #f0faf4;
+  --ts-terminal-border: #a7f3d0;
+  --ts-terminal-glow: rgba(0, 0, 0, 0.04);
+  --ts-header-bg: #dcfce7;
+  --ts-title-color: #052e16;
+  --ts-command-color: #15803d;
+  --ts-bracket-color: #365a45;
+  --ts-item-bg: #dcfce7;
+  --ts-item-border: #bbf7d0;
+  --ts-item-hover-bg: #d1fae5;
+  --ts-text-color: #052e16;
+  --ts-string-color: #16a34a;
+  --ts-secondary-color: #6ee7a0;
+  --ts-secondary-highlight: #365a45;
+
+  /* Experience colors */
+  --exp-text: #052e16;
+  --exp-muted: #6b9e80;
+  --exp-spine: #6ee7a0;
+  --exp-bridge: #a7f3d0;
+  --exp-dot: #6b9e80;
+  --exp-dot-ring: rgba(0, 0, 0, 0.1);
+  --exp-logo-bg: #dcfce7;
+  --exp-logo-border: rgba(0, 0, 0, 0.12);
+
+  /* Projects colors */
+  --proj-panel-bg: #f0faf4;
+  --proj-panel-text: #052e16;
+  --proj-media-bg: #dcfce7;
+  --proj-btn-bg: #bbf7d0;
+  --proj-focus: var(--accent);
+
+  /* Reviews colors */
+  --rev-card-bg: #f0faf4;
+  --rev-card-border: #a7f3d0;
+  --rev-card-text: #052e16;
+  --rev-avatar-bg: #bbf7d0;
+  --rev-avatar-border: #a7f3d0;
+
+  /* Contact colors */
+  --contact-form-bg: #dcfce7;
+  --contact-form-border: #a7f3d0;
+  --contact-form-text: #052e16;
+  --contact-input-bg: #f0faf4;
+  --contact-input-border: #6ee7a0;
+  --contact-input-focus: var(--accent);
+  --contact-submit-bg: #dcfce7;
+  --contact-error: #dc2626;
+  --contact-invalid: #dc2626;
+  --contact-status-bg: #dcfce7;
+  --contact-status-border: var(--accent);
+
+  /* Extra section colors */
+  --extra-activity-bg: #f0faf4;
+  --extra-activity-border: #a7f3d0;
+  --extra-activity-text: #052e16;
+  --extra-journey-bg: #f0faf4;
+  --extra-journey-card-bg: #f0faf4;
+  --extra-journey-media-bg: #dcfce7;
+  --extra-yt-bg: #f0faf4;
+  --extra-yt-thumb-bg: #dcfce7;
+  --extra-yt-badge-bg: #f0faf4;
+  --extra-yt-badge-border: var(--accent);
+  --extra-scrollbar-thumb: #6ee7a0;
+  --extra-scrollbar-track: #dcfce7;
+
+  /* Interactive states */
+  --focus-outline: var(--accent);
+  --hover-overlay: rgba(22, 163, 74, 0.04);
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-heavy: rgba(0, 0, 0, 0.16);
+
+  /* Divider colors */
+  --divider-line: #a7f3d0;
+}
+
+/* Contact form input focus */
+:root[data-theme="light"] .contact input:focus,
+:root[data-theme="light"] .contact textarea:focus,
+:root[data-theme="light"] [class*="contact"] input:focus,
+:root[data-theme="light"] [class*="contact"] textarea:focus {
+  outline: 2px solid var(--contact-input-focus);
+  outline-offset: -2px;
+  border-color: var(--contact-input-focus);
+  box-shadow: 0 0 0 1px var(--contact-input-focus);
+}
+
+/* Projects chevrons */
+:root[data-theme="light"] .projects .proj-nav-btn .chev-icon {
+  filter: none;
+}
+
+/* Exclude sub-headings inside sections */
+:root[data-theme="light"] .extra-section h3,
+:root[data-theme="light"] .extra-section h4,
+:root[data-theme="light"] .extra-section h5,
+:root[data-theme="light"] .extra-section h6,
+:root[data-theme="light"] .ts-title,
+:root[data-theme="light"] .site-header a,
+:root[data-theme="light"] .site-header .nav a {
+  text-decoration: none !important;
+}
+
+/* Globe — colors driven by CSS variables + JS recreation (no filter hack) */

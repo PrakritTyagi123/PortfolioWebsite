@@ -214,8 +214,33 @@
       let globe = null;
       const canvas = document.getElementById('cobe-globe');
       
-      function isDarkMode() {
-        return document.documentElement.getAttribute('data-theme') === 'dark';
+      /* ---- Read globe colors from CSS custom properties ---- */
+      function getGlobeConfig() {
+        const s = getComputedStyle(document.documentElement);
+        const v = (prop, fallback) => {
+          const raw = s.getPropertyValue(prop).trim();
+          return raw ? parseFloat(raw) : fallback;
+        };
+        return {
+          dark:          v('--about-globe-dark', 1),
+          mapBrightness: v('--about-globe-map-brightness', 8),
+          baseColor: [
+            v('--about-globe-base-r', 0.25),
+            v('--about-globe-base-g', 0.25),
+            v('--about-globe-base-b', 0.25),
+          ],
+          glowColor: [
+            v('--about-globe-glow-r', 0.05),
+            v('--about-globe-glow-g', 0.05),
+            v('--about-globe-glow-b', 0.05),
+          ],
+          markerColor: [
+            v('--about-globe-marker-r', 1),
+            v('--about-globe-marker-g', 0.2),
+            v('--about-globe-marker-b', 0.2),
+          ],
+          diffuse: v('--about-globe-diffuse', 2),
+        };
       }
       
       function createGlobeInstance() {
@@ -224,12 +249,7 @@
           globe = null;
         }
         
-        const config = {
-          dark: 1,
-          baseColor: [0.25, 0.25, 0.25],
-          glowColor: [0.05, 0.05, 0.05],
-          mapBrightness: 8,
-        };
+        const config = getGlobeConfig();
         
         globe = createGlobe(canvas, {
           devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
@@ -238,11 +258,11 @@
           phi: phi,
           theta: 0.25,
           dark: config.dark,
-          diffuse: 2,
+          diffuse: config.diffuse,
           mapSamples: 20000,
           mapBrightness: config.mapBrightness,
           baseColor: config.baseColor,
-          markerColor: [1, 0.2, 0.2],
+          markerColor: config.markerColor,
           glowColor: config.glowColor,
           markers: [
             { location: [28.6139, 77.2090], size: 0.1 },
@@ -256,9 +276,26 @@
         window._cobeGlobe = globe;
       }
       
+      /* ---- Recreate globe when theme/palette changes ---- */
+      function watchForThemeChanges() {
+        const observer = new MutationObserver((mutations) => {
+          for (const m of mutations) {
+            if (m.attributeName === 'data-theme' || m.attributeName === 'data-palette') {
+              // Small delay to let CSS variables update
+              setTimeout(createGlobeInstance, 50);
+              break;
+            }
+          }
+        });
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['data-theme', 'data-palette'],
+        });
+      }
+      
       if (canvas) {
         setTimeout(createGlobeInstance, 100);
-        // Note: Theme changes handled by CSS filter in light.css - no JS recreation needed
+        watchForThemeChanges();
       }
     `;
     document.body.appendChild(script);

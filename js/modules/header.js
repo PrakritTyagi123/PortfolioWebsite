@@ -268,3 +268,60 @@ window.themeModule = (function () {
 
   return { init: init, applyTheme: apply };
 })();
+
+// =========================================================
+// PALETTE SWITCHER — Cycle through palettes
+// =========================================================
+window.paletteModule = (function () {
+  'use strict';
+  var HTML = document.documentElement;
+
+  function switchPalette(newPalette) {
+    // Update data attribute
+    HTML.setAttribute('data-palette', newPalette.id);
+
+    // Swap CSS <link> tags
+    var darkLink = document.getElementById('palette-dark');
+    var lightLink = document.getElementById('palette-light');
+    var base = 'css/themes/' + newPalette.id + '/';
+
+    if (darkLink) darkLink.href = base + 'dark.css?v=1';
+    if (lightLink) lightLink.href = base + 'light.css?v=1';
+
+    // Update global reference
+    window.__palette = newPalette;
+  }
+
+  function getNextPalette() {
+    var palettes = window.__palettes || [];
+    if (!palettes.length) return null;
+    var currentId = HTML.getAttribute('data-palette') || '';
+    var currentIdx = -1;
+    for (var i = 0; i < palettes.length; i++) {
+      if (palettes[i].id === currentId) { currentIdx = i; break; }
+    }
+    var nextIdx = (currentIdx + 1) % palettes.length;
+    return palettes[nextIdx];
+  }
+
+  function init() {
+    var btn = document.getElementById('palette-toggle');
+    if (!btn || btn._bound) return;
+
+    btn.addEventListener('click', function () {
+      var next = getNextPalette();
+      if (!next) return;
+      switchPalette(next);
+    });
+
+    btn._bound = true;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+
+  return { init: init, switchPalette: switchPalette, getNextPalette: getNextPalette };
+})();

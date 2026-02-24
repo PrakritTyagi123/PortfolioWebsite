@@ -178,3 +178,18 @@
 .theme-toggle:hover .icon { opacity: 1; }
 :root[data-theme="light"] .theme-toggle .icon-moon { display: block; filter: none; }
 :root[data-theme="dark"] .theme-toggle .icon-sun { display: block; filter: brightness(0) invert(1); }
+
+/* ---------- Palette toggle ---------- */
+.palette-toggle .icon-palette {
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
+  color: var(--text-muted);
+  transition: opacity 0.15s ease, transform 0.3s ease;
+}
+.palette-toggle:hover .icon-palette {
+  opacity: 1;
+  transform: rotate(25deg);
+}
+:root[data-theme="dark"] .palette-toggle .icon-palette { color: var(--text-muted); }
+:root[data-theme="light"] .palette-toggle .icon-palette { color: var(--text-muted); }
