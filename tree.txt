@@ -5,14 +5,14 @@ New Website
 │
 ├───assets
 │   ├───docs
-│   ├───icons
+│   │       Prakrit_Tyagi_CV.pdf
+│   │
 │   ├───img
 │   │   ├───companies
 │   │   │       adda.png
 │   │   │       freelance.png
 │   │   │       ulavi.png
 │   │   │
-│   │   ├───customer
 │   │   ├───extra
 │   │   │       1.jpg
 │   │   │       2.jpg
@@ -486,8 +486,469 @@ New Website
 │   │       reviews.css
 │   │
 │   └───themes
-│           dark.css
-│           light.css
+│       ├───amber
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───amethyst
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───antique-gold
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───aqua-green
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───arctic-steel
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───ash
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───azure
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───baby-blue
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───baby-pink
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───blaze-orange
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───brass
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───brick
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───bright-cobalt
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───bronze-gold
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───burnt-orange
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───burnt-sunset
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───butter
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───charcoal
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───chartreuse
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───chocolate
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───classic-gold
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───classic-royal
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───cobalt
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───cool-gray
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───coral-red
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───crimson
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───cyan
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───cyan-pulse
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───dark-amber
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───dark-cyan
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───dark-goldenrod
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───dark-orange
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───dark-plum
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───dark-teal
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───deep-orange
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───deep-pine
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───deep-pink
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───deep-teal
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───deep-violet
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───dodger-blue
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───electric-indigo
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───electric-yellow
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───ember-and-ash
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───emerald
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───flat-red
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───forest
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───fuchsia
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───goldenrod
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───grape
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───graphite
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───honey
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───hot-magenta
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───ice-blue
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───indigo-lite
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───lava
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───lavender-mist
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───light-silver
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───light-teal
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───lime-spark
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───magenta-dark
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───marigold
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───maroon
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───material-green
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───material-orange
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───material-red
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───midnight-teal
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───mint-cream
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───mint-neon
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───muted-gold
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───navy-sapphire
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───neon-cherry
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───neon-green
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───neon-magenta
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───obsidian-crimson
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───ochre
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───old-gold
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───olive
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───orchid-blush
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───pale-cyan
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───peach-puff
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───periwinkle-bold
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───petrol
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───pistachio
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───pure-gold
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───roasted-coffee
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───rose-quartz
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───rose-red
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───royal-blue
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───saddle-brown
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───saffron-and-ink
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───saffron-gold
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───sage
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───salmon
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───seafoam
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───sienna
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───silver
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───sky-beam
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───sky-cyan
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───slate-gray
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───soft-orange
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───soft-purple
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───soft-red
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───steel-blue
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───sunflower
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───tangerine
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───teal
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───teal-classic
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───terracotta
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───uv-purple
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───verdant-night
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───vermillion
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───violet
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───walnut
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───warm-gray
+│       │       dark.css
+│       │       light.css
+│       │
+│       ├───warm-tan
+│       │       dark.css
+│       │       light.css
+│       │
+│       └───wisteria
+│               dark.css
+│               light.css
 │
 ├───js
 │   │   utils.js
@@ -513,5 +974,6 @@ New Website
             experience.html
             extra.html
             hero.html
+            index.html
             projects.html
             reviews.html
