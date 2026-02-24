@@ -7,12 +7,17 @@ New Website
 │   ├───docs
 │   │       Prakrit_Tyagi_CV.pdf
 │   │
+│   ├───icons
 │   ├───img
 │   │   ├───companies
 │   │   │       adda.png
 │   │   │       freelance.png
 │   │   │       ulavi.png
 │   │   │
+│   │   ├───current
+│   │   │       CDAC.png
+│   │   │
+│   │   ├───customer
 │   │   ├───extra
 │   │   │       1.jpg
 │   │   │       2.jpg
@@ -39,8 +44,25 @@ New Website
 │   │   │       TabImage.svg
 │   │   │
 │   │   ├───projects
-│   │   │       SnakeAI.png
+│   │   │       2SImageTo3DConverter.png
+│   │   │       AIPacManGame.png
+│   │   │       DeepFakeSoftware.png
+│   │   │       DocumentScanner.png
+│   │   │       FPSTemplate.png
+│   │   │       GameLauncher.png
+│   │   │       NeuralScribe.png
+│   │   │       NQueenGame.png
+│   │   │       ObjectDetector.png
+│   │   │       ObjectScanner.png
+│   │   │       PortfolioWebsite.png
+│   │   │       SnakeAIGame.png
+│   │   │       SurvivalGame.png
+│   │   │       TalkingChatbot.png
 │   │   │       UnityParkourSystem.png
+│   │   │       VideoConcatenator.png
+│   │   │       VideoDownloader.png
+│   │   │       VideoHashingWebApp.png
+│   │   │       VideoThumbnailMaker.png
 │   │   │
 │   │   └───techstack
 │   │           .NET-core.svg
