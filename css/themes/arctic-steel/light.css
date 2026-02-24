@@ -3,167 +3,84 @@
    ========================================================= */
 
 :root[data-theme="light"] {
-  /* Accent color */
-  --accent: #2563eb;
-  --accent-rgb: 37, 99, 235;
-  --accent-light: rgba(37, 99, 235, 0.25);
-  --accent-glow: rgba(37, 99, 235, 0.3);
-  --accent-glow-strong: rgba(37, 99, 235, 0.45);
-  --accent-glow-intense: rgba(37, 99, 235, 0.4);
-  --accent-soft: rgba(37, 99, 235, 0.07);
+  --accent: #1662de;
+  --accent-rgb: 22, 98, 222;
+  --accent-light: rgba(22, 98, 222, 0.25);
+  --accent-glow: rgba(22, 98, 222, 0.3);
+  --accent-glow-strong: rgba(22, 98, 222, 0.45);
+  --accent-glow-intense: rgba(22, 98, 222, 0.4);
+  --accent-soft: rgba(22, 98, 222, 0.07);
 
-  /* Base colors */
-  --bg-primary: #f8fafc;
-  --bg-secondary: #e2e8f0;
-  --bg-tertiary: #cbd5e1;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --text-inverted: #f8fafc;
-  --border-primary: #cbd5e1;
-  --border-secondary: #94a3b8;
+  --bg-primary: #e8eef7; --bg-secondary: #dae1ed; --bg-tertiary: #d0d8e5;
+  --text-primary: #111620; --text-secondary: #404958;
+  --text-muted: #64738b; --text-inverted: #e8eef7;
+  --border-primary: #b9c9e0; --border-secondary: #a1b4d3;
 
-  /* Component colors */
-  --chip-bg: #e2e8f0;
-  --chip-border: #cbd5e1;
-  --chip-text: #0f172a;
-  --cta-bg: var(--accent);
-  --cta-text: #ffffff;
+  --chip-bg: #dae1ed; --chip-border: #b9c9e0; --chip-text: #111620;
+  --cta-bg: var(--accent); --cta-text: #ffffff;
 
-  /* Hero colors */
-  --hero-bg: #f8fafc;
-  --hero-text: #0f172a;
+  --hero-bg: #e8eef7; --hero-text: #111620;
 
-  /* About section colors */
-  --about-tile-bg: #e2e8f0;
-  --about-tile-border: #cbd5e1;
-  --about-tile-text: #0f172a;
-  --about-stack-bg: #f8fafc;
-  --about-stack-border: #cbd5e1;
-  --about-stack-dashed: #cbd5e1;
-  --about-socials-bg: #f8fafc;
-  --about-socials-border: #cbd5e1;
-  --about-btn-bg: #f8fafc;
-  --about-btn-border: #cbd5e1;
-  --about-btn-text: #0f172a;
-  --about-orbit-line: #0f172a;
+  --about-tile-bg: #dae1ed; --about-tile-border: #b9c9e0; --about-tile-text: #111620;
+  --about-stack-bg: #e8eef7; --about-stack-border: #b9c9e0; --about-stack-dashed: #b9c9e0;
+  --about-socials-bg: #e8eef7; --about-socials-border: #b9c9e0;
+  --about-btn-bg: #e8eef7; --about-btn-border: #b9c9e0; --about-btn-text: #111620;
+  --about-orbit-line: #111620;
 
-  /* Globe colors (cobe WebGL — read by about.js) */
-  --about-globe-dark: 0;
-  --about-globe-map-brightness: 2;
+  --about-globe-dark: 0; --about-globe-map-brightness: 2;
   --about-globe-diffuse: 3;
-  --about-globe-base-r: 0.88;
-  --about-globe-base-g: 0.9;
-  --about-globe-base-b: 0.95;
-  --about-globe-glow-r: 0.95;
-  --about-globe-glow-g: 0.96;
-  --about-globe-glow-b: 0.99;
-  --about-globe-marker-r: 0.15;
-  --about-globe-marker-g: 0.39;
-  --about-globe-marker-b: 0.92;
+  --about-globe-base-r: 0.83; --about-globe-base-g: 0.84; --about-globe-base-b: 0.87;
+  --about-globe-glow-r: 0.92; --about-globe-glow-g: 0.93; --about-globe-glow-b: 0.93;
+  --about-globe-marker-r: 0.64; --about-globe-marker-g: 0.29; --about-globe-marker-b: 0.16;
 
-  /* Terminal Tech Stack colors */
-  --ts-terminal-bg: #f8fafc;
-  --ts-terminal-border: #cbd5e1;
-  --ts-terminal-glow: rgba(0, 0, 0, 0.04);
-  --ts-header-bg: #e2e8f0;
-  --ts-title-color: #0f172a;
-  --ts-command-color: #0284c7;
-  --ts-bracket-color: #475569;
-  --ts-item-bg: #e2e8f0;
-  --ts-item-border: #cbd5e1;
-  --ts-item-hover-bg: #dbeafe;
-  --ts-text-color: #0f172a;
-  --ts-string-color: #2563eb;
-  --ts-secondary-color: #94a3b8;
-  --ts-secondary-highlight: #475569;
+  --ts-terminal-bg: #e8eef7; --ts-terminal-border: #b9c9e0;
+  --ts-terminal-glow: rgba(0, 0, 0, 0.04); --ts-header-bg: #dae1ed;
+  --ts-title-color: #111620; --ts-command-color: #a68c30;
+  --ts-bracket-color: #404958;
+  --ts-item-bg: #dae1ed; --ts-item-border: #d0d8e5;
+  --ts-item-hover-bg: #e2eaf6; --ts-text-color: #111620;
+  --ts-string-color: #1662de;
+  --ts-secondary-color: #a1b4d3; --ts-secondary-highlight: #404958;
 
-  /* Experience colors */
-  --exp-text: #0f172a;
-  --exp-muted: #94a3b8;
-  --exp-spine: #94a3b8;
-  --exp-bridge: #cbd5e1;
-  --exp-dot: #94a3b8;
-  --exp-dot-ring: rgba(0, 0, 0, 0.1);
-  --exp-logo-bg: #e2e8f0;
-  --exp-logo-border: rgba(0, 0, 0, 0.12);
+  --exp-text: #111620; --exp-muted: #64738b;
+  --exp-spine: #a1b4d3; --exp-bridge: #b9c9e0;
+  --exp-dot: #64738b; --exp-dot-ring: rgba(0, 0, 0, 0.1);
+  --exp-logo-bg: #dae1ed; --exp-logo-border: rgba(0, 0, 0, 0.12);
 
-  /* Projects colors */
-  --proj-panel-bg: #f8fafc;
-  --proj-panel-text: #0f172a;
-  --proj-media-bg: #e2e8f0;
-  --proj-btn-bg: #cbd5e1;
-  --proj-focus: var(--accent);
+  --proj-panel-bg: #e8eef7; --proj-panel-text: #111620;
+  --proj-media-bg: #dae1ed; --proj-btn-bg: #d0d8e5; --proj-focus: var(--accent);
 
-  /* Reviews colors */
-  --rev-card-bg: #f8fafc;
-  --rev-card-border: #cbd5e1;
-  --rev-card-text: #0f172a;
-  --rev-avatar-bg: #cbd5e1;
-  --rev-avatar-border: #cbd5e1;
+  --rev-card-bg: #e8eef7; --rev-card-border: #b9c9e0;
+  --rev-card-text: #111620; --rev-avatar-bg: #d0d8e5; --rev-avatar-border: #b9c9e0;
 
-  /* Contact colors */
-  --contact-form-bg: #e2e8f0;
-  --contact-form-border: #cbd5e1;
-  --contact-form-text: #0f172a;
-  --contact-input-bg: #f8fafc;
-  --contact-input-border: #94a3b8;
-  --contact-input-focus: var(--accent);
-  --contact-submit-bg: #e2e8f0;
-  --contact-error: #dc2626;
-  --contact-invalid: #dc2626;
-  --contact-status-bg: #e2e8f0;
-  --contact-status-border: var(--accent);
+  --contact-form-bg: #dae1ed; --contact-form-border: #b9c9e0;
+  --contact-form-text: #111620; --contact-input-bg: #e8eef7;
+  --contact-input-border: #a1b4d3; --contact-input-focus: var(--accent);
+  --contact-submit-bg: #dae1ed;
+  --contact-error: #dc2626; --contact-invalid: #dc2626;
+  --contact-status-bg: #dae1ed; --contact-status-border: var(--accent);
 
-  /* Extra section colors */
-  --extra-activity-bg: #f8fafc;
-  --extra-activity-border: #cbd5e1;
-  --extra-activity-text: #0f172a;
-  --extra-journey-bg: #f8fafc;
-  --extra-journey-card-bg: #f8fafc;
-  --extra-journey-media-bg: #e2e8f0;
-  --extra-yt-bg: #f8fafc;
-  --extra-yt-thumb-bg: #e2e8f0;
-  --extra-yt-badge-bg: #f8fafc;
-  --extra-yt-badge-border: var(--accent);
-  --extra-scrollbar-thumb: #94a3b8;
-  --extra-scrollbar-track: #e2e8f0;
+  --extra-activity-bg: #e8eef7; --extra-activity-border: #b9c9e0; --extra-activity-text: #111620;
+  --extra-journey-bg: #e8eef7; --extra-journey-card-bg: #e8eef7; --extra-journey-media-bg: #dae1ed;
+  --extra-yt-bg: #e8eef7; --extra-yt-thumb-bg: #dae1ed;
+  --extra-yt-badge-bg: #e8eef7; --extra-yt-badge-border: var(--accent);
+  --extra-scrollbar-thumb: #a1b4d3; --extra-scrollbar-track: #dae1ed;
 
-  /* Interactive states */
   --focus-outline: var(--accent);
-  --hover-overlay: rgba(37, 99, 235, 0.04);
-  --shadow-light: rgba(0, 0, 0, 0.05);
-  --shadow-heavy: rgba(0, 0, 0, 0.16);
-
-  /* Divider colors */
-  --divider-line: #cbd5e1;
+  --hover-overlay: rgba(22, 98, 222, 0.04);
+  --shadow-light: rgba(0, 0, 0, 0.05); --shadow-heavy: rgba(0, 0, 0, 0.16);
+  --divider-line: #b9c9e0;
 }
 
-/* Contact form input focus */
 :root[data-theme="light"] .contact input:focus,
 :root[data-theme="light"] .contact textarea:focus,
 :root[data-theme="light"] [class*="contact"] input:focus,
 :root[data-theme="light"] [class*="contact"] textarea:focus {
-  outline: 2px solid var(--contact-input-focus);
-  outline-offset: -2px;
-  border-color: var(--contact-input-focus);
-  box-shadow: 0 0 0 1px var(--contact-input-focus);
+  outline: 2px solid var(--contact-input-focus); outline-offset: -2px;
+  border-color: var(--contact-input-focus); box-shadow: 0 0 0 1px var(--contact-input-focus);
 }
-
-/* Projects chevrons */
-:root[data-theme="light"] .projects .proj-nav-btn .chev-icon {
-  filter: none;
-}
-
-/* Exclude sub-headings inside sections */
-:root[data-theme="light"] .extra-section h3,
-:root[data-theme="light"] .extra-section h4,
-:root[data-theme="light"] .extra-section h5,
-:root[data-theme="light"] .extra-section h6,
-:root[data-theme="light"] .ts-title,
-:root[data-theme="light"] .site-header a,
-:root[data-theme="light"] .site-header .nav a {
-  text-decoration: none !important;
-}
-
-/* Globe — colors driven by CSS variables + JS recreation (no filter hack) */
+:root[data-theme="light"] .projects .proj-nav-btn .chev-icon { filter: none; }
+:root[data-theme="light"] .extra-section h3, :root[data-theme="light"] .extra-section h4,
+:root[data-theme="light"] .extra-section h5, :root[data-theme="light"] .extra-section h6,
+:root[data-theme="light"] .ts-title, :root[data-theme="light"] .site-header a,
+:root[data-theme="light"] .site-header .nav a { text-decoration: none !important; }

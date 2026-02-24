@@ -3,73 +3,73 @@
    ========================================================= */
 
 :root[data-theme="light"] {
-  --accent: #115e59;
-  --accent-rgb: 17, 94, 89;
-  --accent-light: rgba(17, 94, 89, 0.25);
-  --accent-glow: rgba(17, 94, 89, 0.3);
-  --accent-glow-strong: rgba(17, 94, 89, 0.45);
-  --accent-glow-intense: rgba(17, 94, 89, 0.4);
-  --accent-soft: rgba(17, 94, 89, 0.07);
+  --accent: #155954;
+  --accent-rgb: 21, 89, 84;
+  --accent-light: rgba(21, 89, 84, 0.25);
+  --accent-glow: rgba(21, 89, 84, 0.3);
+  --accent-glow-strong: rgba(21, 89, 84, 0.45);
+  --accent-glow-intense: rgba(21, 89, 84, 0.4);
+  --accent-soft: rgba(21, 89, 84, 0.07);
 
-  --bg-primary: #f1f5f5; --bg-secondary: #e5e9e9; --bg-tertiary: #d8dcdc;
-  --text-primary: #0f1115; --text-secondary: #44474f;
-  --text-muted: #747882; --text-inverted: #f1f5f5;
-  --border-primary: #c9cdcd; --border-secondary: #abafaf;
+  --bg-primary: #e5edec; --bg-secondary: #d7e1e0; --bg-tertiary: #cddad9;
+  --text-primary: #0f1519; --text-secondary: #405857;
+  --text-muted: #648b88; --text-inverted: #e5edec;
+  --border-primary: #b5d1cf; --border-secondary: #9cc1bf;
 
-  --chip-bg: #e5e9e9; --chip-border: #c9cdcd; --chip-text: #0f1115;
+  --chip-bg: #d7e1e0; --chip-border: #b5d1cf; --chip-text: #0f1519;
   --cta-bg: var(--accent); --cta-text: #ffffff;
 
-  --hero-bg: #f1f5f5; --hero-text: #0f1115;
+  --hero-bg: #e5edec; --hero-text: #0f1519;
 
-  --about-tile-bg: #e5e9e9; --about-tile-border: #c9cdcd; --about-tile-text: #0f1115;
-  --about-stack-bg: #f1f5f5; --about-stack-border: #c9cdcd; --about-stack-dashed: #c9cdcd;
-  --about-socials-bg: #f1f5f5; --about-socials-border: #c9cdcd;
-  --about-btn-bg: #f1f5f5; --about-btn-border: #c9cdcd; --about-btn-text: #0f1115;
-  --about-orbit-line: #0f1115;
+  --about-tile-bg: #d7e1e0; --about-tile-border: #b5d1cf; --about-tile-text: #0f1519;
+  --about-stack-bg: #e5edec; --about-stack-border: #b5d1cf; --about-stack-dashed: #b5d1cf;
+  --about-socials-bg: #e5edec; --about-socials-border: #b5d1cf;
+  --about-btn-bg: #e5edec; --about-btn-border: #b5d1cf; --about-btn-text: #0f1519;
+  --about-orbit-line: #0f1519;
 
   --about-globe-dark: 0; --about-globe-map-brightness: 2;
   --about-globe-diffuse: 3;
-  --about-globe-base-r: 0.79; --about-globe-base-g: 0.82; --about-globe-base-b: 0.82;
-  --about-globe-glow-r: 0.91; --about-globe-glow-g: 0.92; --about-globe-glow-b: 0.92;
-  --about-globe-marker-r: 0.05; --about-globe-marker-g: 0.18; --about-globe-marker-b: 0.17;
+  --about-globe-base-r: 0.83; --about-globe-base-g: 0.87; --about-globe-base-b: 0.87;
+  --about-globe-glow-r: 0.92; --about-globe-glow-g: 0.93; --about-globe-glow-b: 0.93;
+  --about-globe-marker-r: 0.64; --about-globe-marker-g: 0.16; --about-globe-marker-b: 0.35;
 
-  --ts-terminal-bg: #f1f5f5; --ts-terminal-border: #c9cdcd;
-  --ts-terminal-glow: rgba(0, 0, 0, 0.04); --ts-header-bg: #e5e9e9;
-  --ts-title-color: #0f1115; --ts-command-color: #b42b97;
-  --ts-bracket-color: #44474f;
-  --ts-item-bg: #e5e9e9; --ts-item-border: #d8dcdc;
-  --ts-item-hover-bg: #f0f4f4; --ts-text-color: #0f1115;
-  --ts-string-color: #115e59;
-  --ts-secondary-color: #abafaf; --ts-secondary-highlight: #44474f;
+  --ts-terminal-bg: #e5edec; --ts-terminal-border: #b5d1cf;
+  --ts-terminal-glow: rgba(0, 0, 0, 0.04); --ts-header-bg: #d7e1e0;
+  --ts-title-color: #0f1519; --ts-command-color: #a68c30;
+  --ts-bracket-color: #405857;
+  --ts-item-bg: #d7e1e0; --ts-item-border: #cddad9;
+  --ts-item-hover-bg: #dee8e7; --ts-text-color: #0f1519;
+  --ts-string-color: #155954;
+  --ts-secondary-color: #9cc1bf; --ts-secondary-highlight: #405857;
 
-  --exp-text: #0f1115; --exp-muted: #747882;
-  --exp-spine: #abafaf; --exp-bridge: #c9cdcd;
-  --exp-dot: #747882; --exp-dot-ring: rgba(0, 0, 0, 0.1);
-  --exp-logo-bg: #e5e9e9; --exp-logo-border: rgba(0, 0, 0, 0.12);
+  --exp-text: #0f1519; --exp-muted: #648b88;
+  --exp-spine: #9cc1bf; --exp-bridge: #b5d1cf;
+  --exp-dot: #648b88; --exp-dot-ring: rgba(0, 0, 0, 0.1);
+  --exp-logo-bg: #d7e1e0; --exp-logo-border: rgba(0, 0, 0, 0.12);
 
-  --proj-panel-bg: #f1f5f5; --proj-panel-text: #0f1115;
-  --proj-media-bg: #e5e9e9; --proj-btn-bg: #d8dcdc; --proj-focus: var(--accent);
+  --proj-panel-bg: #e5edec; --proj-panel-text: #0f1519;
+  --proj-media-bg: #d7e1e0; --proj-btn-bg: #cddad9; --proj-focus: var(--accent);
 
-  --rev-card-bg: #f1f5f5; --rev-card-border: #c9cdcd;
-  --rev-card-text: #0f1115; --rev-avatar-bg: #d8dcdc; --rev-avatar-border: #c9cdcd;
+  --rev-card-bg: #e5edec; --rev-card-border: #b5d1cf;
+  --rev-card-text: #0f1519; --rev-avatar-bg: #cddad9; --rev-avatar-border: #b5d1cf;
 
-  --contact-form-bg: #e5e9e9; --contact-form-border: #c9cdcd;
-  --contact-form-text: #0f1115; --contact-input-bg: #f1f5f5;
-  --contact-input-border: #abafaf; --contact-input-focus: var(--accent);
-  --contact-submit-bg: #e5e9e9;
+  --contact-form-bg: #d7e1e0; --contact-form-border: #b5d1cf;
+  --contact-form-text: #0f1519; --contact-input-bg: #e5edec;
+  --contact-input-border: #9cc1bf; --contact-input-focus: var(--accent);
+  --contact-submit-bg: #d7e1e0;
   --contact-error: #dc2626; --contact-invalid: #dc2626;
-  --contact-status-bg: #e5e9e9; --contact-status-border: var(--accent);
+  --contact-status-bg: #d7e1e0; --contact-status-border: var(--accent);
 
-  --extra-activity-bg: #f1f5f5; --extra-activity-border: #c9cdcd; --extra-activity-text: #0f1115;
-  --extra-journey-bg: #f1f5f5; --extra-journey-card-bg: #f1f5f5; --extra-journey-media-bg: #e5e9e9;
-  --extra-yt-bg: #f1f5f5; --extra-yt-thumb-bg: #e5e9e9;
-  --extra-yt-badge-bg: #f1f5f5; --extra-yt-badge-border: var(--accent);
-  --extra-scrollbar-thumb: #abafaf; --extra-scrollbar-track: #e5e9e9;
+  --extra-activity-bg: #e5edec; --extra-activity-border: #b5d1cf; --extra-activity-text: #0f1519;
+  --extra-journey-bg: #e5edec; --extra-journey-card-bg: #e5edec; --extra-journey-media-bg: #d7e1e0;
+  --extra-yt-bg: #e5edec; --extra-yt-thumb-bg: #d7e1e0;
+  --extra-yt-badge-bg: #e5edec; --extra-yt-badge-border: var(--accent);
+  --extra-scrollbar-thumb: #9cc1bf; --extra-scrollbar-track: #d7e1e0;
 
   --focus-outline: var(--accent);
-  --hover-overlay: rgba(17, 94, 89, 0.04);
+  --hover-overlay: rgba(21, 89, 84, 0.04);
   --shadow-light: rgba(0, 0, 0, 0.05); --shadow-heavy: rgba(0, 0, 0, 0.16);
-  --divider-line: #c9cdcd;
+  --divider-line: #b5d1cf;
 }
 
 :root[data-theme="light"] .contact input:focus,

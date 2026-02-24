@@ -3,7 +3,6 @@
    ========================================================= */
 
 :root[data-theme="dark"] {
-  /* Accent color */
   --accent: #14b8a6;
   --accent-rgb: 20, 184, 166;
   --accent-light: rgba(20, 184, 166, 0.3);
@@ -12,156 +11,76 @@
   --accent-glow-intense: rgba(20, 184, 166, 0.5);
   --accent-soft: rgba(20, 184, 166, 0.08);
 
-  /* Base colors */
-  --bg-primary: #0a0f0e;
-  --bg-secondary: #141f1d;
-  --bg-tertiary: #1c2e2a;
-  --text-primary: #e8f5f2;
-  --text-secondary: #b8d4cd;
-  --text-muted: #6b9e92;
-  --text-inverted: #0a0f0e;
-  --border-primary: #1c2e2a;
-  --border-secondary: #2a4540;
+  --bg-primary: #0b1e1c; --bg-secondary: #162927; --bg-tertiary: #203231;
+  --text-primary: #f0f5fb; --text-secondary: #9cbfbb;
+  --text-muted: #749e9a; --text-inverted: #0b1e1c;
+  --border-primary: #173935; --border-secondary: #214d48;
 
-  /* Component colors */
-  --chip-bg: #141f1d;
-  --chip-border: #1c2e2a;
-  --chip-text: #e8f5f2;
-  --cta-bg: var(--accent);
-  --cta-text: #ffffff;
+  --chip-bg: #162927; --chip-border: #173935; --chip-text: #f0f5fb;
+  --cta-bg: var(--accent); --cta-text: #ffffff;
 
-  /* Hero colors */
-  --hero-bg: #0a0f0e;
-  --hero-text: #e8f5f2;
+  --hero-bg: #0b1e1c; --hero-text: #f0f5fb;
 
-  /* About section colors */
-  --about-tile-bg: #141f1d;
-  --about-tile-border: #1c2e2a;
-  --about-tile-text: #e8f5f2;
-  --about-stack-bg: #0a0f0e;
-  --about-stack-border: #1c2e2a;
-  --about-stack-dashed: #1c2e2a;
-  --about-socials-bg: #0a0f0e;
-  --about-socials-border: #1c2e2a;
-  --about-btn-bg: #0a0f0e;
-  --about-btn-border: #1c2e2a;
-  --about-btn-text: #e8f5f2;
+  --about-tile-bg: #162927; --about-tile-border: #173935; --about-tile-text: #f0f5fb;
+  --about-stack-bg: #0b1e1c; --about-stack-border: #173935; --about-stack-dashed: #173935;
+  --about-socials-bg: #0b1e1c; --about-socials-border: #173935;
+  --about-btn-bg: #0b1e1c; --about-btn-border: #173935; --about-btn-text: #f0f5fb;
   --about-orbit-line: hsla(0, 0%, 100%, 0.575);
 
-  /* Globe colors (cobe WebGL — read by about.js) */
-  --about-globe-dark: 1;
-  --about-globe-map-brightness: 8;
+  --about-globe-dark: 1; --about-globe-map-brightness: 8;
   --about-globe-diffuse: 2;
-  --about-globe-base-r: 0.1;
-  --about-globe-base-g: 0.28;
-  --about-globe-base-b: 0.25;
-  --about-globe-glow-r: 0.03;
-  --about-globe-glow-g: 0.1;
-  --about-globe-glow-b: 0.08;
-  --about-globe-marker-r: 0.08;
-  --about-globe-marker-g: 0.72;
-  --about-globe-marker-b: 0.65;
+  --about-globe-base-r: 0.15; --about-globe-base-g: 0.28; --about-globe-base-b: 0.27;
+  --about-globe-glow-r: 0.05; --about-globe-glow-g: 0.07; --about-globe-glow-b: 0.07;
+  --about-globe-marker-r: 0.85; --about-globe-marker-g: 0.15; --about-globe-marker-b: 0.46;
 
-  /* Terminal Tech Stack colors */
-  --ts-terminal-bg: #080d0c;
-  --ts-terminal-border: #141f1d;
-  --ts-terminal-glow: rgba(20, 184, 166, 0.03);
-  --ts-header-bg: #0f1a18;
-  --ts-title-color: #e8f5f2;
-  --ts-command-color: #34d399;
-  --ts-bracket-color: #3d5a54;
-  --ts-item-bg: #0f1a18;
-  --ts-item-border: #141f1d;
-  --ts-item-hover-bg: #0f201c;
-  --ts-text-color: #e8f5f2;
-  --ts-string-color: #2dd4bf;
-  --ts-secondary-color: #2a4540;
-  --ts-secondary-highlight: #6b9e92;
+  --ts-terminal-bg: #081513; --ts-terminal-border: #162927;
+  --ts-terminal-glow: rgba(20, 184, 166, 0.12); --ts-header-bg: #121f1d;
+  --ts-title-color: #f0f5fb; --ts-command-color: #dcb93b;
+  --ts-bracket-color: #749e9a;
+  --ts-item-bg: #121f1d; --ts-item-border: #162927;
+  --ts-item-hover-bg: #142624; --ts-text-color: #f0f5fb;
+  --ts-string-color: #14b8a6;
+  --ts-secondary-color: #173935; --ts-secondary-highlight: #749e9a;
 
-  /* Experience colors */
-  --exp-text: #e8f5f2;
-  --exp-muted: #6b9e92;
-  --exp-spine: #e8f5f2;
-  --exp-bridge: #1c2e2a;
-  --exp-dot: #e8f5f2;
-  --exp-dot-ring: rgba(255, 255, 255, 0.2);
-  --exp-logo-bg: #141f1d;
-  --exp-logo-border: rgba(255, 255, 255, 0.3);
+  --exp-text: #f0f5fb; --exp-muted: #749e9a;
+  --exp-spine: #f0f5fb; --exp-bridge: #173935;
+  --exp-dot: #f0f5fb; --exp-dot-ring: rgba(240, 245, 251, 0.2);
+  --exp-logo-bg: #162927; --exp-logo-border: rgba(255, 255, 255, 0.3);
 
-  /* Projects colors */
-  --proj-panel-bg: #0a0f0e;
-  --proj-panel-text: #e8f5f2;
-  --proj-media-bg: #141f1d;
-  --proj-btn-bg: #1c2e2a;
-  --proj-focus: var(--accent);
+  --proj-panel-bg: #0b1e1c; --proj-panel-text: #f0f5fb;
+  --proj-media-bg: #162927; --proj-btn-bg: #203231; --proj-focus: var(--accent);
 
-  /* Reviews colors */
-  --rev-card-bg: #0a0f0e;
-  --rev-card-border: #1c2e2a;
-  --rev-card-text: #e8f5f2;
-  --rev-avatar-bg: #1c2e2a;
-  --rev-avatar-border: #1c2e2a;
+  --rev-card-bg: #0b1e1c; --rev-card-border: #173935;
+  --rev-card-text: #f0f5fb; --rev-avatar-bg: #203231; --rev-avatar-border: #173935;
 
-  /* Contact colors */
-  --contact-form-bg: #141f1d;
-  --contact-form-border: #1c2e2a;
-  --contact-form-text: #e8f5f2;
-  --contact-input-bg: #0a0f0e;
-  --contact-input-border: #2a4540;
-  --contact-input-focus: var(--accent);
-  --contact-submit-bg: #141f1d;
-  --contact-error: #ef4444;
-  --contact-invalid: #ef4444;
-  --contact-status-bg: #141f1d;
-  --contact-status-border: var(--accent);
+  --contact-form-bg: #162927; --contact-form-border: #173935;
+  --contact-form-text: #f0f5fb; --contact-input-bg: #0b1e1c;
+  --contact-input-border: #214d48; --contact-input-focus: var(--accent);
+  --contact-submit-bg: #162927;
+  --contact-error: #ef4444; --contact-invalid: #ef4444;
+  --contact-status-bg: #162927; --contact-status-border: var(--accent);
 
-  /* Extra section colors */
-  --extra-activity-bg: #0a0f0e;
-  --extra-activity-border: #1c2e2a;
-  --extra-activity-text: #e8f5f2;
-  --extra-journey-bg: #0a0f0e;
-  --extra-journey-card-bg: #0a0f0e;
-  --extra-journey-media-bg: #141f1d;
-  --extra-yt-bg: #0a0f0e;
-  --extra-yt-thumb-bg: #141f1d;
-  --extra-yt-badge-bg: #0a0f0e;
-  --extra-yt-badge-border: var(--accent);
-  --extra-scrollbar-thumb: #2a4540;
-  --extra-scrollbar-track: #141f1d;
+  --extra-activity-bg: #0b1e1c; --extra-activity-border: #173935; --extra-activity-text: #f0f5fb;
+  --extra-journey-bg: #0b1e1c; --extra-journey-card-bg: #0b1e1c; --extra-journey-media-bg: #162927;
+  --extra-yt-bg: #0b1e1c; --extra-yt-thumb-bg: #162927;
+  --extra-yt-badge-bg: #0b1e1c; --extra-yt-badge-border: var(--accent);
+  --extra-scrollbar-thumb: #214d48; --extra-scrollbar-track: #162927;
 
-  /* Interactive states */
   --focus-outline: var(--accent);
-  --hover-overlay: rgba(232, 245, 242, 0.1);
-  --shadow-light: rgba(0, 0, 0, 0.5);
-  --shadow-heavy: rgba(0, 0, 0, 0.8);
-
-  /* Divider colors */
+  --hover-overlay: rgba(240, 245, 251, 0.1);
+  --shadow-light: rgba(0, 0, 0, 0.5); --shadow-heavy: rgba(0, 0, 0, 0.8);
   --divider-line: #14b8a6;
 }
 
-/* Contact form input focus */
 :root[data-theme="dark"] .contact input:focus,
 :root[data-theme="dark"] .contact textarea:focus,
 :root[data-theme="dark"] [class*="contact"] input:focus,
 :root[data-theme="dark"] [class*="contact"] textarea:focus {
-  outline: 2px solid var(--contact-input-focus);
-  outline-offset: -2px;
-  border-color: var(--contact-input-focus);
-  box-shadow: 0 0 0 1px var(--contact-input-focus);
+  outline: 2px solid var(--contact-input-focus); outline-offset: -2px;
+  border-color: var(--contact-input-focus); box-shadow: 0 0 0 1px var(--contact-input-focus);
 }
-
-/* Projects chevrons white in dark */
-:root[data-theme="dark"] .projects .proj-nav-btn .chev-icon {
-  filter: brightness(0) invert(1);
-}
-
-/* Exclude sub-headings inside sections */
-:root[data-theme="dark"] .extra-section h3,
-:root[data-theme="dark"] .extra-section h4,
-:root[data-theme="dark"] .extra-section h5,
-:root[data-theme="dark"] .extra-section h6,
-:root[data-theme="dark"] .ts-title,
-:root[data-theme="dark"] .site-header a,
-:root[data-theme="dark"] .site-header .nav a {
-  text-decoration: none !important;
-}
+:root[data-theme="dark"] .projects .proj-nav-btn .chev-icon { filter: brightness(0) invert(1); }
+:root[data-theme="dark"] .extra-section h3, :root[data-theme="dark"] .extra-section h4,
+:root[data-theme="dark"] .extra-section h5, :root[data-theme="dark"] .extra-section h6,
+:root[data-theme="dark"] .ts-title, :root[data-theme="dark"] .site-header a,
+:root[data-theme="dark"] .site-header .nav a { text-decoration: none !important; }
