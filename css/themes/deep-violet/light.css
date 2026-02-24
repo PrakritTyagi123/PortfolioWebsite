@@ -1,0 +1,86 @@
+/* =========================================================
+   LIGHT THEME — Deep Violet
+   ========================================================= */
+
+:root[data-theme="light"] {
+  --accent: #6d28d9;
+  --accent-rgb: 109, 40, 217;
+  --accent-light: rgba(109, 40, 217, 0.25);
+  --accent-glow: rgba(109, 40, 217, 0.3);
+  --accent-glow-strong: rgba(109, 40, 217, 0.45);
+  --accent-glow-intense: rgba(109, 40, 217, 0.4);
+  --accent-soft: rgba(109, 40, 217, 0.07);
+
+  --bg-primary: #f6f2fd; --bg-secondary: #eae6f1; --bg-tertiary: #ddd9e4;
+  --text-primary: #0f1115; --text-secondary: #44474f;
+  --text-muted: #747882; --text-inverted: #f6f2fd;
+  --border-primary: #cecad5; --border-secondary: #b0acb7;
+
+  --chip-bg: #eae6f1; --chip-border: #cecad5; --chip-text: #0f1115;
+  --cta-bg: var(--accent); --cta-text: #ffffff;
+
+  --hero-bg: #f6f2fd; --hero-text: #0f1115;
+
+  --about-tile-bg: #eae6f1; --about-tile-border: #cecad5; --about-tile-text: #0f1115;
+  --about-stack-bg: #f6f2fd; --about-stack-border: #cecad5; --about-stack-dashed: #cecad5;
+  --about-socials-bg: #f6f2fd; --about-socials-border: #cecad5;
+  --about-btn-bg: #f6f2fd; --about-btn-border: #cecad5; --about-btn-text: #0f1115;
+  --about-orbit-line: #0f1115;
+
+  --about-globe-dark: 0; --about-globe-map-brightness: 2;
+  --about-globe-diffuse: 3;
+  --about-globe-base-r: 0.83; --about-globe-base-g: 0.8; --about-globe-base-b: 0.87;
+  --about-globe-glow-r: 0.92; --about-globe-glow-g: 0.91; --about-globe-glow-b: 0.94;
+  --about-globe-marker-r: 0.34; --about-globe-marker-g: 0.08; --about-globe-marker-b: 0.43;
+
+  --ts-terminal-bg: #f6f2fd; --ts-terminal-border: #cecad5;
+  --ts-terminal-glow: rgba(0, 0, 0, 0.04); --ts-header-bg: #eae6f1;
+  --ts-title-color: #0f1115; --ts-command-color: #b4872b;
+  --ts-bracket-color: #44474f;
+  --ts-item-bg: #eae6f1; --ts-item-border: #ddd9e4;
+  --ts-item-hover-bg: #f5f2fa; --ts-text-color: #0f1115;
+  --ts-string-color: #6d28d9;
+  --ts-secondary-color: #b0acb7; --ts-secondary-highlight: #44474f;
+
+  --exp-text: #0f1115; --exp-muted: #747882;
+  --exp-spine: #b0acb7; --exp-bridge: #cecad5;
+  --exp-dot: #747882; --exp-dot-ring: rgba(0, 0, 0, 0.1);
+  --exp-logo-bg: #eae6f1; --exp-logo-border: rgba(0, 0, 0, 0.12);
+
+  --proj-panel-bg: #f6f2fd; --proj-panel-text: #0f1115;
+  --proj-media-bg: #eae6f1; --proj-btn-bg: #ddd9e4; --proj-focus: var(--accent);
+
+  --rev-card-bg: #f6f2fd; --rev-card-border: #cecad5;
+  --rev-card-text: #0f1115; --rev-avatar-bg: #ddd9e4; --rev-avatar-border: #cecad5;
+
+  --contact-form-bg: #eae6f1; --contact-form-border: #cecad5;
+  --contact-form-text: #0f1115; --contact-input-bg: #f6f2fd;
+  --contact-input-border: #b0acb7; --contact-input-focus: var(--accent);
+  --contact-submit-bg: #eae6f1;
+  --contact-error: #dc2626; --contact-invalid: #dc2626;
+  --contact-status-bg: #eae6f1; --contact-status-border: var(--accent);
+
+  --extra-activity-bg: #f6f2fd; --extra-activity-border: #cecad5; --extra-activity-text: #0f1115;
+  --extra-journey-bg: #f6f2fd; --extra-journey-card-bg: #f6f2fd; --extra-journey-media-bg: #eae6f1;
+  --extra-yt-bg: #f6f2fd; --extra-yt-thumb-bg: #eae6f1;
+  --extra-yt-badge-bg: #f6f2fd; --extra-yt-badge-border: var(--accent);
+  --extra-scrollbar-thumb: #b0acb7; --extra-scrollbar-track: #eae6f1;
+
+  --focus-outline: var(--accent);
+  --hover-overlay: rgba(109, 40, 217, 0.04);
+  --shadow-light: rgba(0, 0, 0, 0.05); --shadow-heavy: rgba(0, 0, 0, 0.16);
+  --divider-line: #cecad5;
+}
+
+:root[data-theme="light"] .contact input:focus,
+:root[data-theme="light"] .contact textarea:focus,
+:root[data-theme="light"] [class*="contact"] input:focus,
+:root[data-theme="light"] [class*="contact"] textarea:focus {
+  outline: 2px solid var(--contact-input-focus); outline-offset: -2px;
+  border-color: var(--contact-input-focus); box-shadow: 0 0 0 1px var(--contact-input-focus);
+}
+:root[data-theme="light"] .projects .proj-nav-btn .chev-icon { filter: none; }
+:root[data-theme="light"] .extra-section h3, :root[data-theme="light"] .extra-section h4,
+:root[data-theme="light"] .extra-section h5, :root[data-theme="light"] .extra-section h6,
+:root[data-theme="light"] .ts-title, :root[data-theme="light"] .site-header a,
+:root[data-theme="light"] .site-header .nav a { text-decoration: none !important; }
