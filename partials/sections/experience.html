@@ -28,14 +28,19 @@
           </div>
           <div class="t-body">
             <ul class="t-points">
-              <li>Designed modular combat (state machines, hitboxes, i-frames, stamina/poise).</li>
-              <li>Scripted enemy behaviors with NavMesh + behavior trees; authored boss phase logic.</li>
-              <li>Implemented save slots, checkpoints, and persistence (JSON/binary).</li>
-              <li>Set up Addressables and scene streaming to reduce load times and memory.</li>
-              <li>Built editor tools (level spawner, loot tables, dialogue graph).</li>
-              <li>Polished with Cinemachine, Timeline, VFX Graph, and audio cues.</li>
-              <li>Reduced GC spikes via pooling and allocation audits in Unity Profiler.</li>
-              <li>Automated builds (CI) for Windows/Android; semantic versioning.</li>
+              <li>Architected scalable combat framework (state-driven architecture, extensible ability system).</li>
+              <li>Implemented enemy AI using NavMesh, behavior trees, and dynamic difficulty scaling.</li>
+              <li>Built modular inventory, crafting, and loot rarity systems with data-driven ScriptableObjects.</li>
+              <li>Developed save/load architecture with encrypted serialization and version-safe migration.</li>
+              <li>Designed checkpoint & respawn logic with world-state persistence.</li>
+              <li>Integrated Addressables + async scene streaming reducing load times by ~35%.</li>
+              <li>Created custom Unity Editor tools to accelerate level design iteration by 2x.</li>
+              <li>Optimized performance via object pooling, burst-compatible patterns, and memory audits.</li>
+              <li>Reduced frame spikes by profiling GC allocations and eliminating runtime instantiations.</li>
+              <li>Implemented input abstraction (keyboard/controller ready).</li>
+              <li>Set up CI pipeline for automated Windows/Android builds with semantic versioning.</li>
+              <li>Maintained roadmap, feature backlog, and release planning as solo developer.</li>
+              <li>Published small experimental builds to validate gameplay loops & retention.</li>
             </ul>
           </div>
         </li>
@@ -58,11 +63,15 @@
           </div>
           <div class="t-body">
             <ul class="t-points">
-              <li>Developed WhatsApp-based itinerary planning chatbot using LLM.</li>
-              <li>Integrated Twilio API for seamless WhatsApp interactions.</li>
-              <li>Stored user and travel data in MySQL database.</li>
-              <li>Used ngrok for local hosting, cost-effective deployment.</li>
-              <li>Enhanced UX with conversational and intuitive interface.</li>
+              <li>Built WhatsApp itinerary chatbot powered by LLM (Groq API) for conversational planning.</li>
+              <li>Integrated Twilio WhatsApp API with webhook-driven message handling.</li>
+              <li>Developed Node.js REST backend with MySQL relational schema design.</li>
+              <li>Implemented session memory & context tracking for multi-turn conversations.</li>
+              <li>Used ngrok tunneling for secure local webhook testing and staging.</li>
+              <li>Wrote validation middleware, error handling, and rate-limit safeguards.</li>
+              <li>Authored unit tests and structured handover documentation.</li>
+              <li>Improved response latency via query indexing and async optimizations.</li>
+              <li>Structured prompts to reduce hallucinations and improve itinerary accuracy.</li>
             </ul>
           </div>
         </li>
@@ -79,17 +88,20 @@
             <div class="t-meta">
               <div class="t-company">Industry Specialist</div>
               <div class="t-location">
-                <img class="t-pin" src="assets/img/misc/pin.svg" alt=""> USA (FL, NJ, NY) · On-Site
+                <img class="t-pin" src="assets/img/misc/pin.svg" alt=""> USA (FL, NJ, NY), UK (LONDON) · On-Site
               </div>
             </div>
           </div>
           <div class="t-body">
             <ul class="t-points">
-              <li>Site visits at <strong>Google</strong> and <strong>NASA</strong>; observed large-scale systems and SRE practices.</li>
-              <li>Shadowed secure SDLC, access control, and cloud governance at <strong>Barclays</strong>.</li>
-              <li>Sat in on code reviews and incident postmortems; distilled checklists.</li>
-              <li>Mapped CI/CD flows into reusable templates.</li>
-              <li>Documented security takeaways: least-privilege IAM, secret handling, audit trails.</li>
+              <li>Observed SRE practices and distributed systems reliability workflows at Google.</li>
+              <li>Studied mission-critical infrastructure design patterns at NASA.</li>
+              <li>Reviewed secure SDLC lifecycle and compliance workflows at Barclays (Whippany, NJ).</li>
+              <li>Learned access control strategies: RBAC, IAM policies, least privilege models.</li>
+              <li>Analyzed CI/CD pipelines with security gating and automated code scanning.</li>
+              <li>Participated in incident postmortem discussions and risk mitigation reviews.</li>
+              <li>Documented enterprise cloud governance practices (logging, audit trails, secrets mgmt).</li>
+              <li>Mapped enterprise security practices into academic and personal projects.</li>
             </ul>
           </div>
         </li>
@@ -112,11 +124,14 @@
           </div>
           <div class="t-body">
             <ul class="t-points">
-              <li>Developed C# scripts for game logic and mechanics in Unity.</li>
-              <li>Created 3D models, textures, and animations for game environment.</li>
-              <li>Tested builds across Android, iOS, Windows Phone, and WebGL.</li>
-              <li>Optimized game performance by reducing draw calls.</li>
-              <li>Integrated sound effects using FMOD Studio audio middleware.</li>
+              <li>Prototyped gameplay systems in Unity (C#) collaborating with designers and artists.</li>
+              <li>Implemented core mechanics including movement, scoring, and event systems.</li>
+              <li>Reduced frame time by profiling CPU/GPU bottlenecks using Unity Profiler.</li>
+              <li>Optimized draw calls through batching and material consolidation.</li>
+              <li>Integrated FMOD Studio for adaptive sound effects and audio layering.</li>
+              <li>Prepared cross-platform builds (Android, iOS, WebGL) and handled device testing.</li>
+              <li>Documented internal workflows to accelerate iteration cycles.</li>
+              <li>Debugged physics, animation sync, and input edge cases.</li>
             </ul>
           </div>
         </li>
@@ -139,12 +154,16 @@
           </div>
           <div class="t-body">
             <ul class="t-points">
-              <li>Hosted <strong>Minecraft</strong> & <strong>Rust</strong> servers on Linux with Docker + Nginx.</li>
-              <li>Managed mods/plugins, permissions, and anti-cheat configs.</li>
-              <li>Set up Prometheus + Grafana monitoring; alerts for CPU, TPS, latency.</li>
-              <li>Automated backups with S3-based restore and lifecycle rules.</li>
-              <li>Hardened hosts with UFW/fail2ban; TLS via Let's Encrypt.</li>
-              <li>Optimized cloud costs via right-sizing and off-peak schedules.</li>
+              <li>Deployed and maintained Minecraft & Rust game servers on Linux VPS environments.</li>
+              <li>Containerized services using Docker with reverse proxy routing via Nginx.</li>
+              <li>Configured automated CI-based patching and rolling restarts.</li>
+              <li>Implemented Prometheus + Grafana dashboards for TPS, CPU, memory, and latency.</li>
+              <li>Automated daily backups with S3 lifecycle rules and disaster recovery scripts.</li>
+              <li>Hardened infrastructure using UFW, fail2ban, SSH key rotation, and TLS certificates.</li>
+              <li>Tuned JVM flags and server configs to optimize tick rate stability.</li>
+              <li>Reduced downtime via proactive alerting and log-based anomaly detection.</li>
+              <li>Managed mod/plugin ecosystems and version compatibility during migrations.</li>
+              <li>Optimized cloud hosting costs through instance right-sizing and usage scheduling.</li>
             </ul>
           </div>
         </li>
@@ -160,7 +179,10 @@
           </h4>
           <div class="exp-stat-row"><span class="exp-stat-row__label">Total Experience</span><span class="exp-stat-row__value">5+ yrs</span></div>
           <div class="exp-stat-row"><span class="exp-stat-row__label">Roles Held</span><span class="exp-stat-row__value">5</span></div>
-          <div class="exp-stat-row"><span class="exp-stat-row__label">Countries</span><span class="exp-stat-row__value">3</span></div>
+          <div class="exp-stat-row"><span class="exp-stat-row__label">Games Built</span><span class="exp-stat-row__value">10+</span></div>
+          <div class="exp-stat-row"><span class="exp-stat-row__label">Servers Managed</span><span class="exp-stat-row__value">25+</span></div>
+          <div class="exp-stat-row"><span class="exp-stat-row__label">Systems Designed</span><span class="exp-stat-row__value">15+</span></div>
+          <div class="exp-stat-row"><span class="exp-stat-row__label">Countries</span><span class="exp-stat-row__value">4</span></div>
           <div class="exp-stat-row"><span class="exp-stat-row__label">Remote Work</span><span class="exp-stat-row__value">Yes</span></div>
           <div class="exp-stat-row"><span class="exp-stat-row__label">On-Site Work</span><span class="exp-stat-row__value">Yes</span></div>
         </div>
@@ -252,6 +274,16 @@
           <div class="exp-stat-row"><span class="exp-stat-row__label">Google</span><span class="exp-stat-row__value">🇺🇸</span></div>
           <div class="exp-stat-row"><span class="exp-stat-row__label">NASA</span><span class="exp-stat-row__value">🇺🇸</span></div>
           <div class="exp-stat-row"><span class="exp-stat-row__label">Barclays</span><span class="exp-stat-row__value">🇺🇸</span></div>
+        </div>
+
+        <div class="exp-summary-card">
+          <h4 class="exp-summary-card__title">
+            <span class="exp-summary-card__ico">🌎</span> Countries Worked For
+          </h4>
+          <div class="exp-stat-row"><span class="exp-stat-row__label">INDIA</span></div>
+          <div class="exp-stat-row"><span class="exp-stat-row__label">USA</span></div>
+          <div class="exp-stat-row"><span class="exp-stat-row__label">UK</span></div>
+          <div class="exp-stat-row"><span class="exp-stat-row__label">SINGAPORE</span></div>
         </div>
 
       </div>
