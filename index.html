@@ -14,18 +14,10 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <!-- ═══════════════════════════════════════════════════════════
-       PALETTE + THEME BOOTSTRAP — runs before any paint
+       THEME BOOTSTRAP — runs before any paint
        ═══════════════════════════════════════════════════════════ -->
   <script>
     (function () {
-      // ── Palette registry ──
-      var PALETTES = [
-        { id: "original", name: "Original" },
-      ];
-
-      // ── Pick random palette ──
-      var pick = PALETTES[Math.floor(Math.random() * PALETTES.length)];
-
       // ── Resolve theme (dark/light) ──
       var theme;
       try {
@@ -39,15 +31,12 @@
       // ── Apply to <html> before paint ──
       var html = document.documentElement;
       html.setAttribute('data-theme', theme);
-      html.setAttribute('data-palette', pick.id);
 
       // ── Expose to rest of app ──
       window.__savedTheme = theme;
-      window.__palette = pick;
-      window.__palettes = PALETTES;
 
-      // ── Inject palette CSS <link> tags ──
-      var base = 'css/themes/' + pick.id + '/';
+      // ── Inject theme CSS <link> tags ──
+      var base = 'css/themes/original/';
       var darkLink = document.createElement('link');
       darkLink.rel = 'stylesheet';
       darkLink.href = base + 'dark.css?v=1';
@@ -163,31 +152,6 @@
       animation: preloaderFadeUp 0.4s ease 0.4s forwards;
     }
 
-    .preloader__palette {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted, #666666);
-      opacity: 0;
-      animation: preloaderFadeUp 0.4s ease 0.6s forwards;
-    }
-
-    .preloader__palette .palette-accent {
-      color: var(--accent, #ff0000);
-    }
-
-    .preloader__hint {
-      font-family: 'Space Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted, #666666);
-      opacity: 0;
-      animation: preloaderFadeUp 0.4s ease 0.8s forwards;
-      margin-top: 4px;
-    }
-
     @keyframes preloaderFadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -221,18 +185,7 @@
       <div class="preloader__bar" id="preloader-bar"></div>
     </div>
     <div class="preloader__status" id="preloader-status">Loading…</div>
-    <div class="preloader__palette" id="preloader-palette">
-      &#x1f3a8; <span class="palette-accent" id="preloader-palette-name"></span>
-    </div>
   </div>
-
-  <!-- Inject palette name into preloader -->
-  <script>
-    (function () {
-      var el = document.getElementById('preloader-palette-name');
-      if (el && window.__palette) el.textContent = window.__palette.name;
-    })();
-  </script>
 
   <!-- App container — hidden until fully loaded -->
   <main id="app"></main>
@@ -287,12 +240,6 @@
         return new Promise(function(resolve) {
           setTimeout(resolve, duration || 1000);
         });
-      }
-
-      async function loadPartial(path, target) {
-        const res = await fetch(path);
-        if (!res.ok) throw new Error('Failed to fetch ' + path);
-        target.insertAdjacentHTML('beforeend', await res.text());
       }
 
       function loadScript(src) {
@@ -400,7 +347,6 @@
           utils: window.utils,
           header: window.headerModule,
           theme: window.themeModule,
-          hero: window.heroModule,
           about: window.aboutModule,
           projects: window.projectsModule,
           reviews: window.reviewsModule,
@@ -435,7 +381,7 @@
           if (document.body.contains(preloader)) preloader.remove();
         }, 1000);
 
-        console.log('✅ Site fully loaded! Palette:', window.__palette.name);
+        console.log('✅ Site fully loaded!');
 
       } catch (error) {
         console.error('Boot error:', error);

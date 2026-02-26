@@ -17,7 +17,7 @@
       document.querySelector('header')
     );
   }
-  function headerHeight() {
+  function measureHeaderHeight() {
     const h = getHeader();
     if (!h) return 56;
     const r = h.getBoundingClientRect();
@@ -27,7 +27,7 @@
     return Math.max(0, Math.round(r.height + mt + mb)) || 56;
   }
   function syncHeaderVar() {
-    root.style.setProperty('--header-h', headerHeight() + 'px');
+    root.style.setProperty('--header-h', measureHeaderHeight() + 'px');
   }
   addEventListener('DOMContentLoaded', syncHeaderVar, { once: true });
   addEventListener('load', syncHeaderVar, { once: true });
@@ -116,11 +116,9 @@
         if (video.paused) {
           toggle.innerHTML = '&#9654;'; // Play symbol (▶)
           toggle.setAttribute('aria-label', 'Play video');
-          toggle.setAttribute('aria-pressed', 'false');
         } else {
           toggle.innerHTML = '&#10074;&#10074;'; // Pause symbol (⏸)
           toggle.setAttribute('aria-label', 'Pause video');
-          toggle.setAttribute('aria-pressed', 'true');
         }
       }
       toggle.addEventListener('click', () => {

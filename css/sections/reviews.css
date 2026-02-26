@@ -246,13 +246,3 @@
 .rev-avatar[data-color="fuchsia"] { background: #d946ef; }
 .rev-avatar[data-color="pink"] { background: #ec4899; }
 .rev-avatar[data-color="rose"] { background: #f43f5e; }
-
-/* #29 - Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .marquee {
-    animation: none !important;
-  }
-  .clients.marquee-ready .marquee {
-    animation: none !important;
-  }
-}

@@ -233,10 +233,10 @@
   window.addEventListener('mouseout', onMouseOut);
   document.addEventListener('visibilitychange', onVisibility);
 
-  // Observe theme + palette changes
+  // Observe theme changes
   new MutationObserver(applyTheme).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['data-theme', 'data-palette']
+    attributeFilter: ['data-theme']
   });
 
   applyTheme();

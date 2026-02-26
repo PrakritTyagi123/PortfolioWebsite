@@ -46,14 +46,12 @@ body,
 ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent) 80%, white); }
 
 :root {
-  /* Accent colors — defined per-palette in css/themes/<palette>/dark.css & light.css */
+  /* Accent colors — defined in css/themes/original/dark.css & light.css */
 
 /* Layout + sizing tokens */
 --header-h: 56px;
---proj-head-h: 36px;
 --card-w: 800px;
 --gap: 20px;
---unique: 5;
 /* Interaction + rhythm */
 --hover-scale: 1.08;
 --vpad-top: 48px;
@@ -345,7 +343,7 @@ margin-inline: auto;
 
 /* Very short viewports */
 @media (max-height: 720px) {
-.hero, .about, .work, .projects, .clients, .extra, .contact {
+.hero, .about, .work, .projects, .clients, .extra-section, .contact {
 padding-top: 32px;
 padding-bottom: 32px;
 }

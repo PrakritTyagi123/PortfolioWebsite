@@ -12,12 +12,12 @@ window.reviewsModule = (function () {
   let initialized = false;
 
   // Use shared utilities (utils.js is guaranteed loaded first)
-  const q = window.utils.$;
-  const qq = window.utils.$$;
+  const $ = window.utils.$;
+  const $$ = window.utils.$$;
 
   // --- Avatar fallbacks ---
   function setupAvatars(scope) {
-    qq('.rev-avatar', scope).forEach(function (av) {
+    $$('.rev-avatar', scope).forEach(function (av) {
       const img = av.querySelector('img');
       if (!img) { av.classList.add('fallback'); return; }
 
@@ -37,12 +37,12 @@ window.reviewsModule = (function () {
 
   // --- Ensure group fills at least the viewport width ---
   function expandGroup(rowEl) {
-    const marquee = q('.marquee', rowEl);
+    const marquee = $('.marquee', rowEl);
     if (!marquee) return;
-    const group = q('.group', marquee);
+    const group = $('.group', marquee);
     if (!group) return;
 
-    const origCards = qq('.review', group);
+    const origCards = $$('.review', group);
     if (!origCards.length) return;
 
     let guard = 0;
@@ -54,13 +54,13 @@ window.reviewsModule = (function () {
 
   // --- Clone the group to create A|B pair for seamless loop ---
   function cloneGroup(rowEl) {
-    const marquee = q('.marquee', rowEl);
+    const marquee = $('.marquee', rowEl);
     if (!marquee) return;
-    const group = q('.group', marquee);
+    const group = $('.group', marquee);
     if (!group) return;
 
     // Remove any previous clones
-    qq('.group', marquee).slice(1).forEach(function (g) { g.remove(); });
+    $$('.group', marquee).slice(1).forEach(function (g) { g.remove(); });
 
     const clone = group.cloneNode(true);
     clone.setAttribute('aria-hidden', 'true');
@@ -69,9 +69,9 @@ window.reviewsModule = (function () {
 
   // --- Set animation duration based on group width ---
   function setDuration(rowEl) {
-    const marquee = q('.marquee', rowEl);
+    const marquee = $('.marquee', rowEl);
     if (!marquee) return;
-    const group = q('.group', marquee);
+    const group = $('.group', marquee);
     if (!group) return;
 
     const w = group.scrollWidth;
@@ -91,37 +91,60 @@ window.reviewsModule = (function () {
   function init() {
     if (initialized) return;
 
-    const section = q('.clients');
+    const section = $('.clients');
     if (!section) return;
 
-    const rows = qq('.marquee-row', section);
+    const rows = $$('.marquee-row', section);
     if (!rows.length) return;
 
-    // Double rAF to let DOM settle before measuring
-    requestAnimationFrame(function () {
+    function setup() {
+      // Double rAF to let layout fully settle after app reveal
       requestAnimationFrame(function () {
-        rows.forEach(prepareRow);
+        requestAnimationFrame(function () {
+          rows.forEach(prepareRow);
 
-        // Start the CSS animation
-        section.classList.add('marquee-ready');
+          // Start the CSS animation
+          section.classList.add('marquee-ready');
 
-        // Recalculate on resize (debounced)
-        let timer = null;
-        window.addEventListener('resize', function () {
-          clearTimeout(timer);
-          timer = setTimeout(function () {
-            for (const row of rows) {
-              expandGroup(row);
-              cloneGroup(row);
-              setDuration(row);
-              setupAvatars(row);
-            }
-          }, 200);
+          // Recalculate on resize (debounced)
+          let timer = null;
+          window.addEventListener('resize', function () {
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+              for (const row of rows) {
+                expandGroup(row);
+                cloneGroup(row);
+                setDuration(row);
+                setupAvatars(row);
+              }
+            }, 200);
+          });
+
+          initialized = true;
         });
-
-        initialized = true;
       });
-    });
+    }
+
+    // Wait until the app is fully revealed before measuring.
+    // During boot, #app has opacity:0 and elements may not have final layout.
+    const appEl = document.getElementById('app');
+    if (appEl && appEl.classList.contains('is-ready')) {
+      setup();
+    } else if (appEl) {
+      const mo = new MutationObserver(function () {
+        if (appEl.classList.contains('is-ready')) {
+          mo.disconnect();
+          setup();
+        }
+      });
+      mo.observe(appEl, { attributes: true, attributeFilter: ['class'] });
+      // Safety fallback
+      setTimeout(function () {
+        if (!initialized) { mo.disconnect(); setup(); }
+      }, 6000);
+    } else {
+      setup();
+    }
   }
 
   // Boot sequence guarantees DOM is ready

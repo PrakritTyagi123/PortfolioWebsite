@@ -217,11 +217,8 @@ window.contactModule = (function () {
     bindContactHash();
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
+  // Boot sequence guarantees DOM is ready
+  init();
 
   return { init: init };
 })();

@@ -14,8 +14,7 @@ window.headerModule = (function () {
   var scrollRafId = null;
 
   function getHeaderH() {
-    if (window.utils && window.utils.getHeaderHeight) return window.utils.getHeaderHeight();
-    return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 56;
+    return window.utils.getHeaderHeight();
   }
 
   // ---- Smooth scroll ----
@@ -45,8 +44,7 @@ window.headerModule = (function () {
     function step(ts) {
       if (!t0) t0 = ts;
       var p = Math.min((ts - t0) / dur, 1);
-      // Smooth ease-in-out cubic for a more natural feel
-      var ease = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      var ease = window.utils.easeInOutCubic(p);
       window.scrollTo(0, start + dist * ease);
       if (p < 1) {
         scrollRafId = requestAnimationFrame(step);
@@ -260,56 +258,3 @@ window.themeModule = (function () {
   return { init: init, applyTheme: apply };
 })();
 
-// =========================================================
-// PALETTE SWITCHER — Cycle through palettes
-// =========================================================
-window.paletteModule = (function () {
-  'use strict';
-  var HTML = document.documentElement;
-
-  function switchPalette(newPalette) {
-    // Update data attribute
-    HTML.setAttribute('data-palette', newPalette.id);
-
-    // Swap CSS <link> tags
-    var darkLink = document.getElementById('palette-dark');
-    var lightLink = document.getElementById('palette-light');
-    var base = 'css/themes/' + newPalette.id + '/';
-
-    if (darkLink) darkLink.href = base + 'dark.css?v=1';
-    if (lightLink) lightLink.href = base + 'light.css?v=1';
-
-    // Update global reference
-    window.__palette = newPalette;
-  }
-
-  function getNextPalette() {
-    var palettes = window.__palettes || [];
-    if (!palettes.length) return null;
-    var currentId = HTML.getAttribute('data-palette') || '';
-    var currentIdx = -1;
-    for (var i = 0; i < palettes.length; i++) {
-      if (palettes[i].id === currentId) { currentIdx = i; break; }
-    }
-    var nextIdx = (currentIdx + 1) % palettes.length;
-    return palettes[nextIdx];
-  }
-
-  function init() {
-    var btn = document.getElementById('palette-toggle');
-    if (!btn || btn._bound) return;
-
-    btn.addEventListener('click', function () {
-      var next = getNextPalette();
-      if (!next) return;
-      switchPalette(next);
-    });
-
-    btn._bound = true;
-  }
-
-  // Boot sequence guarantees DOM is ready
-  init();
-
-  return { init: init, switchPalette: switchPalette, getNextPalette: getNextPalette };
-})();

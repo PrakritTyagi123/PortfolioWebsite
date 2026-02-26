@@ -104,12 +104,23 @@ window.utils = (function() {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
+  // Shared debounce helper
+  function debounce(fn, ms) {
+    var timer = null;
+    return function () {
+      var ctx = this, args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () { fn.apply(ctx, args); }, ms);
+    };
+  }
+
   return {
     $,
     $$,
     getHeaderHeight,
     smoothScrollTo,
     onReady,
-    easeInOutCubic
+    easeInOutCubic,
+    debounce
   };
 })();

@@ -270,11 +270,11 @@
         window._cobeGlobe = globe;
       }
       
-      /* ---- Recreate globe when theme/palette changes ---- */
+      /* ---- Recreate globe when theme changes ---- */
       function watchForThemeChanges() {
         const observer = new MutationObserver((mutations) => {
           for (const m of mutations) {
-            if (m.attributeName === 'data-theme' || m.attributeName === 'data-palette') {
+            if (m.attributeName === 'data-theme') {
               // Small delay to let CSS variables update
               setTimeout(createGlobeInstance, 50);
               break;
@@ -283,7 +283,7 @@
         });
         observer.observe(document.documentElement, {
           attributes: true,
-          attributeFilter: ['data-theme', 'data-palette'],
+          attributeFilter: ['data-theme'],
         });
       }
       
